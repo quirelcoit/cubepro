@@ -5,6 +5,8 @@
 
 import { BEGINNER_LAST_LAYER, PLL_ALGORITHMS, F2L_CASES } from './algorithms-data.js';
 import { DiagramGenerator } from './diagram-generator.js';
+import { Cube } from './cube-engine.js';
+import { STAGES, ALL_CASES, getLessonCases } from './curriculum.js';
 
 export class AlgorithmTrainer {
   constructor(containerEl) {
@@ -84,10 +86,24 @@ export class AlgorithmTrainer {
     this.nextCard();
   }
 
+  setLesson(stage, level) {
+    this.lessonCases = getLessonCases(stage, level);
+    this.lessonLabel = STAGES[stage].name + ' · ' + level;
+    this.activeSet = '';
+    this.render(); this.nextCard(); this.updateStats(); this.updateMetronomeControls();
+  }
+
   getPool() {
+    if (this.lessonCases) return this.lessonCases;
     let pool = [];
     if (this.activeSet === 'pll') {
       pool = PLL_ALGORITHMS;
+    } else if (this.activeSet === 'cross') {
+      pool = ALL_CASES.filter(c => c.id.startsWith('cross-'));
+    } else if (this.activeSet === 'oll') {
+      pool = getLessonCases('oll', 'beginner');
+    } else if (this.activeSet === '2lookpll') {
+      pool = getLessonCases('pll', 'beginner');
     } else if (this.activeSet === 'beginner') {
       BEGINNER_LAST_LAYER.forEach(group => {
         group.cases.forEach(c => pool.push(c));
@@ -96,7 +112,7 @@ export class AlgorithmTrainer {
       pool = F2L_CASES;
     } else if (this.activeSet === 'weak') {
       // Find cases where score < 2
-      const all = [...PLL_ALGORITHMS, ...F2L_CASES];
+      const all = ALL_CASES;
       pool = all.filter(item => (this.scores[item.id] || 0) < 2);
       if (pool.length === 0) pool = PLL_ALGORITHMS;
     }
@@ -190,12 +206,12 @@ export class AlgorithmTrainer {
         <div class="flashcard-panel glass-panel">
           <div class="trainer-header">
             <div>
-              <h3>Algorithm Flashcard Drill</h3>
+              <h3>Recognition &amp; recall</h3><p class="drill-lesson-label">${this.lessonLabel || "Choose a practice set"}</p>
               <p class="text-sm text-muted">Active recall training to eliminate hesitation during real solves.</p>
             </div>
             <div class="trainer-set-selector">
               <button class="set-pill ${this.activeSet === 'pll' ? 'active' : ''}" data-set="pll">Full PLL</button>
-              <button class="set-pill ${this.activeSet === 'beginner' ? 'active' : ''}" data-set="beginner">2-Look LL</button>
+              <button class="set-pill" data-set="cross">Cross</button><button class="set-pill" data-set="oll">2-Look OLL</button><button class="set-pill" data-set="2lookpll">2-Look PLL</button>
               <button class="set-pill ${this.activeSet === 'f2l' ? 'active' : ''}" data-set="f2l">F2L</button>
               <button class="set-pill ${this.activeSet === 'weak' ? 'active' : ''}" data-set="weak">Weak Cases</button>
             </div>
@@ -252,7 +268,8 @@ export class AlgorithmTrainer {
       btn.addEventListener('click', () => {
         this.container.querySelectorAll('.set-pill').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        this.activeSet = btn.dataset.set;
+        this.activeSet = btn.dataset.set; this.lessonCases = null; this.lessonLabel = '';
+        this.container.querySelector('.drill-lesson-label').textContent = btn.textContent;
         this.nextCard();
       });
     });
@@ -290,15 +307,9 @@ export class AlgorithmTrainer {
     const item = this.currentCase;
     let diagramHtml = '';
 
-    if (item.diagramConfig) {
-      if (item.diagramConfig.pllArrows) {
-        diagramHtml = DiagramGenerator.renderPLLSVG(item.diagramConfig, 140);
-      } else {
-        diagramHtml = DiagramGenerator.renderOLLSVG(item.diagramConfig, 140);
-      }
-    } else {
-      diagramHtml = `<div class="generic-case-badge">${item.group || item.category || 'CFOP'}</div>`;
-    }
+    const preview = new Cube();
+    preview.applyAlgorithm(item.setup || Cube.invertAlgorithm(item.recommendedAlg || item.alg));
+    diagramHtml = DiagramGenerator.renderFlatNet(preview, 240, 180);
 
     const algCode = item.recommendedAlg || item.alg;
 

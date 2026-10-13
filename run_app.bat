@@ -1,5 +1,5 @@
 @echo off
-echo Starting Speedcube Pro...
-start "" http://localhost:8080/index.html
-python -m http.server 8080
+cd /d "%~dp0"
+start "" http://127.0.0.1:8080/?dev
+node scripts/serve.cjs
 pause

@@ -3,12 +3,15 @@
  * Enables offline capability and fast loading as a Progressive Web App (PWA).
  */
 
-const CACHE_NAME = 'speedcube-pro-v6';
+const CACHE_NAME = 'speedcube-pro-v7';
 
 const STATIC_ASSETS = [
   './',
   './index.html',
   './css/styles.css',
+  './css/learning.css',
+  './js/curriculum.js',
+  './js/cube-moves.js',
   './js/app.js',
   './js/three.min.js',
   './js/OrbitControls.js',
@@ -41,7 +44,7 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((keys) => {
       return Promise.all(
         keys.map((key) => {
-          if (key !== CACHE_NAME) {
+          if (key.startsWith('speedcube-pro-') && key !== CACHE_NAME) {
             return caches.delete(key);
           }
         })
@@ -50,43 +53,17 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch: Cache-First strategy with network fallback for local assets
-self.addEventListener('fetch', (event) => {
-  // Only handle GET requests
-  if (event.request.method !== 'GET') return;
-
+// Keep each release coherent: do not refresh individual modules in the background.
+self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
-
-  // Local assets cache-first
-  if (url.origin === self.location.origin) {
-    event.respondWith(
-      caches.match(event.request).then((cachedResponse) => {
-        if (cachedResponse) {
-          // Fetch updated version in background to refresh cache
-          fetch(event.request).then((networkResponse) => {
-            if (networkResponse && networkResponse.status === 200) {
-              caches.open(CACHE_NAME).then((cache) => cache.put(event.request, networkResponse));
-            }
-          }).catch(() => {});
-          return cachedResponse;
-        }
-
-        return fetch(event.request).then((networkResponse) => {
-          if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
-            return networkResponse;
-          }
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-          return networkResponse;
-        }).catch(() => {
-          // Offline fallback
-          if (event.request.mode === 'navigate') {
-            return caches.match('./index.html');
-          }
-        });
-      })
-    );
-  }
+  if (event.request.method !== 'GET' || url.origin !== self.location.origin || url.searchParams.has('dev')) return;
+  event.respondWith(caches.open(CACHE_NAME).then(async cache => {
+    const cached = await cache.match(event.request);
+    if (cached) return cached;
+    try { return await fetch(event.request); }
+    catch {
+      if (event.request.mode === 'navigate') return await cache.match('./index.html');
+      return Response.error();
+    }
+  }));
 });

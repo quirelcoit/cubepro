@@ -17,10 +17,10 @@ export const BEGINNER_LAST_LAYER = [
         type: 'EO',
         badgeTitle: 'Step 1 • Yellow Cross',
         howToHold: 'Hold Yellow on TOP, White on BOTTOM. Any side can face you.',
-        whatItDoes: 'Creates an L-shape. Then follow the L-shape step below.',
+        whatItDoes: 'Orients the yellow edges in two parts to create a yellow cross.',
         qiyiAlg: "F R U R' U' F' -> U2 -> F R U R' U' F'",
         recommendedAlg: "F (R U R' U') F' f (R U R' U') f'",
-        setup: "f (R U R' U') f' F (R U R' U') F'",
+        setup: "f U R U' R' f' F U R U' R' F'",
         diagramConfig: {
           top: [0, 0, 0, 0, 1, 0, 0, 0, 0],
           rims: { B: [0, 1, 0], F: [0, 1, 0], L: [0, 1, 0], R: [0, 1, 0] }
@@ -29,7 +29,7 @@ export const BEGINNER_LAST_LAYER = [
           { name: 'Sexy Move', code: "R U R' U'" },
           { name: 'Wide Sexy', code: "f (R U R' U') f'" }
         ],
-        notes: 'Only the center is yellow. Run this 6-move sequence to form the yellow cross!'
+        notes: 'Use both six-move parts of this sequence. Check the yellow edges after the full sequence.'
       },
       {
         id: 'b-eo-2',
@@ -297,6 +297,8 @@ export const BEGINNER_LAST_LAYER = [
       },
       {
         id: 'b-ep-h',
+        recommendedAlg: "M2 U M2 U2 M2 U M2",
+        setup: "M2 U M2 U2 M2 U M2",
         name: 'H Permutation (Opposite Edge Swap)',
         type: 'EP',
         badgeTitle: 'Step 4 • Final Edges',
@@ -511,7 +513,7 @@ export const PLL_ALGORITHMS = [
     qiyiId: '9',
     qiyiAlg: "R' U' F' R U R' U' R' F R2 U' R' U' R U R' U R",
     recommendedAlg: "(R' U' F') (R U R' U') (R' F R2 U' R') (U' R U R' U R)",
-    setup: "R' U' R U' R' U' R U R2 F' R U R U' R' F U R",
+    setup: "R' U' R U' R' U R U R2 F' R U R U' R' F U R",
     diagramConfig: {
       pllArrows: [[0, 0, 2, 0], [2, 0, 0, 0]],
       rimColors: {
@@ -602,7 +604,7 @@ export const PLL_ALGORITHMS = [
     qiyiId: '7',
     qiyiAlg: "x' R U' R' D R U R' D' R U R' D R U' R' D' x",
     recommendedAlg: "x' (R U' R' D) (R U R' D') (R U R' D) (R U' R' D') x",
-    setup: "x D R U R' D' R U' R' D R U' R' D' R U R' x",
+    setup: "x' D R U R' D' R U' R' D R U' R' D' R U R' x",
     diagramConfig: {
       pllArrows: [[0, 0, 0, 2, '#f43f5e'], [0, 2, 0, 0, '#f43f5e'], [2, 0, 2, 2, '#f43f5e'], [2, 2, 2, 0, '#f43f5e']]
     },
@@ -735,78 +737,78 @@ export const WHITE_CROSS_CASES = [
   // ==========================================
   {
     id: "cross-beg-1",
-    name: "Petal from Middle Layer (Direct 1-Turn)",
+    name: "Petal from the Front-Left Slot",
     tier: "beginner",
     group: "Absolute Beginner • The Daisy Method",
     badge: "BEGINNER • STEP 1",
     qiyiId: "Daisy Step 1A",
     recommendedAlg: "F",
     alg: "F",
-    qiyiAlg: "Turn front layer to lift white petal to top",
-    intuition: "White edge is in the middle layer facing you. One simple F turn lifts the white sticker directly up around the yellow center.",
-    setup: "F'",
-    howToHold: "Hold Yellow on TOP, White on BOTTOM. The white edge is in the middle layer facing FRONT.",
-    whatItDoes: "Places 1 white edge around the yellow center."
+    qiyiAlg: "F",
+    intuition: "Match the preview: white faces LEFT on the front-left edge. Turn F to lift it to the top.",
+    setup: "F2 R2 B2 L2 F'",
+    howToHold: "Yellow on top, white center on bottom. Match the preview: white faces LEFT on the front-left edge. Turn F to lift it to the top.",
+    whatItDoes: "Completes the daisy in this prepared example. Follow the lesson to build one on your own scramble."
   },
   {
     id: "cross-beg-2",
-    name: "Petal from Bottom Layer (White Facing Down)",
+    name: "Petal from the Bottom Layer",
     tier: "beginner",
     group: "Absolute Beginner • The Daisy Method",
     badge: "BEGINNER • STEP 1",
     qiyiId: "Daisy Step 1B",
     recommendedAlg: "F2",
     alg: "F2",
-    qiyiAlg: "Turn face 180° to bring bottom edge to top",
-    intuition: "White edge is on the bottom layer with white facing down. Turn that face 180° (F2, R2, B2, or L2) to deposit it on top around yellow.",
-    setup: "F2",
-    howToHold: "Hold Yellow on TOP, White on BOTTOM. White edge is at bottom-front with white facing down.",
-    whatItDoes: "Lifts bottom white edge straight to top yellow face in 1 double turn."
+    qiyiAlg: "F2",
+    intuition: "Match the preview: the bottom-front edge has white facing down. F2 lifts it beside the yellow center.",
+    setup: "F2 R2 B2 L2 F2",
+    howToHold: "Yellow on top, white center on bottom. Match the preview: the bottom-front edge has white facing down. F2 lifts it beside the yellow center.",
+    whatItDoes: "Completes the daisy in this prepared example. Follow the lesson to build one on your own scramble."
   },
   {
     id: "cross-beg-3",
-    name: "Petal from Bottom Layer (White Facing Front)",
+    name: "Lift a Flipped Bottom Edge",
     tier: "beginner",
     group: "Absolute Beginner • The Daisy Method",
     badge: "BEGINNER • STEP 1",
     qiyiId: "Daisy Step 1C",
-    recommendedAlg: "F' U L'",
-    alg: "F' U L'",
-    qiyiAlg: "F' U L' (Lifts and drops onto top)",
-    intuition: "White edge is on bottom, but white faces FRONT (not down). Turning F2 would make it upside down on top! So turn F' to middle, U to clear space, and L' to drop onto top.",
-    setup: "L U' F",
-    howToHold: "Hold Yellow on TOP, White on BOTTOM. White edge is at bottom-front with white facing FRONT.",
-    whatItDoes: "Orients an inverted bottom edge cleanly onto the yellow daisy."
+    recommendedAlg: "F' U' R",
+    alg: "F' U' R",
+    qiyiAlg: "F' U' R",
+    intuition: "Match the preview: white faces FRONT on the bottom-front edge. F′ moves it right, U′ makes space, and R lifts it.",
+    setup: "F2 R2 B2 L2 R' U F",
+    howToHold: "Yellow on top, white center on bottom. Match the preview: white faces FRONT on the bottom-front edge. F′ moves it right, U′ makes space, and R lifts it.",
+    whatItDoes: "Completes the daisy in this prepared example. Follow the lesson to build one on your own scramble."
   },
   {
     id: "cross-beg-4",
-    name: "Trapped Middle Edge Flipped (R U R')",
+    name: "Lift, Store, Restore",
     tier: "beginner",
     group: "Absolute Beginner • The Daisy Method",
     badge: "BEGINNER • STEP 1",
     qiyiId: "Daisy Step 1D",
     recommendedAlg: "R U R'",
     alg: "R U R'",
-    qiyiAlg: "R U R' (Flick and restore)",
-    intuition: "White edge is stuck in the right-middle slot with white facing right. R brings it up, U stores it safely on top, and R' restores any edges you already placed.",
-    setup: "R U' R'",
-    howToHold: "Hold Yellow on TOP, White on BOTTOM. White edge is in middle-right layer.",
-    whatItDoes: "Ejects a trapped middle edge onto the top daisy without breaking other petals."
+    qiyiAlg: "R U R'",
+    intuition: "Match the preview: white faces FRONT on the front-right edge. R lifts it, U stores it, and R′ restores the right face.",
+    setup: "F2 R2 B2 L2 R U' R'",
+    howToHold: "Yellow on top, white center on bottom. Match the preview: white faces FRONT on the front-right edge. R lifts it, U stores it, and R′ restores the right face.",
+    whatItDoes: "Completes the daisy in this prepared example. Follow the lesson to build one on your own scramble."
   },
   {
     id: "cross-beg-5",
-    name: "The Complete Daisy ➔ 180° Drop to White Bottom",
+    name: "Drop an Aligned Daisy",
     tier: "beginner",
     group: "Absolute Beginner • The Daisy Method",
     badge: "BEGINNER • STEP 2",
     qiyiId: "Booklet Step 1 Complete",
-    recommendedAlg: "F2 U R2 U' B2 U2 L2",
-    alg: "F2 U R2 U' B2 U2 L2",
-    qiyiAlg: "Match side color, rotate face 180 degrees",
-    intuition: "All 4 petals are now around yellow! Look at the side sticker of each petal. Rotate top (U) to match its center color, then turn that face 180° (F2, R2, B2, L2) to deposit it on bottom.",
-    setup: "L2 U2 B2 U R2 U' F2",
-    howToHold: "Hold Yellow on TOP, White on BOTTOM. Match each petal's side color to its center, then turn face twice.",
-    whatItDoes: "Completes the White Cross on bottom with all 4 center colors perfectly aligned!"
+    recommendedAlg: "F2 R2 B2 L2",
+    alg: "F2 R2 B2 L2",
+    qiyiAlg: "F2 R2 B2 L2",
+    intuition: "In this example the daisy petals already match their side centers. Turn each side twice. On other scrambles, align each petal with U first.",
+    setup: "L2 B2 R2 F2",
+    howToHold: "Yellow on top, white center on bottom. In this example the daisy petals already match their side centers. Turn each side twice. On other scrambles, align each petal with U first.",
+    whatItDoes: "Drops the four aligned petals to form the bottom cross."
   },
 
   // ==========================================
@@ -1107,7 +1109,7 @@ export const F2L_CASES = [
     alg: "y' U R' U R U2 R' U R",
     qiyiAlg: "y' U (R' U' R) (R' U' R)",
     intuition: "Left-handed mirror of Case 5. Separate and pair into the left slot.",
-    setup: "R' U' R U2 R' U' R U' y"
+    setup: "R' U' R d2 R' U' R d'"
   },
   {
     id: 'f2l-7',
@@ -1162,7 +1164,7 @@ export const F2L_CASES = [
     alg: "U R U2 R2 U R'",
     qiyiAlg: "y' (U R' U2) (R U' R' U R)",
     intuition: "Pieces are stuck together incorrectly on top. Break apart with R U2 R', then pair into slot.",
-    setup: "R U' R2 U2 R' U'"
+    setup: "R U' R' R U2 R' U'"
   },
   {
     id: 'f2l-12',
@@ -1173,7 +1175,7 @@ export const F2L_CASES = [
     alg: "U' R U2 R2 U' R'",
     qiyiAlg: "U (R U'2) (R' U R U' R')",
     intuition: "Separate and immediately pair into back slot without cube rotations.",
-    setup: "R U R2 U2 R' U"
+    setup: "R U R' R U2 R' U"
   },
   {
     id: 'f2l-13',
@@ -1340,7 +1342,7 @@ export const F2L_CASES = [
     alg: "R U' R' U R U2 R U' R'",
     qiyiAlg: "(R U' R' U) (R U2) (R U' R')",
     intuition: "Corner in bottom slot, edge in top layer. Eject corner and form pair in one fluid motion.",
-    setup: "R U R' U2 R' U' R U' R'"
+    setup: "R U R' U2 R' U' R U R'"
   },
   {
     id: 'f2l-28',
@@ -1373,7 +1375,7 @@ export const F2L_CASES = [
     alg: "R U' R2 U' R' U F' U' F",
     qiyiAlg: "(R U' R') (U' R U' R' U) y' (R' U' R)",
     intuition: "Solves edge from back into slot without whole cube rotation.",
-    setup: "F' U F U' R U R2 U R'"
+    setup: "R' U R y U' R U R' U R U R'"
   },
   {
     id: 'f2l-31',

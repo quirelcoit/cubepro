@@ -8,6 +8,7 @@
  */
 
 import { COLORS, Cube } from './cube-engine.js';
+import { getMove } from './cube-moves.js';
 
 export class CubeVisualizer {
   constructor(canvas3d, canvas2d, options = {}) {
@@ -22,15 +23,18 @@ export class CubeVisualizer {
     this.moves = [];
     this.currentStep = 0;
     this.isPlaying = false;
-    this.playInterval = null;
+    this.playTimeout = null;
+    this.animationVersion = 0;
+    this.animationFrame = null;
     this.playbackSpeed = 1500; // ms per move (slower default for learning)
 
     // Animation state
     this.isAnimating = false;
-    this.animDuration = 600; // ms for 90deg turn (slow enough to see)
+    this.animDuration = 900; // ms for 90deg turn (slow enough to see)
 
     // Callbacks
     this.onStepChange = options.onStepChange || (() => {});
+    this.onStateChange = options.onStateChange || (() => {});
 
     this._initThree();
     this._setupKeyboardControls();
@@ -38,6 +42,10 @@ export class CubeVisualizer {
 
     // Mobile-first responsive canvas resizing
     window.addEventListener('resize', () => this.handleResize());
+    if (window.ResizeObserver && this.canvas3d) {
+      this.resizeObserver = new ResizeObserver(() => this.handleResize());
+      this.resizeObserver.observe(this.canvas3d.parentElement);
+    }
     setTimeout(() => this.handleResize(), 60);
   }
 
@@ -46,13 +54,14 @@ export class CubeVisualizer {
     const parent = this.canvas3d.parentElement;
     if (!parent) return;
     const rect = parent.getBoundingClientRect();
-    const w = Math.floor(rect.width) || 360;
+    if (!rect.width) return;
+    const w = Math.floor(rect.width);
     const isMobile = window.innerWidth <= 768;
-    const h = isMobile ? Math.min(340, Math.max(260, Math.floor(w * 0.82))) : 380;
+    const h = isMobile ? Math.min(280, Math.max(220, Math.floor(w * 0.7))) : 280;
 
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(w, h, false);
+    this.renderer.setSize(w, h);
     this.render();
   }
 
@@ -98,7 +107,7 @@ export class CubeVisualizer {
     dirLight1.position.set(5, 10, 7);
     this.scene.add(dirLight1);
 
-    const dirLight2 = new THREE.DirectionalLight(0x38bdf8, 0.35);
+    const dirLight2 = new THREE.DirectionalLight(0xffffff, 0.35);
     dirLight2.position.set(-5, -6, -5);
     this.scene.add(dirLight2);
 
@@ -123,62 +132,22 @@ export class CubeVisualizer {
 
     // Build 26 solid cubies
     this.cubies = [];
-    this._buildSolidCubies();
+    this.geometry = new THREE.BoxGeometry(0.96, 0.96, 0.96);
+    this._sync3DFromCubeState();
 
     // Render loop
     const animate = () => {
       requestAnimationFrame(animate);
+      if (document.hidden || !this.canvas3d.getClientRects().length) return;
       if (this.controls) this.controls.update();
       this.renderer.render(this.scene, this.camera);
     };
     animate();
   }
 
-  _buildSolidCubies() {
-    const THREE = window.THREE;
-    const size = 0.96; // Slight dark seam between cubies
-    const geom = new THREE.BoxGeometry(size, size, size);
-
-    // Clear existing
-    while (this.cubeGroup.children.length > 0) {
-      this.cubeGroup.remove(this.cubeGroup.children[0]);
-    }
-    this.cubies = [];
-
-    for (let x = -1; x <= 1; x++) {
-      for (let y = -1; y <= 1; y++) {
-        for (let z = -1; z <= 1; z++) {
-          // Skip internal hidden core
-          if (x === 0 && y === 0 && z === 0) continue;
-
-          // Multi-material box: [Right, Left, Top, Bottom, Front, Back]
-          // In standard speedcubing orientation:
-          // Top (+Y) = Yellow, Bottom (-Y) = White
-          // Front (+Z) = Green, Back (-Z) = Blue
-          // Left (-X) = Orange, Right (+X) = Red
-          const matArray = [
-            x === 1 ? this.materials.R : this.materials.black, // +X
-            x === -1 ? this.materials.L : this.materials.black, // -X
-            y === 1 ? this.materials.U : this.materials.black, // +Y
-            y === -1 ? this.materials.D : this.materials.black, // -Y
-            z === 1 ? this.materials.F : this.materials.black, // +Z
-            z === -1 ? this.materials.B : this.materials.black  // -Z
-          ];
-
-          const cubie = new THREE.Mesh(geom, matArray);
-          cubie.position.set(x, y, z);
-          cubie.userData = { initialPos: new THREE.Vector3(x, y, z) };
-
-          this.cubeGroup.add(cubie);
-          this.cubies.push(cubie);
-        }
-      }
-    }
-  }
-
   _setupKeyboardControls() {
     window.addEventListener('keydown', (e) => {
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.repeat || e.target.closest('input, textarea, select, button, [contenteditable], dialog[open]') || document.querySelector('dialog[open]')) return;
 
       const visPane = document.getElementById('tab-visualizer');
       if (!visPane || !visPane.classList.contains('active')) return;
@@ -188,6 +157,7 @@ export class CubeVisualizer {
         this.togglePlay();
       } else if (e.code === 'ArrowRight') {
         e.preventDefault();
+        this.pause();
         this.stepForward(true);
       } else if (e.code === 'ArrowLeft') {
         e.preventDefault();
@@ -199,317 +169,141 @@ export class CubeVisualizer {
     });
   }
 
-  setAlgorithm(algStr, setupStr = '') {
-    this.pause();
-    this.cube.reset();
-
-    if (setupStr) {
-      this.cube.applyAlgorithm(setupStr);
-    } else if (algStr) {
-      const inverse = Cube.invertAlgorithm(algStr);
-      this.cube.applyAlgorithm(inverse);
-    }
-
-    this.initialState = this.cube.clone();
-    this.moves = Cube.parseAlgorithm(algStr);
-    this.currentStep = 0;
-
-    // Reset 3D physical cubies to match logical cube state
-    this._sync3DFromCubeState();
-    this.render2D();
-    this.onStepChange(this.currentStep, this.moves, null);
+  notifyState() {
+    this.onStateChange({ playing: this.isPlaying, animating: this.isAnimating, step: this.currentStep, total: this.moves.length });
   }
 
-  reset() {
+  cancelAnimation() {
     this.pause();
+    this.animationVersion++;
+    if (this.animationFrame !== null) cancelAnimationFrame(this.animationFrame);
+    this.animationFrame = null;
+    this.isAnimating = false;
+    const indicator = document.getElementById('vis-rotating-face');
+    if (indicator) indicator.style.opacity = '0';
+  }
+
+  setAlgorithm(algStr, setupStr = '', fromSolved = false) {
+    const moves = Cube.parseAlgorithm(algStr);
+    const initial = new Cube();
+    initial.applyAlgorithm(setupStr || (fromSolved ? '' : Cube.invertAlgorithm(algStr)));
+    this.cancelAnimation();
+    this.initialState = initial;
+    this.moves = moves;
+    this.seek(0);
+  }
+
+  seek(step) {
+    this.cancelAnimation();
+    this.currentStep = Math.max(0, Math.min(this.moves.length, step));
     this.cube = this.initialState.clone();
-    this.currentStep = 0;
+    for (const move of this.moves.slice(0, this.currentStep)) this.cube.applyMove(move);
     this._sync3DFromCubeState();
     this.render2D();
     this.onStepChange(this.currentStep, this.moves, null);
+    this.notifyState();
   }
+
+  reset() { this.seek(0); }
 
   stepForward(animate = true, onDone = null) {
-    if (this.isAnimating) return false;
-    if (this.currentStep < this.moves.length) {
-      const moveIndex = this.currentStep;
-      const move = this.moves[moveIndex];
-
-      if (animate && this.playbackSpeed >= 180) {
-        // SIMULTANEOUS ACTIVATION: Notify ribbon pill to move & highlight AT THE EXACT SAME INSTANT rotation begins!
-        this.onStepChange(moveIndex + 1, this.moves, moveIndex);
-
-        this.rotateLayer3D(move, () => {
-          this.currentStep++;
-          this.render2D();
-          this.onStepChange(this.currentStep, this.moves, null);
-          if (onDone) onDone();
-        });
-      } else {
-        this.onStepChange(moveIndex + 1, this.moves, moveIndex);
-        this.cube.applyMove(move);
-        this.currentStep++;
-        this._sync3DFromCubeState();
-        this.render2D();
-        this.onStepChange(this.currentStep, this.moves, null);
-        if (onDone) onDone();
-      }
-      return true;
+    if (this.isAnimating || this.currentStep >= this.moves.length) return false;
+    const index = this.currentStep;
+    const move = this.moves[index];
+    const finish = () => {
+      this.currentStep = index + 1;
+      this.render2D();
+      this.onStepChange(this.currentStep, this.moves, null);
+      if (this.currentStep === this.moves.length) this.pause();
+      else if (this.isPlaying) this.scheduleNext();
+      this.notifyState();
+      if (onDone) onDone();
+    };
+    this.onStepChange(index + 1, this.moves, index);
+    if (animate && !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+      this.rotateLayer3D(move, finish);
+    } else {
+      this.cube.applyMove(move);
+      this._sync3DFromCubeState();
+      finish();
     }
-    return false;
+    return true;
   }
 
-  stepBackward() {
-    if (this.isAnimating) return false;
-    if (this.currentStep > 0) {
-      this.pause();
-      this.cube = this.initialState.clone();
-      this.currentStep--;
-      for (let i = 0; i < this.currentStep; i++) {
-        this.cube.applyMove(this.moves[i]);
-      }
-      this._sync3DFromCubeState();
-      this.render2D();
-      this.onStepChange(this.currentStep, this.moves, this.currentStep > 0 ? this.currentStep - 1 : null);
-      return true;
-    }
-    return false;
+  stepBackward() { this.seek(this.currentStep - 1); }
+
+  scheduleNext() {
+    clearTimeout(this.playTimeout);
+    const version = this.animationVersion;
+    this.playTimeout = setTimeout(() => {
+      if (version === this.animationVersion && this.isPlaying) this.stepForward();
+    }, Math.max(90, this.playbackSpeed - this.animDuration));
   }
 
   play() {
-    if (this.isPlaying) return;
+    if (this.isPlaying || !this.moves.length) return;
+    if (this.currentStep >= this.moves.length) this.reset();
     this.isPlaying = true;
-    if (this.currentStep >= this.moves.length) {
-      this.reset();
-    }
-
-    const runNext = () => {
-      if (!this.isPlaying) return;
-      if (this.currentStep >= this.moves.length) {
-        this.pause();
-        return;
-      }
-      const ok = this.stepForward(true, () => {
-        if (!this.isPlaying) return;
-        if (this.currentStep < this.moves.length) {
-          const pauseGap = Math.max(90, this.playbackSpeed - this.animDuration);
-          this.playTimeout = setTimeout(runNext, pauseGap);
-        } else {
-          this.pause();
-        }
-      });
-      if (!ok && this.currentStep >= this.moves.length) {
-        this.pause();
-      }
-    };
-
-    // Run first step immediately without waiting full interval
-    runNext();
+    this.notifyState();
+    if (!this.isAnimating) this.stepForward();
   }
 
   pause() {
     this.isPlaying = false;
-    if (this.playTimeout) {
-      clearTimeout(this.playTimeout);
-      this.playTimeout = null;
-    }
-    if (this.playInterval) {
-      clearInterval(this.playInterval);
-      this.playInterval = null;
-    }
+    clearTimeout(this.playTimeout);
+    this.playTimeout = null;
+    this.notifyState();
   }
 
   togglePlay() {
-    if (this.isPlaying) {
-      this.pause();
-    } else {
-      this.play();
-    }
+    if (this.isPlaying) this.pause(); else this.play();
     return this.isPlaying;
   }
 
   setSpeed(ms) {
-    this.playbackSpeed = ms;
-    // Deliberate, clear rotation speed: 50% to 65% of interval
-    this.animDuration = Math.min(1400, Math.max(250, ms * 0.6));
-    if (this.isPlaying) {
-      this.pause();
-      this.play();
-    }
+    this.playbackSpeed = Math.max(300, Math.min(3000, Number(ms) || 1500));
+    this.animDuration = Math.min(1400, this.playbackSpeed * 0.6);
   }
 
-  // Interactively execute and visualize a single move or trigger sequence
-  visualizeSingleMove(moveInput) {
-    if (this.isAnimating) return;
-    this.pause();
-    const moves = Cube.parseAlgorithm(moveInput);
-    if (moves.length === 0) return;
-
-    if (moves.length === 1) {
-      this.rotateLayer3D(moves[0], () => {
-        this.render2D();
-      });
-    } else {
-      let idx = 0;
-      const playNext = () => {
-        if (idx < moves.length) {
-          const m = moves[idx++];
-          this.rotateLayer3D(m, () => {
-            this.render2D();
-            if (idx < moves.length) {
-              setTimeout(playNext, 120);
-            }
-          });
-        }
-      };
-      playNext();
-    }
+  restoreView() {
+    if (!this.camera) return;
+    this.camera.position.set(4.5, 4.2, 5.8);
+    this.controls?.target.set(0, 0, 0);
+    this.controls?.update();
   }
 
-  // --- Smooth 3D Layer Rotation in WebGL ---
   rotateLayer3D(move, onComplete) {
-    const THREE = window.THREE;
-    if (!THREE) {
+    const { axis, layers, angle } = getMove(move);
+    if (!this.pivot) {
+      this.cube.applyMove(move);
       onComplete();
       return;
     }
-
     this.isAnimating = true;
-    const clean = move.trim();
-
-    const is2 = clean.includes('2');
-    const isPrime = clean.includes("'") || clean.includes("’") || clean.includes("`");
-    const baseAngle = is2 ? Math.PI : Math.PI / 2;
-
-    let axis = 'y';
-    let filterFn = (pos) => true;
-    let angle = -Math.PI / 2;
-    let moveDesc = '';
-
-    // Handle standard, wide, and slice moves
-    if (clean.startsWith('U') && !clean.startsWith('Uw')) {
-      axis = 'y'; filterFn = (pos) => pos.y > 0.5;
-      angle = isPrime ? baseAngle : -baseAngle;
-      moveDesc = isPrime ? "U' ➜ Top Face Counter-Clockwise (Flick Right ➡️)" : (is2 ? "U2 ➜ Top Face Double Turn 180°" : "U ➜ Top Face Clockwise (Flick Left ⬅️)");
-    } else if (clean.startsWith('u') || clean.startsWith('Uw')) {
-      axis = 'y'; filterFn = (pos) => pos.y > -0.5; // Top 2 layers
-      angle = isPrime ? baseAngle : -baseAngle;
-      moveDesc = isPrime ? "u' ➜ Top TWO Layers Counter-Clockwise" : (is2 ? "u2 ➜ Top TWO Layers 180°" : "u ➜ Top TWO Layers Clockwise");
-    } else if (clean.startsWith('D') && !clean.startsWith('Dw')) {
-      axis = 'y'; filterFn = (pos) => pos.y < -0.5;
-      angle = isPrime ? -baseAngle : baseAngle;
-      moveDesc = isPrime ? "D' ➜ Bottom Face Counter-Clockwise" : (is2 ? "D2 ➜ Bottom Face 180°" : "D ➜ Bottom Face Clockwise");
-    } else if (clean.startsWith('d') || clean.startsWith('Dw')) {
-      axis = 'y'; filterFn = (pos) => pos.y < 0.5; // Bottom 2 layers
-      angle = isPrime ? -baseAngle : baseAngle;
-      moveDesc = isPrime ? "d' ➜ Bottom TWO Layers Counter-Clockwise" : (is2 ? "d2 ➜ Bottom TWO Layers 180°" : "d ➜ Bottom TWO Layers Clockwise");
-    } else if (clean.startsWith('R') && !clean.startsWith('Rw')) {
-      axis = 'x'; filterFn = (pos) => pos.x > 0.5;
-      angle = isPrime ? baseAngle : -baseAngle;
-      moveDesc = isPrime ? "R' ➜ Right Face Downwards ⬇️" : (is2 ? "R2 ➜ Right Face 180°" : "R ➜ Right Face Upwards ⬆️");
-    } else if (clean.startsWith('r') || clean.startsWith('Rw')) {
-      axis = 'x'; filterFn = (pos) => pos.x > -0.5; // Right 2 layers
-      angle = isPrime ? baseAngle : -baseAngle;
-      moveDesc = isPrime ? "r' ➜ Right TWO Layers Downwards ⬇️" : (is2 ? "r2 ➜ Right TWO Layers 180°" : "r ➜ Right TWO Layers Upwards ⬆️");
-    } else if (clean.startsWith('L') && !clean.startsWith('Lw')) {
-      axis = 'x'; filterFn = (pos) => pos.x < -0.5;
-      angle = isPrime ? -baseAngle : baseAngle;
-      moveDesc = isPrime ? "L' ➜ Left Face Upwards ⬆️" : (is2 ? "L2 ➜ Left Face 180°" : "L ➜ Left Face Downwards ⬇️");
-    } else if (clean.startsWith('l') || clean.startsWith('Lw')) {
-      axis = 'x'; filterFn = (pos) => pos.x < 0.5; // Left 2 layers
-      angle = isPrime ? -baseAngle : baseAngle;
-      moveDesc = isPrime ? "l' ➜ Left TWO Layers Upwards ⬆️" : (is2 ? "l2 ➜ Left TWO Layers 180°" : "l ➜ Left TWO Layers Downwards ⬇️");
-    } else if (clean.startsWith('F') && !clean.startsWith('Fw')) {
-      axis = 'z'; filterFn = (pos) => pos.z > 0.5;
-      angle = isPrime ? baseAngle : -baseAngle;
-      moveDesc = isPrime ? "F' ➜ Front Face Counter-Clockwise ↺" : (is2 ? "F2 ➜ Front Face 180°" : "F ➜ Front Face Clockwise ↻");
-    } else if (clean.startsWith('f') || clean.startsWith('Fw')) {
-      axis = 'z'; filterFn = (pos) => pos.z > -0.5; // Front 2 layers
-      angle = isPrime ? baseAngle : -baseAngle;
-      moveDesc = isPrime ? "f' ➜ Front TWO Layers Counter-Clockwise ↺" : (is2 ? "f2 ➜ Front TWO Layers 180°" : "f ➜ Front TWO Layers Clockwise ↻");
-    } else if (clean.startsWith('B') && !clean.startsWith('Bw')) {
-      axis = 'z'; filterFn = (pos) => pos.z < -0.5;
-      angle = isPrime ? -baseAngle : baseAngle;
-      moveDesc = isPrime ? "B' ➜ Back Face Counter-Clockwise" : (is2 ? "B2 ➜ Back Face 180°" : "B ➜ Back Face Clockwise");
-    } else if (clean.startsWith('b') || clean.startsWith('Bw')) {
-      axis = 'z'; filterFn = (pos) => pos.z < 0.5; // Back 2 layers
-      angle = isPrime ? -baseAngle : baseAngle;
-      moveDesc = isPrime ? "b' ➜ Back TWO Layers Counter-Clockwise" : (is2 ? "b2 ➜ Back TWO Layers 180°" : "b ➜ Back TWO Layers Clockwise");
-    } else if (clean.startsWith('M')) {
-      axis = 'x'; filterFn = (pos) => Math.abs(pos.x) < 0.5;
-      angle = isPrime ? -baseAngle : baseAngle;
-      moveDesc = isPrime ? "M' ➜ Middle Slice Upwards ⬆️" : (is2 ? "M2 ➜ Middle Slice 180°" : "M ➜ Middle Slice Downwards ⬇️");
-    } else if (clean.startsWith('y')) {
-      axis = 'y'; filterFn = () => true;
-      angle = isPrime ? baseAngle : -baseAngle;
-      moveDesc = isPrime ? "y' ➜ Rotate Entire Cube Counter-Clockwise" : (is2 ? "y2 ➜ Rotate Entire Cube 180°" : "y ➜ Rotate Entire Cube Clockwise");
-    } else if (clean.startsWith('x')) {
-      axis = 'x'; filterFn = () => true;
-      angle = isPrime ? baseAngle : -baseAngle;
-      moveDesc = isPrime ? "x' ➜ Tilt Entire Cube Downwards" : (is2 ? "x2 ➜ Tilt Entire Cube 180°" : "x ➜ Tilt Entire Cube Upwards");
-    } else if (clean.startsWith('z')) {
-      axis = 'z'; filterFn = () => true;
-      angle = isPrime ? baseAngle : -baseAngle;
-      moveDesc = isPrime ? "z' ➜ Tilt Entire Cube Counter-Clockwise" : "z ➜ Tilt Entire Cube Clockwise";
-    }
-
-    // Show rotating face indicator (keep translateX(-50%) to prevent mobile horizontal blowout)
+    this.notifyState();
+    const version = this.animationVersion;
     const indicator = document.getElementById('vis-rotating-face');
-    if (indicator) {
-      indicator.innerHTML = `<strong>${clean}</strong> &bull; ${moveDesc || clean}`;
-      indicator.style.opacity = '1';
-      indicator.style.transform = 'translateX(-50%) translateY(0)';
-    }
-
-    // Attach matching cubies to pivot group
+    if (indicator) { indicator.textContent = 'Turning ' + move; indicator.style.opacity = '1'; }
     this.pivot.rotation.set(0, 0, 0);
-    this.pivot.position.set(0, 0, 0);
-    const activeCubies = [];
-
-    for (let i = this.cubies.length - 1; i >= 0; i--) {
-      const c = this.cubies[i];
-      if (filterFn(c.position)) {
-        activeCubies.push(c);
-        this.pivot.add(c);
-      }
+    for (const cubie of this.cubies) {
+      if (layers.includes(Math.round(cubie.position[axis]))) this.pivot.add(cubie);
     }
-
-    // Animate pivot rotation
-    const startTime = performance.now();
-    const duration = this.animDuration;
-
-    const animateRotation = (time) => {
-      const elapsed = time - startTime;
-      const progress = Math.min(1.0, elapsed / duration);
-      // Smooth sinusoidal ease-in-out (natural tactile hand turn)
-      const ease = 0.5 - 0.5 * Math.cos(progress * Math.PI);
-      this.pivot.rotation[axis] = angle * ease;
-
-      if (progress < 1.0) {
-        requestAnimationFrame(animateRotation);
-      } else {
-        // Complete the physical turn
-        this.pivot.rotation[axis] = angle;
+    const startTime = performance.now(), duration = this.animDuration;
+    const animateRotation = time => {
+      if (version !== this.animationVersion) return;
+      const progress = Math.max(0, Math.min(1, (time - startTime) / duration));
+      this.pivot.rotation[axis] = angle * (0.5 - 0.5 * Math.cos(progress * Math.PI));
+      if (progress < 1) this.animationFrame = requestAnimationFrame(animateRotation);
+      else {
+        this.animationFrame = null;
         this.isAnimating = false;
-
-        // Apply logical move and cleanly resync all cubies
         this.cube.applyMove(move);
         this._sync3DFromCubeState();
-
-        // Fade out indicator
-        if (indicator) {
-          setTimeout(() => {
-            if (!this.isAnimating) {
-              indicator.style.opacity = '0';
-              indicator.style.transform = 'translateX(-50%) translateY(-6px)';
-            }
-          }, 300);
-        }
+        if (indicator) indicator.style.opacity = '0';
         onComplete();
       }
     };
-
-    requestAnimationFrame(animateRotation);
+    this.animationFrame = requestAnimationFrame(animateRotation);
   }
 
   // Synchronize 3D cubies with the ACTUAL logical cube state (faces array)
@@ -522,7 +316,7 @@ export class CubeVisualizer {
   //   L (x=-1):  (1-y)*3 + (z+1)   — row from top(y=1) to bottom(y=-1), col back(z=-1) to front(z=1)
   _sync3DFromCubeState() {
     const THREE = window.THREE;
-    if (!THREE) return;
+    if (!THREE || !this.pivot) return;
 
     const faces = this.cube.faces;
 
@@ -536,8 +330,7 @@ export class CubeVisualizer {
     this.pivot.rotation.set(0, 0, 0);
     this.cubies = [];
 
-    const size = 0.96;
-    const geom = new THREE.BoxGeometry(size, size, size);
+    const geom = this.geometry;
     const matFor = (colorKey) => this.materials[colorKey] || this.materials.black;
 
     for (let x = -1; x <= 1; x++) {
@@ -588,6 +381,8 @@ export class CubeVisualizer {
     ctx.fillRect(0, 0, w, h);
 
     const faces = this.cube.faces;
+    const legend = document.getElementById('vis-orientation');
+    if (legend) legend.textContent = 'Top: ' + ({ U: 'yellow', D: 'white', F: 'green', B: 'blue', L: 'orange', R: 'red' }[faces.U[4]]) + ' · Front: ' + ({ U: 'yellow', D: 'white', F: 'green', B: 'blue', L: 'orange', R: 'red' }[faces.F[4]]);
 
     // Back rim
     for (let c = 0; c < 3; c++) {
@@ -606,7 +401,7 @@ export class CubeVisualizer {
     }
     // Right rim
     for (let r = 0; r < 3; r++) {
-      ctx.fillStyle = COLORS[faces.R[r]];
+      ctx.fillStyle = COLORS[faces.R[2 - r]];
       ctx.fillRect(startX + size + 3, startY + r * stickerSize + 2, rimThickness, stickerSize - 4);
     }
 

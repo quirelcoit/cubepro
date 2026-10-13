@@ -22,6 +22,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/learning.css">
 </head>
 <body>
   <div id="app-container" class="app-container">
@@ -94,29 +95,25 @@
       </div>
 
       <nav id="main-nav" class="main-nav" aria-label="Main Navigation">
-        <button id="nav-btn-roadmap" class="nav-tab active" data-tab="roadmap" title="Solve My Cube">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-          <span>⚡ Solve</span>
-        </button>
-        <button id="nav-btn-algs" class="nav-tab" data-tab="algorithms" title="Algorithm Vault">
+        <button id="nav-btn-algs" class="nav-tab active" data-tab="algorithms" title="Learn CFOP">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-          <span>📖 Algorithms</span>
+          <span>Learn</span>
         </button>
         <button id="nav-btn-visualizer" class="nav-tab" data-tab="visualizer" title="3D Visualizer">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-          <span>🧊 3D Visualizer</span>
+          <span>Practice</span>
         </button>
         <button id="nav-btn-trainer" class="nav-tab" data-tab="trainer" title="Drills & Trainer">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          <span>🎯 Drills</span>
+          <span>Drills</span>
         </button>
         <button id="nav-btn-timer" class="nav-tab" data-tab="timer" title="Speed Timer">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <span>⏱️ Timer</span>
+          <span>Timer</span>
         </button>
         <button id="nav-btn-guide" class="nav-tab" data-tab="guide" title="Guide & Gear">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-          <span>💡 Guide</span>
+          <span>Guide</span>
         </button>
       </nav>
 
@@ -131,7 +128,7 @@
         </button>
         <button id="btn-open-cheat-sheet" class="btn btn-helper" title="Click to view move explanations">
           <span class="helper-icon">&#10067;</span>
-          <span><strong>Move Cheat Sheet</strong> <small>(R, U, F?)</small></span>
+          <span>Move guide</span>
         </button>
       </div>
     </header>
@@ -154,429 +151,30 @@
     <!-- Main Content Pages -->
     <main id="main-content" class="main-content">
 
-      <!-- ================= 1. ROADMAP TAB ================= -->
-      <section id="tab-roadmap" class="tab-pane active">
-        <!-- QUICK START SOLVER WIZARD (Dead Simple First-Glance Guide) -->
-        <div class="solver-wizard glass-panel">
-          <div class="wizard-header">
-            <span class="badge-pill highlight-gold">⚡ FIRST-GLANCE GUIDE &bull; START HERE</span>
-            <h2 class="wizard-heading">How to Solve Your Cube Right Now</h2>
-            <p class="wizard-sub">You can already solve the first 2 layers! Follow the 4 visual steps below. Look down at your yellow top face, click the picture that matches, and watch the 3D replay to do the move.</p>
-          </div>
-
-          <!-- The Golden Rule Banner -->
-          <div class="golden-rule-banner">
-            <span class="rule-icon">🧭</span>
-            <div>
-              <strong>THE GOLDEN RULE:</strong> Always hold your cube with <strong>WHITE on the BOTTOM</strong> and <strong>YELLOW on the TOP</strong>.
-            </div>
-          </div>
-
-          <!-- 5 Visual Step Tracker Buttons -->
-          <div class="wizard-steps-bar">
-            <button class="step-btn done" onclick="window.app.switchTab('algorithms', 'f2l')">
-              <span class="step-num">&#10003; First 2 Layers</span>
-              <span class="step-label">White &amp; Middle</span>
-              <span class="step-status">Solved!</span>
-            </button>
-            <span class="step-arrow">&rarr;</span>
-            <button class="step-btn active" id="wizard-btn-step1">
-              <span class="step-num">&#9733; STEP 1</span>
-              <span class="step-label">1. Yellow Cross (+)</span>
-              <span class="step-status">Dot &bull; L-Shape &bull; Line</span>
-            </button>
-            <span class="step-arrow">&rarr;</span>
-            <button class="step-btn" id="wizard-btn-step2">
-              <span class="step-num">STEP 2</span>
-              <span class="step-label">2. All Yellow Top</span>
-              <span class="step-status">Sune &bull; Fish</span>
-            </button>
-            <span class="step-arrow">&rarr;</span>
-            <button class="step-btn" id="wizard-btn-step3">
-              <span class="step-num">STEP 3</span>
-              <span class="step-label">3. Match Corners</span>
-              <span class="step-status">Matching Headlights</span>
-            </button>
-            <span class="step-arrow">&rarr;</span>
-            <button class="step-btn" id="wizard-btn-step4">
-              <span class="step-num">STEP 4</span>
-              <span class="step-label">4. Final Edges</span>
-              <span class="step-status">SOLVED! &#127881;</span>
-            </button>
-          </div>
-
-          <!-- Visual Cube Matcher: Click what is on top of your cube right now -->
-          <div class="cube-matcher-box">
-            <h4 class="matcher-title">&#128065; Look directly down at the YELLOW top of your cube right now. Which pattern matches?</h4>
-            <div class="matcher-options-grid">
-              <!-- Card 1: Dot -->
-              <div class="matcher-card" data-case="b-eo-1">
-                <span class="matcher-step-badge">Step 1 &bull; Yellow Cross</span>
-                <div class="matcher-thumb" id="thumb-dot"></div>
-                <div class="matcher-name">Just a Yellow Dot</div>
-                <div class="matcher-hint">0 yellow edges on top</div>
-                <div class="matcher-hold">🧭 Hold any side facing you</div>
-                <div class="matcher-alg-preview">F (R U R' U') F'</div>
-                <div class="matcher-plain-words">Front &bull; Sexy Move &bull; Front Back</div>
-                <button class="matcher-action-btn">&#9658; Watch 3D Replay</button>
-              </div>
-
-              <!-- Card 2: L-Shape -->
-              <div class="matcher-card highlight-card" data-case="b-eo-2">
-                <span class="matcher-step-badge">Step 1 &bull; Yellow Cross</span>
-                <div class="matcher-thumb" id="thumb-lshape"></div>
-                <div class="matcher-name">Yellow L-Shape (9:00)</div>
-                <div class="matcher-hint">2 edges meet at top-left</div>
-                <div class="matcher-hold">🧭 Put L in back-left (9:00 &amp; 12:00)</div>
-                <div class="matcher-alg-preview">f (R U R' U') f'</div>
-                <div class="matcher-plain-words">Front 2 Layers &bull; Sexy Move &bull; Back</div>
-                <button class="matcher-action-btn">&#9658; Watch 3D Replay</button>
-              </div>
-
-              <!-- Card 3: Horizontal Line -->
-              <div class="matcher-card" data-case="b-eo-3">
-                <span class="matcher-step-badge">Step 1 &bull; Yellow Cross</span>
-                <div class="matcher-thumb" id="thumb-line"></div>
-                <div class="matcher-name">Horizontal Line &minus;</div>
-                <div class="matcher-hint">Straight bar across top</div>
-                <div class="matcher-hold">🧭 Keep line horizontal (flat)</div>
-                <div class="matcher-alg-preview">F (R U R' U') F'</div>
-                <div class="matcher-plain-words">Front &bull; Sexy Move &bull; Front Back</div>
-                <button class="matcher-action-btn">&#9658; Watch 3D Replay</button>
-              </div>
-
-              <!-- Card 4: Sune / Fish -->
-              <div class="matcher-card" data-case="b-co-sune">
-                <span class="matcher-step-badge">Step 2 &bull; Yellow Face</span>
-                <div class="matcher-thumb" id="thumb-sune"></div>
-                <div class="matcher-name">The Fish (Sune)</div>
-                <div class="matcher-hint">Cross done + 1 yellow corner</div>
-                <div class="matcher-hold">🧭 Point yellow corner to front-left (7:00)</div>
-                <div class="matcher-alg-preview">R U R' U R U2 R'</div>
-                <div class="matcher-plain-words">Up, Left, Down, Left, Up, Twice, Down</div>
-                <button class="matcher-action-btn">&#9658; Watch 3D Replay</button>
-              </div>
-
-              <!-- Card 5: Headlights -->
-              <div class="matcher-card" data-case="b-cp-headlights">
-                <span class="matcher-step-badge">Step 3 &bull; Match Corners</span>
-                <div class="matcher-thumb" id="thumb-headlights"></div>
-                <div class="matcher-name">Matching Headlights</div>
-                <div class="matcher-hint">Top all yellow, match corners</div>
-                <div class="matcher-hold">🧭 Put matching pair in the BACK</div>
-                <div class="matcher-alg-preview">R' F R' B2 R F' R' B2 R2</div>
-                <div class="matcher-plain-words">Solves all 4 corners into place!</div>
-                <button class="matcher-action-btn">&#9658; Watch 3D Replay</button>
-              </div>
-
-              <!-- Card 6: Final Edges -->
-              <div class="matcher-card" data-case="b-ep-ua">
-                <span class="matcher-step-badge">Step 4 &bull; Final Edges</span>
-                <div class="matcher-thumb" id="thumb-edges"></div>
-                <div class="matcher-name">Final 3 Edges (Ua-Perm)</div>
-                <div class="matcher-hint">1 side solid, 3 edges swap</div>
-                <div class="matcher-hold">🧭 Put solid solved side in BACK</div>
-                <div class="matcher-alg-preview">R U' R U R U R U' R' U' R2</div>
-                <div class="matcher-plain-words">&#127881; COMPLETE SOLVE!</div>
-                <button class="matcher-action-btn">&#9658; Watch 3D Replay</button>
-              </div>
-            </div>
-          </div>
+      <section id="tab-algorithms" class="tab-pane active" aria-label="CFOP learning path">
+        <div class="learn-heading">
+          <div><span class="eyebrow">YOUR CFOP PATH</span><h2>One stage at a time.</h2><p>Build a reliable solve. Then make it smoother.</p></div>
+          <div class="learning-progress"><span id="learning-progress-text">0 of 12 lessons practiced</span><progress id="learning-progress" max="12" value="0" aria-label="Lessons practiced"></progress></div>
         </div>
-
-        <div class="roadmap-hero glass-panel">
-          <div class="hero-content">
-            <span class="badge-pill">Proven Speed Blueprint</span>
-            <h2>Your Fastest Journey: Slow F2L &rarr; Sub-20 &rarr; Sub-10</h2>
-            <p>Your biggest competitive advantage is <strong>deliberate efficiency</strong>, not frantic turning. 55 moves at a calm 2.8 turns/sec yields a <strong>19.6-second solve</strong>. Here is your step-by-step master plan.</p>
-          </div>
-          <div class="quick-stats-card">
-            <div class="stat-box">
-              <span class="stat-label">Current Stage</span>
-              <span class="stat-val highlight-green">Stage 1: Last Layer</span>
-            </div>
-            <div class="stat-box">
-              <span class="stat-label">Target Milestones</span>
-              <span class="stat-val">Sub-60s &rarr; Sub-20s</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="roadmap-timeline">
-          <!-- Stage 1 -->
-          <div class="stage-card active-stage glass-panel" id="stage-1-card">
-            <div class="stage-header">
-              <div class="stage-badge">Stage 1 &bull; Immediate (Days 1 - 7)</div>
-              <h3>Finish the Entire Cube Every Single Time (Sub-60s)</h3>
-              <p class="stage-desc">You already reach the 2nd layer! The immediate missing piece is the <strong>Last Layer (LL)</strong>. You do NOT need 78 algorithms. Master <strong>2-Look OLL (9 algs) + 2-Look PLL (6 algs)</strong> to finish every solve cleanly.</p>
-            </div>
-            <div class="stage-checklist">
-              <label class="check-item"><input type="checkbox" id="chk-s1-1" checked> <span>Keep White Cross strictly on the bottom</span></label>
-              <label class="check-item"><input type="checkbox" id="chk-s1-2"> <span>Yellow Cross: Line (F R U R' U' F') &amp; L-shape (f R U R' U' f')</span></label>
-              <label class="check-item"><input type="checkbox" id="chk-s1-3"> <span>Yellow Corners: Sune &amp; Anti-Sune (QiYi Algs 6 &amp; 7)</span></label>
-              <label class="check-item"><input type="checkbox" id="chk-s1-4"> <span>Corner Permutation: Headlights (A-perm/QiYi Alg 8)</span></label>
-              <label class="check-item"><input type="checkbox" id="chk-s1-5"> <span>Edge Permutation: Ua &amp; Ub perms (QiYi Algs 9 &amp; 10)</span></label>
-            </div>
-            <div class="stage-action">
-              <button class="btn btn-primary" onclick="window.app.switchTab('algorithms', 'beginner')">Open Last Layer Algorithms &rarr;</button>
-            </div>
-          </div>
-
-          <!-- Stage 2 -->
-          <div class="stage-card glass-panel" id="stage-2-card">
-            <div class="stage-header">
-              <div class="stage-badge">Stage 2 &bull; Weeks 2 - 4</div>
-              <h3>Speed Up F2L &amp; Eliminate Regrips (Target: Sub-30s)</h3>
-              <p class="stage-desc">Why is your F2L currently "super slow"? Because of whole-cube rotations (y / y') and searching for pieces. Learn the 3 foundational pairing concepts and ergonomic fingertricks.</p>
-            </div>
-            <div class="stage-checklist">
-              <label class="check-item"><input type="checkbox" id="chk-s2-1"> <span>Upgrade to a budget magnetic speedcube (RS3M V5 or GAN)</span></label>
-              <label class="check-item"><input type="checkbox" id="chk-s2-2"> <span>Index flick (U) and double-flick (U2) without rotating cube</span></label>
-              <label class="check-item"><input type="checkbox" id="chk-s2-3"> <span>Solve F2L pairs into back slots first to keep front open</span></label>
-              <label class="check-item"><input type="checkbox" id="chk-s2-4"> <span>Zero pause practice: Turn slowly at 1 turn/sec with continuous lookahead</span></label>
-            </div>
-            <div class="stage-action">
-              <button class="btn btn-secondary" onclick="window.app.switchTab('algorithms', 'f2l')">Explore Intuitive F2L &rarr;</button>
-            </div>
-          </div>
-
-          <!-- Stage 3 -->
-          <div class="stage-card glass-panel" id="stage-3-card">
-            <div class="stage-header">
-              <div class="stage-badge">Stage 3 &bull; Weeks 5 - 10</div>
-              <h3>Full PLL &amp; Cross Inspection (Target: Sub-20s Golden Milestone!)</h3>
-              <p class="stage-desc">Learn all 21 PLL algorithms (1 new alg every 2-3 days). Plan the entire White Cross in your mind during the 15-second inspection before making your first move.</p>
-            </div>
-            <div class="stage-checklist">
-              <label class="check-item"><input type="checkbox" id="chk-s3-1"> <span>Full PLL (21 algorithms) committed to muscle memory</span></label>
-              <label class="check-item"><input type="checkbox" id="chk-s3-2"> <span>Cross solved in &le; 8 moves consistently</span></label>
-              <label class="check-item"><input type="checkbox" id="chk-s3-3"> <span>Solve Cross with eyes closed after 15s inspection</span></label>
-              <label class="check-item"><input type="checkbox" id="chk-s3-4"> <span>Achieve Sub-20s Average of 12 on the Timer</span></label>
-            </div>
-            <div class="stage-action">
-              <button class="btn btn-secondary" onclick="window.app.switchTab('algorithms', 'pll')">Learn 21 PLL Cases &rarr;</button>
-            </div>
-          </div>
-
-          <!-- Stage 4 -->
-          <div class="stage-card glass-panel" id="stage-4-card">
-            <div class="stage-header">
-              <div class="stage-badge">Stage 4 &bull; Advanced</div>
-              <h3>Full OLL, Lookahead &amp; Cross+1 (Target: Sub-10s)</h3>
-              <p class="stage-desc">Full 57 OLL, instant 2-sided recognition, multislotting, and Cross+1 (tracking the first F2L pair during inspection). Turns per second reaches 5-7 TPS.</p>
-            </div>
-            <div class="stage-checklist">
-              <label class="check-item"><input type="checkbox" id="chk-s4-1"> <span>Full 57 OLL algorithms</span></label>
-              <label class="check-item"><input type="checkbox" id="chk-s4-2"> <span>Cross + 1 planned during 15s inspection</span></label>
-              <label class="check-item"><input type="checkbox" id="chk-s4-3"> <span>Seamless F2L lookahead with zero transition pauses</span></label>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= 2. ALGORITHMS TAB ================= -->
-      <section id="tab-algorithms" class="tab-pane">
-        <!-- Speedcubing Acronyms & Concept Guide -->
-        <div class="glossary-banner glass-panel">
-          <div class="glossary-header">
-            <div>
-              <span class="badge-tag">SPEEDCUBING CHEAT SHEET</span>
-              <h3 class="glossary-title">What do EO, CO, CP, and EP mean?</h3>
-              <p class="text-sm text-muted">Solving the Last Layer (LL) is divided into <strong>Orientation</strong> (making yellow face UP) and <strong>Permutation</strong> (moving pieces to matching sides):</p>
-            </div>
-            <button id="btn-toggle-glossary" class="btn-text">Quick Reference &#9662;</button>
-          </div>
-          <div id="glossary-content" class="glossary-grid">
-            <div class="glossary-item">
-              <span class="glossary-badge badge-eo">EO &bull; Edge Orientation</span>
-              <p>Turns yellow edges so yellow faces <strong>UP</strong>. Forms the <strong>Yellow Cross</strong> (Dot &rarr; L-Shape &rarr; Bar &rarr; Cross).</p>
-            </div>
-            <div class="glossary-item">
-              <span class="glossary-badge badge-co">CO &bull; Corner Orientation</span>
-              <p>Twists yellow corners so yellow faces <strong>UP</strong>. Turns the cross into a solid yellow face (Sune, Anti-Sune, etc.).</p>
-              <span class="glossary-note">EO + CO = <strong>OLL</strong></span>
-            </div>
-            <div class="glossary-item">
-              <span class="glossary-badge badge-cp">CP &bull; Corner Permutation</span>
-              <p>Moves the 4 corners to their matching side colors. Look for matching <strong>Headlights</strong> (A-Perm, T-Perm).</p>
-            </div>
-            <div class="glossary-item">
-              <span class="glossary-badge badge-ep">EP &bull; Edge Permutation</span>
-              <p>Cycles the final 3-4 edges into place to <strong>complete the entire cube</strong> (Ua, Ub, H, Z Permutations).</p>
-              <span class="glossary-note">CP + EP = <strong>PLL</strong></span>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-toolbar glass-panel">
-          <div class="alg-category-pills">
-            <button class="cat-pill" data-cat="cross" id="cat-btn-cross">White Cross (Beginner &amp; Pro)</button>
-            <button class="cat-pill active" data-cat="beginner" id="cat-btn-beginner">Beginner &amp; 2-Look LL</button>
-            <button class="cat-pill" data-cat="f2l" id="cat-btn-f2l">F2L Mastercases (41 Cases)</button>
-            <button class="cat-pill" data-cat="pll" id="cat-btn-pll">Full PLL (21 Cases)</button>
-          </div>
-          <div class="search-box">
-            <input type="text" id="alg-search-input" placeholder="Search algorithm or case name...">
-          </div>
-        </div>
-
-        <!-- White Cross Beginner vs Intermediate vs Pro Masterclass Banner -->
-        <div id="cross-masterclass-banner" class="cross-masterclass-panel glass-panel" style="display: none;">
-          <div class="f2l-hacks-header">
-            <span class="badge-pill highlight-gold">🧭 COMPLETE WHITE CROSS MASTERY &bull; BEGINNER ➔ INTERMEDIATE ➔ PRO</span>
-            <h3 style="margin: 8px 0 4px 0;">3 Levels of White Cross Solutions</h3>
-            <p class="text-sm text-muted" style="margin-bottom: 16px;">The White Cross sets up your entire solve. Master your current level and level up when ready:</p>
-          </div>
-
-          <div class="cross-comparison-container three-col">
-            <!-- Tier 1: Absolute Beginner -->
-            <div class="cross-method-card beginner-cross">
-              <div class="method-title">
-                <span class="cross-tier-badge badge-beginner">LEVEL 1 &bull; ABSOLUTE BEGINNER</span>
-                <h4>The "Daisy" Method (Petals to Top)</h4>
-              </div>
-              <ul class="cross-steps-list">
-                <li><strong>Idea:</strong> Don't worry about centers yet! Bring all 4 white edge stickers around the Yellow center to form a daisy flower.</li>
-                <li><strong>Step A:</strong> Edge in middle layer &rarr; <code>F</code> or <code>R</code> to lift to top.</li>
-                <li><strong>Step B:</strong> Edge on bottom with white down &rarr; <code>F2</code> straight to top.</li>
-                <li><strong>Step C:</strong> Once all 4 petals are on yellow, match side color to center and turn 180° (<code>F2</code>, <code>R2</code>, <code>B2</code>, <code>L2</code>) to deposit onto white bottom.</li>
-              </ul>
-              <div class="method-verdict verdict-slow">
-                <span>⏱️ 10–15s &bull; Cube flipping &bull; Zero stress, 100% reliable for day 1.</span>
-              </div>
-              <button class="btn-tier-filter" onclick="window.app.filterCrossTier('beginner')">View Beginner Cases (5) &rarr;</button>
-            </div>
-
-            <!-- Tier 2: Intermediate -->
-            <div class="cross-method-card int-cross">
-              <div class="method-title">
-                <span class="cross-tier-badge badge-intermediate">LEVEL 2 &bull; INTERMEDIATE</span>
-                <h4>Direct Bottom Cross (Skip the Daisy)</h4>
-              </div>
-              <ul class="cross-steps-list">
-                <li><strong>Idea:</strong> Keep White on BOTTOM from second zero! Never flip the cube upside down.</li>
-                <li><strong>Rule 1:</strong> Middle layer edges insert directly onto bottom in 1 turn (<code>F</code>, <code>R'</code>, <code>L</code>, <code>B</code>).</li>
-                <li><strong>Rule 2:</strong> Flipped top edge inserts directly in 3 moves with <code>F' U L'</code>.</li>
-                <li><strong>Rule 3:</strong> Use <strong>Keyhole (<code>D</code> turntable)</strong> to protect already-placed cross edges without breaking them.</li>
-                <li><strong>Rule 4:</strong> Swap adjacent edges with <code>R2 D' R2 D R2</code> or opposite with <code>R2 L2 D2 R2 L2</code>.</li>
-              </ul>
-              <div class="method-verdict verdict-medium">
-                <span>⚡ 4–6s &bull; Solved directly on bottom &bull; Saves 8 seconds per solve.</span>
-              </div>
-              <button class="btn-tier-filter" onclick="window.app.filterCrossTier('intermediate')">View Intermediate Cases (6) &rarr;</button>
-            </div>
-
-            <!-- Tier 3: Pro & Advanced -->
-            <div class="cross-method-card pro-cross">
-              <div class="method-title">
-                <span class="cross-tier-badge badge-pro">LEVEL 3 &bull; PRO &amp; ADVANCED</span>
-                <h4>Sub-20 CFOP &bull; 15s Inspection &amp; BOOG</h4>
-              </div>
-              <ul class="cross-steps-list">
-                <li><strong>The B-O-O-G Rule:</strong> Clockwise around white is Blue &rarr; Orange &rarr; Green &rarr; Red. Place edges in relative order, then ONE <code>D</code> aligns all 4 centers simultaneously!</li>
-                <li><strong>15s Inspection:</strong> Every scramble has a cross &le; 8 moves (average: 5.8 moves). Plan 100% of moves in your head and execute blindfolded!</li>
-                <li><strong>Cross + 1 (X-Cross):</strong> Track where the first F2L corner and edge will land during inspection to eliminate the transition pause.</li>
-                <li><strong>Zero-Regrip Fingertricks:</strong> Use left ring finger for <code>D</code> and right ring finger for <code>D'</code>.</li>
-              </ul>
-              <div class="method-verdict verdict-fast">
-                <span>🔥 &le; 2.0s &bull; Planned 100% blind &bull; Seamless flow directly into F2L.</span>
-              </div>
-              <button class="btn-tier-filter" onclick="window.app.filterCrossTier('pro')">View Pro Cases (5) &rarr;</button>
-            </div>
-          </div>
-
-          <!-- Interactive Tier Filter Navigation -->
-          <div class="cross-tier-nav-bar">
-            <span class="tier-nav-label">Filter Cross Solutions:</span>
-            <div class="tier-pills-group">
-              <button class="cross-tier-pill active" data-cross-tier="all">🌟 All Tiers (16 Cases)</button>
-              <button class="cross-tier-pill" data-cross-tier="beginner">🌱 Absolute Beginner • The Daisy (5)</button>
-              <button class="cross-tier-pill" data-cross-tier="intermediate">⚡ Intermediate • Direct Bottom (6)</button>
-              <button class="cross-tier-pill" data-cross-tier="pro">🚀 Pro &amp; Advanced • Sub-20 (5)</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- F2L Beginner + Pro Speed Hacks & Cheat Sheet Banner -->
-        <div id="f2l-pro-hacks-banner" class="f2l-hacks-panel glass-panel" style="display: none;">
-          <div class="f2l-hacks-header">
-            <span class="badge-pill highlight-gold">⚡ F2L SPEED HACKS &amp; CHEAT SHEET &bull; ROAD TO SUB-20 &amp; SUB-10</span>
-            <h3 style="margin: 8px 0 4px 0;">How to Stop Being "Super Slow" at F2L (Pro Speed Guide)</h3>
-            <p class="text-sm text-muted" style="margin-bottom: 16px;">You already know how to solve the first 2 layers, but it feels slow? F2L is 60% to 70% of the entire solve! Drill these 6 speedcubing hacks to slash your time from 40s to under 15s:</p>
-          </div>
-          <div class="f2l-hacks-grid">
-            <div class="f2l-hack-card">
-              <div class="hack-badge">HACK 1 &bull; 3-MOVE GOLD</div>
-              <h4>Pair Already Formed? 3 Moves!</h4>
-              <p>Never overthink an already-connected pair. Position it and insert directly without whole-cube rotations:</p>
-              <div class="hack-alg-code">Front-Right: <code>R U R'</code> &bull; Front-Left: <code>L' U' L</code></div>
-              <span class="hack-tip">💡 Drill both hands until it takes under 0.4 seconds.</span>
-            </div>
-            <div class="f2l-hack-card highlight-border">
-              <div class="hack-badge badge-pro">HACK 2 &bull; PRO EDGE CONTROL</div>
-              <h4>Sledgehammer Insert</h4>
-              <p>Instead of doing standard <code>U (R U' R')</code> into the front-right slot, do the Sledgehammer:</p>
-              <div class="hack-alg-code"><code>(R' F R F')</code></div>
-              <span class="hack-tip">🔥 <strong>Why it's OP:</strong> It inserts the pair AND flips edges yellow! Guarantees an easy yellow cross (skips the slow Dot OLL).</span>
-            </div>
-            <div class="f2l-hack-card">
-              <div class="hack-badge badge-pro">HACK 3 &bull; ZERO ROTATIONS</div>
-              <h4>Back-Slot Preference</h4>
-              <p>Always solve the back two slots first when pairs appear:</p>
-              <div class="hack-alg-code">Back-Right: <code>R' U' R</code> &bull; Back-Left: <code>L U L'</code></div>
-              <span class="hack-tip">💡 Keeps the front slots empty and visible. Eliminates 90% of cube rotations (y / y')!</span>
-            </div>
-            <div class="f2l-hack-card">
-              <div class="hack-badge badge-cheat">HACK 4 &bull; PRO CHEAT CODE</div>
-              <h4>The Keyhole Method</h4>
-              <p>Leave 1 corner unsolved on purpose! Move the D layer so that empty slot is directly underneath where you insert middle edges:</p>
-              <div class="hack-alg-code"><code>R U R'</code> or <code>F' U' F</code></div>
-              <span class="hack-tip">✨ Solves middle edges in 3 simple moves without disturbing anything else.</span>
-            </div>
-            <div class="f2l-hack-card">
-              <div class="hack-badge">HACK 5 &bull; SUB-20 ENGINE</div>
-              <h4>The "Don't Look at Your Pair" Rule</h4>
-              <p>Once your eyes spot a pair and you know the 3-4 moves, <strong>LOOK AWAY</strong>. Turn the moves with muscle memory while your eyes hunt for the NEXT corner/edge!</p>
-              <span class="hack-tip">🎯 Smooth continuous turning beats fast-stop-search every single time.</span>
-            </div>
-            <div class="f2l-hack-card">
-              <div class="hack-badge badge-cheat">HACK 6 &bull; TRIPLE SEXY</div>
-              <h4>Corner Stuck in Bottom Slot?</h4>
-              <p>Corner trapped in slot with white facing right? Run 1 Sexy Move to eject it. White facing front? Run 2 Sexy Moves:</p>
-              <div class="hack-alg-code"><code>(R U R' U')</code> 1x, 2x, or 3x</div>
-              <span class="hack-tip">⚡ Requires 0 brain power! Pure tactile muscle memory.</span>
-            </div>
-          </div>
-        </div>
-
-        <div id="alg-container" class="alg-grid">
-          <!-- Dynamically populated via app.js with 2D diagrams -->
-        </div>
+        <nav class="cfop-stages" aria-label="CFOP stages">
+          <button class="cfop-stage active" data-stage="cross" aria-pressed="true"><span class="stage-number">01</span><span><strong>Cross</strong><small>Build your foundation</small></span></button>
+          <button class="cfop-stage" data-stage="f2l" aria-pressed="false"><span class="stage-number">02</span><span><strong>F2L</strong><small>Pair and insert</small></span></button>
+          <button class="cfop-stage" data-stage="oll" aria-pressed="false"><span class="stage-number">03</span><span><strong>OLL</strong><small>Orient the last layer</small></span></button>
+          <button class="cfop-stage" data-stage="pll" aria-pressed="false"><span class="stage-number">04</span><span><strong>PLL</strong><small>Finish the solve</small></span></button>
+        </nav>
+        <div class="lesson-toolbar"><div class="lesson-levels" role="group" aria-label="Learning level">
+          <button data-level="beginner" aria-pressed="true" class="active">Beginner</button><button data-level="intermediate" aria-pressed="false">Intermediate</button><button data-level="pro" aria-pressed="false">Pro</button>
+        </div><span id="lesson-position" class="text-muted"></span></div>
+        <article id="lesson-content" class="lesson-card glass-panel"></article>
+        <div class="case-library-heading"><div><h3 id="case-library-title">Practice cases</h3><p id="case-library-count" class="text-muted"></p></div><div class="search-box"><label class="sr-only" for="alg-search-input">Search cases in this lesson</label><input id="alg-search-input" type="search" placeholder="Search this lesson…"></div></div>
+        <div id="alg-container" class="alg-grid"></div>
+        <p class="curriculum-source">Curriculum references: <a href="https://www.cubeskills.com/tutorials/f2l" target="_blank" rel="noopener">CubeSkills F2L</a> and <a href="https://jperm.net/algs/2lookoll" target="_blank" rel="noopener">J Perm 2-look OLL</a>. Practice at your own pace; levels are learning paths, not guaranteed solve times.</p>
       </section>
 
       <!-- ================= 3. 3D VISUALIZER TAB ================= -->
       <section id="tab-visualizer" class="tab-pane">
-        <!-- Plain-English Case Helper Banner -->
-        <div id="vis-case-helper-banner" class="vis-helper-banner glass-panel">
-          <div class="helper-banner-left">
-            <span class="badge-pill highlight-gold" id="vis-banner-step-badge">STEP 1 &bull; YELLOW CROSS</span>
-            <h3 id="vis-banner-title">Yellow L-Shape (9:00 Angle)</h3>
-            <div class="helper-directions">
-              <div class="dir-item">
-                <span class="dir-icon">🧭</span>
-                <strong>How to hold your cube:</strong>
-                <span id="vis-banner-hold">Hold Yellow on TOP. Put the L-shape in the TOP-LEFT (9:00 and 12:00 on a clock).</span>
-              </div>
-              <div class="dir-item">
-                <span class="dir-icon">⚡</span>
-                <strong>The Move to execute:</strong>
-                <span id="vis-banner-alg" class="banner-alg-code">f (R U R' U') f'</span>
-                <span id="vis-banner-plain" class="banner-plain-words">Front Two Layers &bull; (Right Up, Top Left, Right Down, Top Right) &bull; Front Two Back</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        <div class="practice-topline"><button id="vis-back-learn" class="btn-text">← Back to lesson</button><span class="eyebrow" id="vis-banner-step-badge">CASE PRACTICE</span></div>
+        <div id="vis-error" class="error-message" role="alert" hidden></div>
         <div class="visualizer-layout">
           <div class="visualizer-stage glass-panel">
             <div class="visualizer-header">
@@ -595,29 +193,26 @@
             <div class="canvases-wrapper">
               <div class="canvas-box canvas-3d-box">
                 <div class="canvas-top-bar">
-                  <span class="canvas-label">3D Perspective View (Drag to rotate)</span>
-                  <div class="face-orientation-legend">
-                    <span class="face-pill face-u" title="Yellow is Top">TOP: Yellow (U)</span>
-                    <span class="face-pill face-f" title="Green is Front">FRONT: Green (F)</span>
-                    <span class="face-pill face-r" title="Red is Right">RIGHT: Red (R)</span>
-                    <span class="face-pill face-l" title="Orange is Left">LEFT: Orange (L)</span>
-                  </div>
+                  <span class="canvas-label">Drag to change your view</span>
+                  <span id="vis-orientation" class="text-muted">Top: yellow · Front: green</span><button id="vis-restore-view" class="btn-text">Restore view</button>
                 </div>
                 <div class="canvas-3d-viewport-wrap">
-                  <canvas id="canvas-3d" width="440" height="380"></canvas>
+                  <canvas id="canvas-3d" width="440" height="300" role="img" aria-label="Interactive three dimensional cube"></canvas>
                   <!-- Floating HUD Turn Indicator -->
                   <div id="vis-rotating-face" class="vis-turn-hud" style="opacity: 0;"></div>
                 </div>
               </div>
-              <div class="canvas-box canvas-2d-box">
-                <span class="canvas-label">Top Face Recognition</span>
-                <canvas id="canvas-2d" width="220" height="220"></canvas>
+              <details class="canvas-box canvas-2d-box"><summary>Top recognition view</summary>
+                <span class="canvas-label">Last completed move</span>
+                <canvas id="canvas-2d" width="220" height="220" role="img" aria-label="Top face and side rim colors"></canvas>
                 <div class="mini-legend">
-                  <span>Yellow = Top</span>
+                  <span>Front is the bottom rim</span>
                   <span>Rim = Sides</span>
                 </div>
-              </div>
+              </details>
             </div>
+            <p class="practice-hold" id="vis-banner-hold"></p>
+            <div class="playback-status"><span id="vis-step-status" role="status" aria-live="polite">Ready</span><span id="vis-current-move"></span></div>
 
             <!-- Current Move Ribbon -->
             <div id="vis-moves-ribbon" class="moves-ribbon">
@@ -634,14 +229,15 @@
               <button id="vis-btn-reset" class="btn btn-ctrl" title="Reset to Start">&#8635; Reset</button>
 
               <div class="speed-slider-group">
-                <label for="vis-speed-range">Turn Speed:</label>
+                <label for="vis-speed-range">Pace:</label>
                 <input type="range" id="vis-speed-range" min="300" max="3000" step="100" value="1500">
-                <span id="vis-speed-label">1.5s (Slow &amp; Clear)</span>
+                <span id="vis-speed-label">1.5s / move</span>
               </div>
             </div>
 
-            <!-- Interactive Move & Notation Quick Tester -->
-            <div class="interactive-notation-bar">
+            <p class="playback-help">Pause finishes the current turn. Reset returns to the case setup.</p>
+            <details class="practice-details"><summary>Algorithm &amp; explanation</summary><code id="vis-banner-alg"></code><p id="vis-banner-plain"></p></details>
+            <details class="interactive-notation-bar"><summary>Explore move notation</summary><p class="text-muted">Starts a separate demonstration from a solved cube. Return to your case when you are done.</p><button id="vis-return-case" class="btn-text" hidden>Return to case</button>
               <div class="notation-bar-header">
                 <div>
                   <span class="badge-tag highlight-gold">🧭 INTERACTIVE NOTATION EXPLORER</span>
@@ -715,13 +311,13 @@
                   <span class="move-arrow">Sledgehammer ⚡</span>
                 </button>
               </div>
-            </div>
+            </details>
           </div>
 
           <!-- Quick Case Select Sidebar -->
           <div class="visualizer-sidebar glass-panel">
-            <h4>Quick Load Case</h4>
-            <p class="text-sm text-muted">Select an algorithm to simulate instantly:</p>
+            <h4>Lesson cases</h4>
+            <p class="text-sm text-muted">Continue practicing this lesson.</p>
             <div id="vis-quick-cases" class="quick-cases-list">
               <!-- Populated by app.js -->
             </div>
@@ -893,14 +489,14 @@
   </div>
 
   <!-- ================= Move Notation Cheat Sheet Modal ================= -->
-  <div id="modal-cheat-sheet" class="modal-backdrop" style="display: none;">
+  <dialog id="modal-cheat-sheet" class="modal-backdrop" aria-labelledby="cheat-sheet-title">
     <div class="modal-card">
       <div class="modal-header">
         <div>
           <span class="badge-tag">BEGINNER ZERO-JARGON GUIDE</span>
-          <h3>What do R, U, F, and (') Prime mean?</h3>
+          <h3 id="cheat-sheet-title">What do R, U, F, and (') Prime mean?</h3>
         </div>
-        <button id="btn-close-cheat-sheet" class="modal-close-btn" title="Close">&times;</button>
+        <button id="btn-close-cheat-sheet" class="modal-close-btn" title="Close" aria-label="Close move cheat sheet">&times;</button>
       </div>
       <div class="modal-body">
         <div class="notation-explain-intro">
@@ -987,21 +583,17 @@
         <button id="btn-close-cheat-sheet-foot" class="btn btn-primary">Got it! Back to Solving &rarr;</button>
       </div>
     </div>
-  </div>
+  </dialog>
 
   <!-- Mobile Bottom Navigation Bar (Thumb Zone) -->
   <nav id="mobile-bottom-nav" class="mobile-bottom-nav" aria-label="Mobile Navigation">
-    <button class="mobile-nav-btn active" data-tab="roadmap" title="Solve My Cube">
-      <span class="m-nav-icon">⚡</span>
-      <span class="m-nav-label">Solve</span>
-    </button>
-    <button class="mobile-nav-btn" data-tab="algorithms" title="Algorithm Vault">
+    <button class="mobile-nav-btn active" data-tab="algorithms" title="Algorithm Vault">
       <span class="m-nav-icon">📖</span>
-      <span class="m-nav-label">Algs</span>
+      <span class="m-nav-label">Learn</span>
     </button>
     <button class="mobile-nav-btn" data-tab="visualizer" title="3D Cube Visualizer">
       <span class="m-nav-icon">🧊</span>
-      <span class="m-nav-label">3D</span>
+      <span class="m-nav-label">Practice</span>
     </button>
     <button class="mobile-nav-btn" data-tab="timer" title="Speed Timer">
       <span class="m-nav-icon">⏱️</span>
@@ -1011,6 +603,7 @@
       <span class="m-nav-icon">🎯</span>
       <span class="m-nav-label">Drills</span>
     </button>
+    <button class="mobile-nav-btn" data-tab="guide" title="Guide"><span class="m-nav-icon">💡</span><span class="m-nav-label">Guide</span></button>
   </nav>
 
   <!-- Local Solid 3D WebGL Engine (Offline-Ready) -->

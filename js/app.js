@@ -9,6 +9,8 @@ import { DiagramGenerator } from './diagram-generator.js';
 import { CubeVisualizer } from './cube-visualizer.js';
 import { SpeedTimer } from './timer.js';
 import { AlgorithmTrainer } from './trainer.js';
+import { Cube } from './cube-engine.js';
+import { STAGES, LEVELS, getLessonCases, nextLesson } from './curriculum.js';
 
 /**
  * Translates Rubik's cube Singmaster moves into plain English for beginners.
@@ -56,8 +58,15 @@ export function translateMoveToEnglish(algStr) {
 
 class App {
   constructor() {
-    this.currentCategory = 'beginner';
-    this.currentCrossTier = 'all';
+    this.currentCategory = 'cross';
+    this.currentLevel = 'beginner';
+    this.lessonProgress = {};
+    try {
+      const saved = JSON.parse(localStorage.getItem('cubepro_learning') || '{}');
+      if (STAGES[saved.stage]) this.currentCategory = saved.stage;
+      if (LEVELS.includes(saved.level)) this.currentLevel = saved.level;
+      this.lessonProgress = saved.progress && typeof saved.progress === 'object' ? saved.progress : {};
+    } catch { /* Start with the first lesson if saved data is unreadable. */ }
     this.searchQuery = '';
     this.masteryState = this.loadMasteryState();
 
@@ -72,11 +81,10 @@ class App {
     this.initTheme();
     this.initNavigation();
     this.initVisualizer();
-    this.initSolverWizard();
+    this.initCurriculum();
     this.initCheatSheetModal();
     this.initTrainer();
     this.initTimer();
-    this.initRoadmapChecklist();
     this.initPWA();
     this.renderAlgorithms();
     this.renderVisualizerSidebar();
@@ -144,28 +152,6 @@ class App {
       }
     }, { passive: true });
 
-    // Category pills in Algorithm Vault
-    const catPills = document.querySelectorAll('.cat-pill');
-    catPills.forEach(pill => {
-      pill.addEventListener('click', () => {
-        catPills.forEach(p => p.classList.remove('active'));
-        pill.classList.add('active');
-        this.currentCategory = pill.dataset.cat;
-        this.renderAlgorithms();
-      });
-    });
-
-    // Cross Tier Pills (Beginner, Intermediate, Pro)
-    const crossTierPills = document.querySelectorAll('.cross-tier-pill');
-    crossTierPills.forEach(pill => {
-      pill.addEventListener('click', () => {
-        crossTierPills.forEach(p => p.classList.remove('active'));
-        pill.classList.add('active');
-        this.currentCrossTier = pill.dataset.crossTier || 'all';
-        this.renderAlgorithms();
-      });
-    });
-
     // Search input
     const searchInput = document.getElementById('alg-search-input');
     if (searchInput) {
@@ -175,38 +161,27 @@ class App {
       });
     }
 
-    // Glossary toggle
-    const toggleGlossary = document.getElementById('btn-toggle-glossary');
-    const glossaryContent = document.getElementById('glossary-content');
-    if (toggleGlossary && glossaryContent) {
-      toggleGlossary.addEventListener('click', () => {
-        const isHidden = glossaryContent.style.display === 'none';
-        glossaryContent.style.display = isHidden ? 'grid' : 'none';
-        toggleGlossary.innerHTML = isHidden ? 'Quick Reference &#9662;' : 'Expand &#9656;';
-      });
-    }
   }
 
   switchTab(tabId, category = null) {
+    if (tabId === 'roadmap') tabId = 'algorithms';
+    if (tabId !== 'visualizer') this.visualizer?.pause();
+    if (tabId !== 'trainer' && this.trainer?.isMetronomeRunning) this.trainer.toggleMetronome();
     document.querySelectorAll('.nav-tab').forEach(t => {
       t.classList.toggle('active', t.dataset.tab === tabId);
+      t.setAttribute('aria-current', t.dataset.tab === tabId ? 'page' : 'false');
     });
 
     document.querySelectorAll('.mobile-nav-btn').forEach(b => {
       b.classList.toggle('active', b.dataset.tab === tabId);
+      b.setAttribute('aria-current', b.dataset.tab === tabId ? 'page' : 'false');
     });
 
     document.querySelectorAll('.tab-pane').forEach(p => {
       p.classList.toggle('active', p.id === `tab-${tabId}`);
     });
 
-    if (tabId === 'algorithms' && category) {
-      this.currentCategory = category;
-      document.querySelectorAll('.cat-pill').forEach(p => {
-        p.classList.toggle('active', p.dataset.cat === category);
-      });
-      this.renderAlgorithms();
-    }
+    if (tabId === 'algorithms' && category) this.selectLesson(category === 'beginner' ? 'oll' : category, this.currentLevel);
 
     if (tabId === 'visualizer' && this.visualizer) {
       setTimeout(() => {
@@ -219,154 +194,42 @@ class App {
     }
   }
 
-  filterCrossTier(tier) {
-    this.switchTab('algorithms', 'cross');
-    this.currentCrossTier = tier;
-    document.querySelectorAll('.cross-tier-pill').forEach(p => {
-      p.classList.toggle('active', p.dataset.crossTier === tier);
-    });
-    this.renderAlgorithms();
-    const container = document.getElementById('alg-container');
-    if (container) {
-      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+  initCurriculum() {
+    document.querySelectorAll('[data-stage]').forEach(button => button.addEventListener('click', () => this.selectLesson(button.dataset.stage, this.currentLevel)));
+    document.querySelectorAll('[data-level]').forEach(button => button.addEventListener('click', () => this.selectLesson(this.currentCategory, button.dataset.level)));
+    this.renderLesson();
   }
 
-  // --- First-Glance Solver Wizard ---
-  initSolverWizard() {
-    // 1. Render mini SVG diagrams into matcher card thumbnails
-    const thumbDot = document.getElementById('thumb-dot');
-    if (thumbDot) {
-      thumbDot.innerHTML = DiagramGenerator.renderOLLSVG({
-        top: [0, 0, 0, 0, 1, 0, 0, 0, 0],
-        rims: { B: [0, 1, 0], F: [0, 1, 0], L: [0, 1, 0], R: [0, 1, 0] }
-      }, 95);
-    }
+  saveLearning() {
+    try { localStorage.setItem('cubepro_learning', JSON.stringify({ stage: this.currentCategory, level: this.currentLevel, progress: this.lessonProgress })); }
+    catch { document.getElementById('lesson-save-status').textContent = 'Progress could not be saved on this device.'; }
+  }
 
-    const thumbLshape = document.getElementById('thumb-lshape');
-    if (thumbLshape) {
-      thumbLshape.innerHTML = DiagramGenerator.renderOLLSVG({
-        top: [0, 1, 0, 1, 1, 0, 0, 0, 0],
-        rims: { B: [0, 0, 0], F: [0, 1, 0], L: [0, 0, 0], R: [0, 1, 0] }
-      }, 95);
-    }
+  selectLesson(stage, level) {
+    if (!STAGES[stage] || !LEVELS.includes(level)) return;
+    this.currentCategory = stage; this.currentLevel = level; this.searchQuery = '';
+    document.getElementById('alg-search-input').value = '';
+    this.renderLesson(); this.renderAlgorithms(); this.renderVisualizerSidebar(); this.saveLearning();
+  }
 
-    const thumbLine = document.getElementById('thumb-line');
-    if (thumbLine) {
-      thumbLine.innerHTML = DiagramGenerator.renderOLLSVG({
-        top: [0, 0, 0, 1, 1, 1, 0, 0, 0],
-        rims: { B: [0, 1, 0], F: [0, 1, 0], L: [0, 0, 0], R: [0, 0, 0] }
-      }, 95);
-    }
-
-    const thumbSune = document.getElementById('thumb-sune');
-    if (thumbSune) {
-      thumbSune.innerHTML = DiagramGenerator.renderOLLSVG({
-        top: [0, 1, 0, 1, 1, 1, 1, 1, 0],
-        rims: { B: [1, 0, 0], F: [0, 0, 1], L: [0, 0, 0], R: [1, 0, 0] }
-      }, 95);
-    }
-
-    const thumbHeadlights = document.getElementById('thumb-headlights');
-    if (thumbHeadlights) {
-      thumbHeadlights.innerHTML = DiagramGenerator.renderPLLSVG({
-        pllArrows: [[0, 2, 2, 2], [2, 2, 0, 2]],
-        rimColors: {
-          L: ['#b71234', '#b71234', '#b71234'],
-          R: ['#009b48', '#ff5800', '#0046ad'],
-          F: ['#b71234', '#009b48', '#009b48'],
-          B: ['#0046ad', '#0046ad', '#ff5800']
-        }
-      }, 95);
-    }
-
-    const thumbEdges = document.getElementById('thumb-edges');
-    if (thumbEdges) {
-      thumbEdges.innerHTML = DiagramGenerator.renderPLLSVG({
-        pllArrows: [[2, 1, 1, 0], [1, 0, 1, 2], [1, 2, 2, 1]],
-        rimColors: {
-          B: ['#0046ad', '#0046ad', '#0046ad'],
-          F: ['#009b48', '#ff5800', '#009b48'],
-          L: ['#ff5800', '#b71234', '#ff5800'],
-          R: ['#b71234', '#009b48', '#b71234']
-        }
-      }, 95);
-    }
-
-    // 2. Wire click handlers to all matcher cards
-    const cards = document.querySelectorAll('.matcher-card');
-    cards.forEach(card => {
-      card.addEventListener('click', () => {
-        const caseId = card.dataset.case;
-        // Search in BEGINNER_LAST_LAYER
-        let foundCase = null;
-        for (const group of BEGINNER_LAST_LAYER) {
-          const match = group.cases.find(c => c.id === caseId);
-          if (match) {
-            foundCase = match;
-            break;
-          }
-        }
-
-        if (foundCase) {
-          this.switchTab('visualizer');
-          this.loadCaseIntoVisualizer(
-            foundCase.name,
-            foundCase.recommendedAlg,
-            foundCase.notes || '',
-            foundCase.setup || '',
-            foundCase.howToHold || 'Hold Yellow on TOP, White on BOTTOM.',
-            foundCase.whatItDoes || '',
-            foundCase.badgeTitle || 'BEGINNER LAST LAYER'
-          );
-
-          // Scroll to top of visualizer smoothly
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-
-          // Auto-play after brief pause so the user immediately sees the move execute in 3D
-          setTimeout(() => {
-            if (this.visualizer) {
-              this.visualizer.play();
-              const playText = document.getElementById('vis-play-text');
-              if (playText) playText.innerHTML = '&#10074;&#10074; Pause';
-            }
-          }, 350);
-        }
-      });
-    });
-
-    // 3. Wire step navigation buttons in wizard
-    const step1Btn = document.getElementById('wizard-btn-step1');
-    const step2Btn = document.getElementById('wizard-btn-step2');
-    const step3Btn = document.getElementById('wizard-btn-step3');
-    const step4Btn = document.getElementById('wizard-btn-step4');
-
-    const updateActiveStep = (btn, filterType) => {
-      document.querySelectorAll('.wizard-steps-bar .step-btn').forEach(b => {
-        if (!b.classList.contains('done')) b.classList.remove('active');
-      });
-      btn.classList.add('active');
-
-      // Highlight/filter corresponding cards
-      cards.forEach(card => {
-        const cId = card.dataset.case;
-        let show = false;
-        if (filterType === 'all') show = true;
-        else if (filterType === 'eo' && (cId === 'b-eo-1' || cId === 'b-eo-2' || cId === 'b-eo-3')) show = true;
-        else if (filterType === 'co' && cId === 'b-co-sune') show = true;
-        else if (filterType === 'cp' && cId === 'b-cp-headlights') show = true;
-        else if (filterType === 'ep' && cId === 'b-ep-ua') show = true;
-
-        card.style.display = show ? 'flex' : 'none';
-        if (show) card.classList.add('highlight-card');
-        else card.classList.remove('highlight-card');
-      });
-    };
-
-    if (step1Btn) step1Btn.addEventListener('click', () => updateActiveStep(step1Btn, 'eo'));
-    if (step2Btn) step2Btn.addEventListener('click', () => updateActiveStep(step2Btn, 'co'));
-    if (step3Btn) step3Btn.addEventListener('click', () => updateActiveStep(step3Btn, 'cp'));
-    if (step4Btn) step4Btn.addEventListener('click', () => updateActiveStep(step4Btn, 'ep'));
+  renderLesson() {
+    const stage = STAGES[this.currentCategory], lesson = stage.levels[this.currentLevel];
+    const key = this.currentCategory + ':' + this.currentLevel;
+    document.querySelectorAll('[data-stage]').forEach(b => { const active = b.dataset.stage === this.currentCategory; b.classList.toggle('active', active); b.setAttribute('aria-pressed', active); });
+    document.querySelectorAll('[data-level]').forEach(b => { const active = b.dataset.level === this.currentLevel; b.classList.toggle('active', active); b.setAttribute('aria-pressed', active); });
+    document.getElementById('lesson-position').textContent = stage.name + ' / ' + this.currentLevel;
+    const done = Object.keys(STAGES).flatMap(s => LEVELS.map(l => s + ':' + l)).filter(k => this.lessonProgress[k] === true).length;
+    document.getElementById('learning-progress').value = done;
+    document.getElementById('learning-progress-text').textContent = done + ' of 12 lessons practiced';
+    const next = nextLesson(this.currentCategory, this.currentLevel);
+    document.getElementById('lesson-content').innerHTML = `
+      <div class="lesson-main"><span class="eyebrow">${stage.name.toUpperCase()} · ${this.currentLevel.toUpperCase()}</span><h3>${lesson.title}</h3><p class="lesson-goal">${stage.goal}</p><ol>${lesson.steps.map(step => '<li>' + step + '</li>').join('')}</ol></div>
+      <aside class="lesson-drill"><span class="eyebrow">YOUR NEXT PRACTICE</span><p>${lesson.drill}</p><h4>Ready to move on?</h4><p class="text-muted">${lesson.ready}</p><label class="lesson-check"><input id="lesson-done" type="checkbox" ${this.lessonProgress[key] ? 'checked' : ''}> I practiced this lesson</label><small>Self-reported practice, not an automatic skill assessment.</small><button id="lesson-drill" class="btn btn-secondary">Drill this lesson</button><button id="lesson-next" class="btn btn-primary">Next: ${STAGES[next.stage].name} · ${next.level} →</button><span id="lesson-save-status" role="status"></span></aside>
+      ${lesson.reference ? '<div class="coverage-note"><p>' + lesson.coverage + '</p><a target="_blank" rel="noopener" href="' + lesson.reference[1] + '">' + lesson.reference[0] + ' ↗</a></div>' : ''}
+    `;
+    document.getElementById('lesson-drill').addEventListener('click', () => { this.trainer.setLesson(this.currentCategory, this.currentLevel); this.switchTab('trainer'); });
+    document.getElementById('lesson-done').addEventListener('change', e => { this.lessonProgress[key] = e.target.checked; this.saveLearning(); this.renderLesson(); });
+    document.getElementById('lesson-next').addEventListener('click', () => { this.selectLesson(next.stage, next.level); document.getElementById('lesson-content').scrollIntoView({ block: 'start' }); });
   }
 
   // --- Move Notation Cheat Sheet Modal ---
@@ -377,10 +240,10 @@ class App {
     const btnCloseFoot = document.getElementById('btn-close-cheat-sheet-foot');
 
     const openModal = () => {
-      if (modal) modal.style.display = 'flex';
+      if (modal) { this.visualizer.pause(); modal.showModal(); }
     };
     const closeModal = () => {
-      if (modal) modal.style.display = 'none';
+      if (modal) modal.close();
     };
 
     if (btnOpen) btnOpen.addEventListener('click', openModal);
@@ -394,7 +257,7 @@ class App {
     }
 
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal && modal.style.display === 'flex') {
+      if (e.key === 'Escape' && modal && modal.open) {
         closeModal();
       }
     });
@@ -403,7 +266,7 @@ class App {
   // --- Progressive Web App (PWA) & Offline Installation ---
   initPWA() {
     // 1. Register Service Worker
-    if ('serviceWorker' in navigator) {
+    if ('serviceWorker' in navigator && !new URLSearchParams(location.search).has('dev')) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').then((reg) => {
           console.log('Speedcube Pro Service Worker active:', reg.scope);
@@ -477,7 +340,8 @@ class App {
     const canvas2d = document.getElementById('canvas-2d');
 
     this.visualizer = new CubeVisualizer(canvas3d, canvas2d, {
-      onStepChange: (step, moves, activeMoveIdx) => this.updateMovesRibbon(step, moves, activeMoveIdx)
+      onStepChange: (step, moves, activeMoveIdx) => this.updateMovesRibbon(step, moves, activeMoveIdx),
+      onStateChange: state => this.updatePlaybackState(state)
     });
 
     const btnPlay = document.getElementById('vis-btn-play');
@@ -490,15 +354,13 @@ class App {
 
     if (btnPlay) {
       btnPlay.addEventListener('click', () => {
-        const isPlaying = this.visualizer.togglePlay();
-        playText.innerHTML = isPlaying ? '&#10074;&#10074; Pause' : '&#9658; Play';
+        this.visualizer.togglePlay();
       });
     }
 
     if (btnPrev) {
       btnPrev.addEventListener('click', () => {
         this.visualizer.pause();
-        playText.innerHTML = '&#9658; Play';
         this.visualizer.stepBackward();
       });
     }
@@ -506,7 +368,6 @@ class App {
     if (btnNext) {
       btnNext.addEventListener('click', () => {
         this.visualizer.pause();
-        playText.innerHTML = '&#9658; Play';
         this.visualizer.stepForward(true);
       });
     }
@@ -514,7 +375,6 @@ class App {
     if (btnReset) {
       btnReset.addEventListener('click', () => {
         this.visualizer.reset();
-        playText.innerHTML = '&#9658; Play';
       });
     }
 
@@ -523,7 +383,7 @@ class App {
         const ms = parseInt(e.target.value);
         this.visualizer.setSpeed(ms);
         if (speedLabel) {
-          speedLabel.textContent = `${(ms / 1000).toFixed(1)}s ${ms >= 1200 ? '(Slow & Clear)' : ''}`;
+          speedLabel.textContent = (ms / 1000).toFixed(1) + 's / move';
         }
       });
     }
@@ -534,7 +394,8 @@ class App {
       btn.addEventListener('click', () => {
         const move = btn.dataset.move;
         if (this.visualizer && move) {
-          this.visualizer.visualizeSingleMove(move);
+          this.loadCaseIntoVisualizer('Move demonstration: ' + move, move, 'A separate sequence starting from a solved cube.', '', 'Watch the moving layer. Dragging changes your view, not the moves.', '', 'NOTATION EXPLORER', true);
+          this.visualizer.play();
           const titleEl = document.getElementById('vis-case-title');
           const descEl = document.getElementById('vis-case-desc');
           if (titleEl) titleEl.textContent = `Move Demonstration: ${move}`;
@@ -543,15 +404,36 @@ class App {
       });
     });
 
-    // Default benchmark case: T-Perm
-    this.loadCaseIntoVisualizer(
-      'T-Perm (Benchmark Adjacent Swap)',
-      "(R U R' U') (R' F R2 U') (R' U' R U) (R' F')",
-      "Swaps two adjacent corners and two adjacent edges. Benchmark speedcubing PLL."
-    );
+    document.getElementById('vis-restore-view').addEventListener('click', () => this.visualizer.restoreView());
+    document.getElementById('vis-back-learn').addEventListener('click', () => this.switchTab('algorithms'));
+    document.getElementById('vis-return-case').addEventListener('click', () => {
+      if (this.savedCase) this.loadCaseIntoVisualizer(...this.savedCase);
+    });
+    this.openCase(getLessonCases(this.currentCategory, this.currentLevel)[0]);
   }
 
-  loadCaseIntoVisualizer(title, alg, desc = '', setup = '', howToHold = '', whatItDoes = '', badge = '') {
+  updatePlaybackState({ playing, animating, step, total }) {
+    const label = document.getElementById('vis-play-text');
+    if (label) label.textContent = playing ? 'Ⅱ Pause' : step === total && total ? '↻ Replay' : '▶ Play';
+    document.getElementById('vis-btn-play').disabled = !total;
+    document.getElementById('vis-btn-prev').disabled = !step && !animating;
+    document.getElementById('vis-btn-next').disabled = animating || step >= total;
+    document.getElementById('vis-step-status').textContent = animating ? 'Turning move ' + (step + 1) + ' of ' + total : step === total && total ? 'Sequence complete · ' + total + ' moves' : 'Move ' + step + ' of ' + total;
+  }
+
+  openCase(item) {
+    this.activeCaseId = item.id;
+    this.loadCaseIntoVisualizer(item.name, item.recommendedAlg || item.alg, item.whatItDoes || item.intuition || item.notes || '', item.setup || '', item.howToHold || 'Yellow on top, white on bottom. Match the preview before starting.', '', STAGES[this.currentCategory].name.toUpperCase() + ' PRACTICE');
+    this.renderVisualizerSidebar();
+  }
+
+  loadCaseIntoVisualizer(title, alg, desc = '', setup = '', howToHold = '', whatItDoes = '', badge = '', demonstration = false) {
+    const error = document.getElementById('vis-error');
+    try { this.visualizer.setAlgorithm(alg, setup, demonstration); error.hidden = true; }
+    catch (e) { error.textContent = e.message; error.hidden = false; return; }
+    if (!demonstration) this.savedCase = [title, alg, desc, setup, howToHold, whatItDoes, badge];
+    document.getElementById('vis-return-case').hidden = !demonstration;
+    this.visualizer.restoreView();
     const titleEl = document.getElementById('vis-case-title');
     const descEl = document.getElementById('vis-case-desc');
     if (titleEl) titleEl.textContent = title;
@@ -570,12 +452,12 @@ class App {
     if (algEl) algEl.textContent = alg;
     if (plainEl) plainEl.textContent = translateMoveToEnglish(alg);
 
-    this.visualizer.setAlgorithm(alg, setup);
     const playText = document.getElementById('vis-play-text');
     if (playText) playText.innerHTML = '&#9658; Play';
   }
 
   updateMovesRibbon(step, moves, activeMoveIdx = null) {
+    document.getElementById('vis-current-move').textContent = activeMoveIdx !== null ? moves[activeMoveIdx] + ' · ' + translateMoveToEnglish(moves[activeMoveIdx]) : '';
     const ribbon = document.getElementById('vis-moves-ribbon');
     if (!ribbon) return;
 
@@ -600,7 +482,8 @@ class App {
     if (existingPills.length !== moves.length) {
       ribbon.innerHTML = '';
       moves.forEach((move, idx) => {
-        const pill = document.createElement('span');
+        const pill = document.createElement('button');
+        pill.type = 'button';
         pill.className = 'move-pill';
         pill.dataset.idx = idx;
         const plain = translateMoveToEnglish(move);
@@ -610,10 +493,7 @@ class App {
           const playText = document.getElementById('vis-play-text');
           if (playText) playText.innerHTML = '&#9658; Play';
 
-          this.visualizer.reset();
-          for (let i = 0; i <= idx; i++) {
-            this.visualizer.stepForward(false);
-          }
+          this.visualizer.seek(idx + 1);
         });
         ribbon.appendChild(pill);
       });
@@ -624,10 +504,13 @@ class App {
     pills.forEach((pill, idx) => {
       const move = moves[idx];
       const plain = translateMoveToEnglish(move);
+      pill.title = 'Step ' + (idx + 1) + ': ' + move + ' (' + plain + ')';
+      pill.setAttribute('aria-label', 'Jump to after move ' + (idx + 1) + ': ' + move);
+      pill.setAttribute('aria-current', idx === activeIndex ? 'step' : 'false');
 
       if (idx === activeIndex) {
         pill.className = 'move-pill current-move';
-        pill.innerHTML = `<strong>${move}</strong> <small style="font-size: 0.72rem; opacity: 0.95;">(${plain})</small>`;
+        pill.textContent = move;
         try {
           const pillRect = pill.getBoundingClientRect();
           const ribbonRect = ribbon.getBoundingClientRect();
@@ -658,35 +541,15 @@ class App {
   renderVisualizerSidebar() {
     const list = document.getElementById('vis-quick-cases');
     if (!list) return;
-    list.innerHTML = '';
-
-    const popular = [
-      { name: '⭐ White Cross: Daisy Drop', alg: "F2 U R2 U' B2 U2 L2", desc: 'Match side colors & drop to bottom', hold: 'Hold yellow on top, match center and turn 180°', badge: 'BEGINNER CROSS' },
-      { name: '⭐ White Cross: Flipped Edge', alg: "F' U L'", desc: 'Pro 3-move flip directly into bottom cross', hold: 'Hold white on bottom, flipped edge in top-front', badge: 'PRO CFOP CROSS' },
-      { name: '⭐ Step 1: Yellow Dot', alg: "F (R U R' U') F' f (R U R' U') f'", desc: 'Only center yellow', hold: 'Hold yellow on top, any side facing you', badge: 'STEP 1 • YELLOW CROSS' },
-      { name: '⭐ Step 1: Yellow L-Shape', alg: "f (R U R' U') f'", desc: '2 edges meet at 9:00', hold: 'Put L in back-left (9:00 & 12:00)', badge: 'STEP 1 • YELLOW CROSS' },
-      { name: '⭐ Step 1: Yellow Line', alg: "F (R U R' U') F'", desc: 'Straight bar across top', hold: 'Keep line horizontal (flat)', badge: 'STEP 1 • YELLOW CROSS' },
-      { name: '⭐ Step 2: Sune / Fish', alg: "R U R' U R U2 R'", desc: '1 yellow corner oriented', hold: 'Put yellow corner at front-left (7:00)', badge: 'STEP 2 • FULL YELLOW FACE' },
-      { name: '⭐ Step 3: Headlights (T-Perm)', alg: "(R U R' U') (R' F R2 U') (R' U' R U) (R' F')", desc: 'Matching corner pair', hold: 'Put headlights on the left (or back)', badge: 'STEP 3 • MATCH CORNERS' },
-      { name: '⭐ Step 4: Final Edges (Ua-Perm)', alg: "R U' R U R U R U' R' U' R2", desc: '3-edge clockwise cycle', hold: 'Put solid solved side in the back', badge: 'STEP 4 • FINAL EDGES' },
-      { name: '⚡ F2L: 3-Move Pair Insert', alg: "R U R'", desc: 'Connected pair into front-right slot', hold: 'Hold white on bottom, pair in U-layer', badge: 'F2L SPEED HACK' },
-      { name: '⚡ F2L: Sledgehammer Insert', alg: "R' F R F'", desc: 'Inserts pair and orients yellow edges', hold: 'Hold white on bottom, pair in U-front', badge: 'PRO F2L HACK' },
-      { name: '🚀 Jb Perm (Fastest PLL)', alg: "(R U R' F') (R U R' U') (R' F R2 U' R')", desc: 'Full solved bar on right', badge: 'ADVANCED PLL' },
-      { name: '🚀 H-Perm (Opposite Edges)', alg: "M2 U M2 U2 M2 U M2", desc: 'Opposite edges swap with M-slice', badge: 'ADVANCED PLL' },
-      { name: '🚀 Sexy Move Drill', alg: "(R U R' U')6", desc: '6x Sexy Move returns cube to solved', hold: 'Practice muscle memory', badge: 'SPEED TRIGGER' }
-    ];
-
-    popular.forEach((item, idx) => {
-      const btn = document.createElement('button');
-      btn.className = `quick-case-btn ${idx === 0 ? 'active' : ''}`;
-      btn.innerHTML = `<span>${item.name}</span><span class="text-subtle">&rsaquo;</span>`;
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.quick-case-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        this.loadCaseIntoVisualizer(item.name, item.alg, item.desc, item.setup || '', item.hold || '', '', item.badge || '');
-      });
-      list.appendChild(btn);
-    });
+    list.replaceChildren();
+    for (const item of getLessonCases(this.currentCategory, this.currentLevel)) {
+      const button = document.createElement('button');
+      button.className = 'quick-case-btn' + (item.id === this.activeCaseId ? ' active' : '');
+      button.textContent = item.name;
+      button.setAttribute('aria-pressed', item.id === this.activeCaseId);
+      button.addEventListener('click', () => this.openCase(item));
+      list.appendChild(button);
+    }
   }
 
   // --- Flashcard Trainer & Metronome ---
@@ -703,42 +566,8 @@ class App {
     if (!container) return;
     container.innerHTML = '';
 
-    // Toggle F2L Pro Hacks & Cheat Sheet Banner
-    const f2lBanner = document.getElementById('f2l-pro-hacks-banner');
-    if (f2lBanner) {
-      f2lBanner.style.display = (this.currentCategory === 'f2l') ? 'block' : 'none';
-    }
-
-    // Toggle White Cross Masterclass Banner
-    const crossBanner = document.getElementById('cross-masterclass-banner');
-    if (crossBanner) {
-      crossBanner.style.display = (this.currentCategory === 'cross') ? 'block' : 'none';
-    }
-
-    let items = [];
-
-    if (this.currentCategory === 'cross') {
-      items = WHITE_CROSS_CASES;
-      if (this.currentCrossTier && this.currentCrossTier !== 'all') {
-        items = items.filter(c => c.tier === this.currentCrossTier);
-      }
-    } else if (this.currentCategory === 'beginner') {
-      BEGINNER_LAST_LAYER.forEach(stepGroup => {
-        stepGroup.cases.forEach(c => {
-          items.push({
-            ...c,
-            groupTitle: stepGroup.name,
-            recommendedAlg: c.recommendedAlg,
-            qiyiAlg: c.qiyiAlg
-          });
-        });
-      });
-    } else if (this.currentCategory === 'pll') {
-      items = PLL_ALGORITHMS;
-    } else if (this.currentCategory === 'f2l') {
-      items = F2L_CASES;
-    }
-
+    let items = getLessonCases(this.currentCategory, this.currentLevel);
+    const total = items.length;
     if (this.searchQuery) {
       items = items.filter(item => {
         const name = (item.name || '').toLowerCase();
@@ -748,6 +577,8 @@ class App {
       });
     }
 
+    document.getElementById('case-library-title').textContent = STAGES[this.currentCategory].name + ' practice cases';
+    document.getElementById('case-library-count').textContent = items.length + ' of ' + total + ' cases · Preview, practice, then test your recall';
     if (items.length === 0) {
       container.innerHTML = '<div class="glass-panel text-muted" style="padding: 40px; text-align: center; grid-column: 1 / -1;">No algorithms match your search.</div>';
       return;
@@ -761,17 +592,9 @@ class App {
       const qiyiCode = item.qiyiAlg || '';
       const status = this.masteryState[item.id] || 'to-learn';
 
-      // Generate 2D SVG Diagram
-      let diagramSvg = '';
-      if (item.diagramConfig) {
-        if (item.diagramConfig.pllArrows) {
-          diagramSvg = DiagramGenerator.renderPLLSVG(item.diagramConfig, 90);
-        } else {
-          diagramSvg = DiagramGenerator.renderOLLSVG(item.diagramConfig, 90);
-        }
-      } else {
-        diagramSvg = `<div class="card-diagram-placeholder">${item.group || 'CFOP'}</div>`;
-      }
+      const preview = new Cube();
+      preview.applyAlgorithm(item.setup || Cube.invertAlgorithm(algCode));
+      const diagramSvg = DiagramGenerator.renderFlatNet(preview, 150, 112);
 
       // Format triggers
       let triggersHtml = '';
@@ -807,12 +630,13 @@ class App {
         ${triggersHtml}
 
         <div class="alg-formula-box">
-          <span class="formula-label">Speedcubing Alg:</span>
+          <span class="formula-label">Practice sequence:</span>
           <div class="formula-code">${algCode}</div>
-          <div class="formula-plain-words">🗣️ ${translateMoveToEnglish(algCode)}</div>
-          ${qiyiCode ? `<span class="formula-label" style="margin-top: 6px;">QiYi Booklet:</span><div class="formula-qiyi">${qiyiCode}</div>` : ''}
+
+          
         </div>
 
+        <details class="case-details"><summary>Hold &amp; learning notes</summary>
         ${item.howToHold ? `
           <div class="how-to-hold-box">
             <span class="hold-label">🧭 How to hold your cube:</span>
@@ -831,6 +655,7 @@ class App {
           ${item.notes || item.intuition || item.speedTip || ''}
         </div>
 
+        </details>
         <div class="alg-card-footer">
           <div class="footer-left">
             <button class="mastery-btn status-${status}" data-id="${item.id}">
@@ -871,23 +696,8 @@ class App {
       const practiceBtn = card.querySelector('.practice-btn');
       practiceBtn.addEventListener('click', () => {
         this.switchTab('visualizer');
-        this.loadCaseIntoVisualizer(
-          item.name,
-          algCode,
-          item.notes || item.intuition || item.recognition || '',
-          item.setup || '',
-          item.howToHold || 'Hold Yellow on TOP, White on BOTTOM.',
-          item.whatItDoes || '',
-          badgeLabel
-        );
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        setTimeout(() => {
-          if (this.visualizer) {
-            this.visualizer.play();
-            const playText = document.getElementById('vis-play-text');
-            if (playText) playText.innerHTML = '&#10074;&#10074; Pause';
-          }
-        }, 350);
+        this.openCase(item);
+        window.scrollTo({ top: 0, behavior: 'auto' });
       });
 
       container.appendChild(card);
@@ -937,21 +747,6 @@ class App {
         this.timer.useSound = e.target.checked;
       });
     }
-  }
-
-  // --- Roadmap Persistence ---
-  initRoadmapChecklist() {
-    const checkboxes = document.querySelectorAll('.stage-checklist input[type="checkbox"]');
-    checkboxes.forEach(chk => {
-      const saved = localStorage.getItem(`chk_${chk.id}`);
-      if (saved !== null) {
-        chk.checked = saved === 'true';
-      }
-
-      chk.addEventListener('change', () => {
-        localStorage.setItem(`chk_${chk.id}`, chk.checked);
-      });
-    });
   }
 
   loadMasteryState() {
