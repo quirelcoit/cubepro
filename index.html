@@ -81,49 +81,59 @@
             </g>
           </svg>
         </div>
-        <div>
-          <h1 class="brand-title">CUBE<span class="brand-accent">PRO</span> <span class="brand-author">by Kaloy</span></h1>
+        <div class="brand-text-col">
+          <div class="brand-title-row">
+            <h1 class="brand-title">CUBE<span class="brand-accent">PRO</span></h1>
+            <span class="brand-signature">
+              <span class="sig-by">by</span>
+              <span class="sig-author">Kaloy</span>
+            </span>
+          </div>
           <p class="brand-subtitle">Speedcubing Made Dead Simple &bull; Path to Sub-20 &amp; Sub-10</p>
         </div>
       </div>
 
+      <nav id="main-nav" class="main-nav" aria-label="Main Navigation">
+        <button id="nav-btn-roadmap" class="nav-tab active" data-tab="roadmap" title="Solve My Cube">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          <span>⚡ Solve</span>
+        </button>
+        <button id="nav-btn-algs" class="nav-tab" data-tab="algorithms" title="Algorithm Vault">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>📖 Algorithms</span>
+        </button>
+        <button id="nav-btn-visualizer" class="nav-tab" data-tab="visualizer" title="3D Visualizer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          <span>🧊 3D Visualizer</span>
+        </button>
+        <button id="nav-btn-trainer" class="nav-tab" data-tab="trainer" title="Drills & Trainer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <span>🎯 Drills</span>
+        </button>
+        <button id="nav-btn-timer" class="nav-tab" data-tab="timer" title="Speed Timer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>⏱️ Timer</span>
+        </button>
+        <button id="nav-btn-guide" class="nav-tab" data-tab="guide" title="Guide & Gear">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          <span>💡 Guide</span>
+        </button>
+      </nav>
+
       <div class="header-actions">
+        <button id="btn-theme-toggle" class="btn btn-theme-toggle" title="Toggle Light / Dark Mode" aria-label="Toggle Light or Dark Theme">
+          <span id="theme-toggle-icon" class="theme-toggle-icon">☀️</span>
+          <span class="theme-toggle-text">Light</span>
+        </button>
         <button id="btn-install-pwa" class="btn btn-pwa-install" style="display: none;" title="Install Speedcube Pro as an App">
           <span class="pwa-install-icon">📲</span>
           <span>Install App</span>
         </button>
         <button id="btn-open-cheat-sheet" class="btn btn-helper" title="Click to view move explanations">
           <span class="helper-icon">&#10067;</span>
-          <span><strong>Move Cheat Sheet</strong> <small>(What do R, U, F mean?)</small></span>
+          <span><strong>Move Cheat Sheet</strong> <small>(R, U, F?)</small></span>
         </button>
       </div>
-
-      <nav id="main-nav" class="main-nav">
-        <button id="nav-btn-roadmap" class="nav-tab active" data-tab="roadmap">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-          ⚡ Solve My Cube (Start Here)
-        </button>
-        <button id="nav-btn-algs" class="nav-tab" data-tab="algorithms">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-          📖 Algorithm Vault
-        </button>
-        <button id="nav-btn-visualizer" class="nav-tab" data-tab="visualizer">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-          🧊 3D Visualizer
-        </button>
-        <button id="nav-btn-trainer" class="nav-tab" data-tab="trainer">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          🎯 Drills &amp; Trainer
-        </button>
-        <button id="nav-btn-timer" class="nav-tab" data-tab="timer">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          ⏱️ Speed Timer
-        </button>
-        <button id="nav-btn-guide" class="nav-tab" data-tab="guide">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-          💡 Guide &amp; Gear
-        </button>
-      </nav>
     </header>
 
     <!-- Mobile PWA Installation Banner -->

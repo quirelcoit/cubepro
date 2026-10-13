@@ -69,6 +69,7 @@ class App {
   }
 
   init() {
+    this.initTheme();
     this.initNavigation();
     this.initVisualizer();
     this.initSolverWizard();
@@ -79,6 +80,41 @@ class App {
     this.initPWA();
     this.renderAlgorithms();
     this.renderVisualizerSidebar();
+  }
+
+  // --- Theme Management (Light / Dark Mode) ---
+  initTheme() {
+    const savedTheme = localStorage.getItem('cubepro_theme') || 'dark';
+    this.applyTheme(savedTheme);
+
+    const toggleBtn = document.getElementById('btn-theme-toggle');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+        const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        this.applyTheme(nextTheme);
+      });
+    }
+  }
+
+  applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('cubepro_theme', theme);
+
+    const iconEl = document.getElementById('theme-toggle-icon');
+    const labelEl = document.querySelector('.theme-toggle-text');
+    if (iconEl) {
+      iconEl.textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
+    if (labelEl) {
+      labelEl.textContent = theme === 'dark' ? 'Light' : 'Dark';
+    }
+
+    const toggleBtn = document.getElementById('btn-theme-toggle');
+    if (toggleBtn) {
+      toggleBtn.setAttribute('title', theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+      toggleBtn.setAttribute('aria-label', theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+    }
   }
 
   // --- Navigation & Tabs ---
