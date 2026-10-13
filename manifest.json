@@ -1,0 +1,61 @@
+{
+  "name": "CUBEPRO by Kaloy - Path to Sub-20 & Sub-10",
+  "short_name": "CUBEPRO",
+  "description": "Speedcubing tutorial and training app by Kaloy. Master CFOP, White Cross, 41 F2L cases, 2-Look LL, 21 PLL algorithms, metronome & speed timer.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#070a12",
+  "theme_color": "#0284c7",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "games", "utilities"],
+  "shortcuts": [
+    {
+      "name": "3D Visualizer",
+      "short_name": "3D Cube",
+      "description": "Interactive 3D move player",
+      "url": "./index.html#visualizer",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Speed Timer",
+      "short_name": "Timer",
+      "description": "WCA speedcubing timer",
+      "url": "./index.html#timer",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Algorithm Vault",
+      "short_name": "Algorithms",
+      "description": "Cross, F2L, OLL, PLL reference",
+      "url": "./index.html#algorithms",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

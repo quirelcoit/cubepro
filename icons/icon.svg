@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e1726" />
+      <stop offset="100%" stop-color="#030712" />
+    </linearGradient>
+    <linearGradient id="iconTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="50%" stop-color="#fde047" />
+      <stop offset="100%" stop-color="#eab308" />
+    </linearGradient>
+    <linearGradient id="iconLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    <linearGradient id="iconRight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fb7185" />
+      <stop offset="100%" stop-color="#e11d48" />
+    </linearGradient>
+    <filter id="iconGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="16" stdDeviation="28" flood-color="#38bdf8" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <!-- Background Icon Container Tile -->
+  <rect width="512" height="512" rx="120" fill="url(#bgGrad)"/>
+  <rect width="504" height="504" x="4" y="4" rx="116" fill="none" stroke="rgba(56,189,248,0.25)" stroke-width="3"/>
+
+  <!-- Glowing Isometric Speedcube -->
+  <g filter="url(#iconGlow)" transform="translate(256, 256)">
+    <!-- Speedcube Dark Body -->
+    <polygon points="0,-180 180,-76 180,118 0,224 -180,118 -180,-76" fill="#090d16" stroke="#38bdf8" stroke-width="4" stroke-linejoin="round"/>
+
+    <!-- TOP FACE (Yellow Stickers) -->
+    <g fill="url(#iconTop)">
+      <polygon points="0,-175 48,-147 0,-120 -48,-147"/>
+      <polygon points="-58,-142 -10,-114 -58,-86 -106,-114"/>
+      <polygon points="-116,-108 -68,-80 -116,-52 -164,-80"/>
+      <polygon points="58,-142 106,-114 58,-86 10,-114"/>
+      <polygon points="0,-108 48,-80 0,-52 -48,-80"/>
+      <polygon points="-58,-74 -10,-46 -58,-18 -106,-46"/>
+      <polygon points="116,-108 164,-80 116,-52 68,-80"/>
+      <polygon points="58,-74 106,-46 58,-18 10,-46"/>
+      <polygon points="0,-40 48,-12 0,16 -48,-12"/>
+    </g>
+
+    <!-- LEFT FACE (Green Stickers) -->
+    <g fill="url(#iconLeft)">
+      <polygon points="-168,-70 -120,-42 -120,14 -168,-14"/>
+      <polygon points="-168,-3 -120,25 -120,81 -168,53"/>
+      <polygon points="-168,64 -120,92 -120,148 -168,120"/>
+      <polygon points="-110,-37 -62,-9 -62,47 -110,19"/>
+      <polygon points="-110,30 -62,58 -62,114 -110,86"/>
+      <polygon points="-110,97 -62,125 -62,181 -110,153"/>
+      <polygon points="-52,-4 -4,24 -4,80 -52,52"/>
+      <polygon points="-52,63 -4,91 -4,147 -52,119"/>
+      <polygon points="-52,130 -4,158 -4,214 -52,186"/>
+    </g>
+
+    <!-- RIGHT FACE (Red Stickers) -->
+    <g fill="url(#iconRight)">
+      <polygon points="4,24 52,-4 52,52 4,80"/>
+      <polygon points="4,91 52,63 52,119 4,147"/>
+      <polygon points="4,158 52,130 52,186 4,214"/>
+      <polygon points="62,-9 110,-37 110,19 62,47"/>
+      <polygon points="62,58 110,30 110,86 62,114"/>
+      <polygon points="62,125 110,97 110,153 62,181"/>
+      <polygon points="120,-42 168,-70 168,-14 120,14"/>
+      <polygon points="120,25 168,-3 168,53 120,81"/>
+      <polygon points="120,92 168,64 168,120 120,148"/>
+    </g>
+  </g>
+</svg>
