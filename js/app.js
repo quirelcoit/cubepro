@@ -103,7 +103,8 @@ class App {
 
     this.visualizer = null;
     this.notationVisualizer = null;
-    this.selectedNotationCategory = 'rotations';
+    this.selectedNotationCategory = 'faces';
+    this.selectedNotationSubfilter = 'all';
     this.selectedNotationMove = NOTATION_MOVES[0];
     this.timer = null;
     this.trainer = null;
@@ -844,6 +845,7 @@ class App {
     }
 
     this.renderNotationCategories();
+    this.renderNotationSubfilters();
     this.renderNotationMoves();
     this.updateNotationHUD(this.selectedNotationMove);
   }
@@ -862,6 +864,7 @@ class App {
     container.querySelectorAll('.notation-cat-pill').forEach(btn => {
       btn.addEventListener('click', () => {
         this.selectedNotationCategory = btn.dataset.cat;
+        this.selectedNotationSubfilter = 'all';
         container.querySelectorAll('.notation-cat-pill').forEach(b => {
           const isActive = b.dataset.cat === this.selectedNotationCategory;
           b.classList.toggle('active', isActive);
@@ -871,8 +874,51 @@ class App {
         if (categoryMoves.length > 0) {
           this.selectedNotationMove = categoryMoves[0];
         }
+        this.renderNotationSubfilters();
         this.renderNotationMoves();
         this.updateNotationHUD(this.selectedNotationMove);
+      });
+    });
+  }
+
+  renderNotationSubfilters() {
+    const container = document.getElementById('notation-subfilter-bar');
+    if (!container) return;
+
+    const allCatMoves = NOTATION_MOVES.filter(m => m.category === this.selectedNotationCategory);
+    const types = ['all'];
+    if (allCatMoves.some(m => m.type === 'clockwise')) types.push('clockwise');
+    if (allCatMoves.some(m => m.type === 'prime')) types.push('prime');
+    if (allCatMoves.some(m => m.type === 'double')) types.push('double');
+    if (allCatMoves.some(m => m.type === 'sequence')) types.push('sequence');
+
+    if (types.length <= 2) {
+      container.style.display = 'none';
+      return;
+    }
+    container.style.display = 'flex';
+
+    const typeLabels = {
+      all: `All Moves (${allCatMoves.length})`,
+      clockwise: `Clockwise ↻ (${allCatMoves.filter(m => m.type === 'clockwise').length})`,
+      prime: `Primes ' ↺ (${allCatMoves.filter(m => m.type === 'prime').length})`,
+      double: `Doubles 2 (${allCatMoves.filter(m => m.type === 'double').length})`,
+      sequence: `Sequences (${allCatMoves.filter(m => m.type === 'sequence').length})`
+    };
+
+    container.innerHTML = types.map(t => `
+      <button class="notation-subfilter-btn ${t === this.selectedNotationSubfilter ? 'active' : ''}" data-type="${t}">
+        ${typeLabels[t] || t}
+      </button>
+    `).join('');
+
+    container.querySelectorAll('.notation-subfilter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        this.selectedNotationSubfilter = btn.dataset.type;
+        container.querySelectorAll('.notation-subfilter-btn').forEach(b => {
+          b.classList.toggle('active', b.dataset.type === this.selectedNotationSubfilter);
+        });
+        this.renderNotationMoves();
       });
     });
   }
@@ -881,12 +927,23 @@ class App {
     const container = document.getElementById('notation-moves-grid');
     if (!container) return;
 
-    const categoryMoves = NOTATION_MOVES.filter(m => m.category === this.selectedNotationCategory);
+    let categoryMoves = NOTATION_MOVES.filter(m => m.category === this.selectedNotationCategory);
+    if (this.selectedNotationSubfilter !== 'all') {
+      categoryMoves = categoryMoves.filter(m => m.type === this.selectedNotationSubfilter);
+    }
+
+    const typeBadges = {
+      clockwise: '<span class="move-type-badge badge-cw">CW 90°</span>',
+      prime: '<span class="move-type-badge badge-prime">Prime 90° ↺</span>',
+      double: '<span class="move-type-badge badge-double">Double 180° ↻</span>',
+      sequence: '<span class="move-type-badge badge-seq">Trigger</span>'
+    };
+
     container.innerHTML = categoryMoves.map(move => `
-      <button class="notation-move-card ${move.symbol === this.selectedNotationMove?.symbol ? 'active' : ''}" data-sym="${move.symbol}">
+      <button class="notation-move-card ${move.symbol === this.selectedNotationMove?.symbol ? 'active' : ''} type-${move.type || 'cw'}" data-sym="${move.symbol}">
         <div class="move-card-top">
           <span class="move-card-sym">${move.symbol}</span>
-          <span class="move-card-axis">${move.axis || ''}</span>
+          ${typeBadges[move.type] || ''}
         </div>
         <div class="move-card-name">${move.name}</div>
         <div class="move-card-dir">${move.direction}</div>
@@ -903,9 +960,8 @@ class App {
             c.classList.toggle('active', c.dataset.sym === sym);
           });
           this.updateNotationHUD(found);
-          if (found.variants && found.variants[0]) {
-            this.playNotationMove(found.variants[0].move);
-          }
+          const moveCmd = found.algorithm || found.symbol;
+          this.playNotationMove(moveCmd);
         }
       });
     });
@@ -943,7 +999,19 @@ class App {
 
       variantsWrap.querySelectorAll('.btn-notation-trigger').forEach(btn => {
         btn.addEventListener('click', () => {
-          this.playNotationMove(btn.dataset.move);
+          const moveCmd = btn.dataset.move;
+          this.playNotationMove(moveCmd);
+          const companion = NOTATION_MOVES.find(m => m.symbol === moveCmd);
+          if (companion) {
+            this.selectedNotationMove = companion;
+            const cardContainer = document.getElementById('notation-moves-grid');
+            if (cardContainer) {
+              cardContainer.querySelectorAll('.notation-move-card').forEach(c => {
+                c.classList.toggle('active', c.dataset.sym === moveCmd);
+              });
+            }
+            this.updateNotationHUD(companion);
+          }
         });
       });
     }
