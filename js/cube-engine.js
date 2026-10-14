@@ -43,6 +43,14 @@ export class Cube {
     return copy;
   }
 
+  isSolved() {
+    for (const f of ['U', 'D', 'F', 'B', 'L', 'R']) {
+      const center = this.faces[f][4];
+      if (!this.faces[f].every(color => color === center)) return false;
+    }
+    return true;
+  }
+
   applyMove(move) {
     const { axis, layers, angle } = getMove(move);
     const axisIndex = { x: 0, y: 1, z: 2 }[axis];

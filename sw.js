@@ -22,6 +22,7 @@ const STATIC_ASSETS = [
   './js/algorithms-data.js',
   './js/timer.js',
   './js/trainer.js',
+  './js/play-cube.js',
   './manifest.json',
   './icons/icon.svg',
   './icons/icon-192.png',

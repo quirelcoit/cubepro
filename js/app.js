@@ -12,6 +12,7 @@ import { AlgorithmTrainer } from './trainer.js';
 import { Cube } from './cube-engine.js';
 import { STAGES, LEVELS, getLessonCases, nextLesson } from './curriculum.js';
 import { NOTATION_CATEGORIES, NOTATION_MOVES } from './notation-data.js';
+import { PlayCube } from './play-cube.js';
 
 /**
  * Translates Rubik's cube Singmaster moves into plain English for beginners.
@@ -103,6 +104,7 @@ class App {
 
     this.visualizer = null;
     this.notationVisualizer = null;
+    this.playCube = null;
     this.selectedNotationCategory = 'faces';
     this.selectedNotationSubfilter = 'all';
     this.selectedNotationMove = NOTATION_MOVES[0];
@@ -115,6 +117,7 @@ class App {
   init() {
     this.initTheme();
     this.initNavigation();
+    this.initPlayCube();
     this.initNotation();
     this.initVisualizer();
     this.initCurriculum();
@@ -220,6 +223,11 @@ class App {
 
     if (tabId === 'algorithms' && category) this.selectLesson(category === 'beginner' ? 'oll' : category, this.currentLevel);
 
+    if (tabId === 'play' && this.playCube) {
+      setTimeout(() => {
+        this.playCube.handleResize();
+      }, 60);
+    }
     if (tabId === 'notation' && this.notationVisualizer) {
       setTimeout(() => {
         this.notationVisualizer.handleResize();
@@ -814,6 +822,67 @@ class App {
       localStorage.setItem('speedcube_mastery', JSON.stringify(this.masteryState));
     } catch (e) {
       console.warn('Failed to save mastery state', e);
+    }
+  }
+
+  // --- 3D Virtual Play Cube Simulator ---
+  initPlayCube() {
+    const canvasPlay = document.getElementById('canvas-3d-play');
+    if (!canvasPlay) return;
+
+    this.playCube = new PlayCube(canvasPlay);
+
+    const btnScramble = document.getElementById('btn-play-scramble');
+    if (btnScramble) {
+      btnScramble.addEventListener('click', () => {
+        this.playCube.scramble();
+      });
+    }
+
+    const btnReset = document.getElementById('btn-play-reset');
+    if (btnReset) {
+      btnReset.addEventListener('click', () => {
+        this.playCube.resetCube();
+      });
+    }
+
+    const btnUndo = document.getElementById('btn-play-undo');
+    if (btnUndo) {
+      btnUndo.addEventListener('click', () => {
+        this.playCube.undo();
+      });
+    }
+
+    const btnRestore = document.getElementById('btn-play-restore-view');
+    if (btnRestore) {
+      btnRestore.addEventListener('click', () => {
+        this.playCube.restoreView();
+      });
+    }
+
+    const btnVicAgain = document.getElementById('btn-vic-scramble-again');
+    if (btnVicAgain) {
+      btnVicAgain.addEventListener('click', () => {
+        this.playCube.scramble();
+      });
+    }
+
+    const chkSound = document.getElementById('chk-play-sound');
+    if (chkSound) {
+      chkSound.addEventListener('change', (e) => {
+        this.playCube.audioEnabled = e.target.checked;
+      });
+    }
+
+    // Bind all move buttons on controller
+    const container = document.getElementById('tab-play');
+    if (container) {
+      container.querySelectorAll('.btn-cube-move, .btn-cube-trigger').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const move = btn.dataset.move;
+          if (move) this.playCube.executeMove(move);
+        });
+      });
     }
   }
 

@@ -122,3 +122,26 @@ test('all executable library algorithms and setups use supported notation', () =
     if (item.setup) assert.ok(Cube.parseAlgorithm(item.setup).length, item.id);
   }
 });
+
+test('cube.isSolved() correctly identifies solved and scrambled states', () => {
+  const c = new Cube();
+  assert.equal(c.isSolved(), true);
+
+  // Even with whole cube rotations, every face has uniform color matching its center
+  c.applyAlgorithm("x y2 z'");
+  assert.equal(c.isSolved(), true);
+
+  // Scrambling makes it unsolved
+  c.applyMove("R");
+  assert.equal(c.isSolved(), false);
+
+  c.applyMove("R'");
+  assert.equal(c.isSolved(), true);
+
+  // Sexy move 6 times returns to solved
+  c.applyAlgorithm("(R U R' U')5");
+  assert.equal(c.isSolved(), false);
+  c.applyAlgorithm("R U R' U'");
+  assert.equal(c.isSolved(), true);
+});
+

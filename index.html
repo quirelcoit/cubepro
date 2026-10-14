@@ -99,6 +99,10 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
           <span>Learn</span>
         </button>
+        <button id="nav-btn-play" class="nav-tab" data-tab="play" title="Play &amp; Solve 3D Virtual Cube">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="3"/><path d="M6 12h4m-2-2v4m8-3h.01m2 2h.01"/></svg>
+          <span>Play</span>
+        </button>
         <button id="nav-btn-notation" class="nav-tab" data-tab="notation" title="Learn Notation & Cube Rotations">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6z"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
           <span>Notation</span>
@@ -175,7 +179,197 @@
         <p class="curriculum-source">Curriculum references: <a href="https://www.cubeskills.com/tutorials/f2l" target="_blank" rel="noopener">CubeSkills F2L</a> and <a href="https://jperm.net/algs/2lookoll" target="_blank" rel="noopener">J Perm 2-look OLL</a>. Practice at your own pace; levels are learning paths, not guaranteed solve times.</p>
       </section>
 
-      <!-- ================= 2. NOTATION STUDIO TAB ================= -->
+      <!-- ================= 2. PLAY 3D VIRTUAL CUBE TAB ================= -->
+      <section id="tab-play" class="tab-pane" aria-label="Play 3D Virtual Rubik's Cube">
+        <div class="play-heading">
+          <div>
+            <span class="eyebrow">3D VIRTUAL SPEEDCUBE</span>
+            <h2>Play &amp; Solve Anytime.</h2>
+            <p>No physical cube needed! Scramble, test fingertricks, and solve directly with phone touch or keyboard.</p>
+          </div>
+          <div class="play-header-actions">
+            <button id="btn-play-scramble" class="btn btn-primary" title="Scramble with official WCA algorithm">
+              <span>🎲 Scramble Cube</span>
+            </button>
+            <button id="btn-play-reset" class="btn btn-secondary" title="Reset cube to solved state">↺ Reset</button>
+            <button id="btn-play-undo" class="btn btn-text" title="Undo last move">↩ Undo</button>
+            <button id="btn-play-restore-view" class="btn btn-text" title="Reset 3D camera angle">Restore View</button>
+          </div>
+        </div>
+
+        <!-- Scramble Bar -->
+        <div class="play-scramble-bar glass-panel">
+          <div class="scramble-bar-left">
+            <span class="scramble-tag">CURRENT SCRAMBLE</span>
+            <div id="play-scramble-display" class="play-scramble-text">Cube is in solved state. Tap <strong>Scramble Cube</strong> to start playing!</div>
+          </div>
+          <div class="play-stats-chips">
+            <div class="play-chip">
+              <span class="chip-label">TIMER</span>
+              <span id="play-timer-digits" class="chip-val highlight-cyan-text">00:00.00</span>
+            </div>
+            <div class="play-chip">
+              <span class="chip-label">MOVES</span>
+              <span id="play-moves-count" class="chip-val">0 moves</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Victory Banner (Hidden until solved) -->
+        <div id="play-victory-banner" class="play-victory-banner glass-panel">
+          <div class="vic-content">
+            <div class="vic-badge">🎉 SOLVED!</div>
+            <h3>Congratulations! Cube Completed!</h3>
+            <div class="vic-metrics">
+              <div class="metric-item">
+                <span class="metric-lbl">TIME</span>
+                <span id="play-vic-time" class="metric-val">00:00.00</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-lbl">MOVES</span>
+                <span id="play-vic-moves" class="metric-val">0</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-lbl">TURNING SPEED</span>
+                <span id="play-vic-tps" class="metric-val">0.0 TPS</span>
+              </div>
+            </div>
+            <button id="btn-vic-scramble-again" class="btn btn-primary">🎲 Scramble &amp; Play Again</button>
+          </div>
+        </div>
+
+        <div class="play-layout">
+          <!-- 3D Cube Interactive Stage -->
+          <div class="play-stage-card glass-panel">
+            <div class="play-canvas-wrap">
+              <canvas id="canvas-3d-play" width="460" height="340" role="img" aria-label="3D Virtual Rubik's Cube Simulator"></canvas>
+              <div id="play-turn-hud" class="vis-turn-hud" style="opacity: 0;"></div>
+              <div class="play-drag-hint">👆 Drag background to rotate 3D view</div>
+            </div>
+          </div>
+
+          <!-- Mobile & Desktop Touch Controller -->
+          <div class="play-controller-card glass-panel">
+            <div class="controller-header">
+              <h4>Fingertrick &amp; Touch Controller</h4>
+              <div class="controller-audio-toggle">
+                <label class="toggle-control" title="Toggle mechanical cube click audio">
+                  <input type="checkbox" id="chk-play-sound" checked>
+                  <span>🔊 Sound</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Face Turns Grid -->
+            <div class="play-turns-section">
+              <div class="turns-group-title">
+                <span>Face Turns (Tap to turn)</span>
+                <span class="group-hint">Desktop: press U, R, F, L, D, B keys</span>
+              </div>
+
+              <div class="play-buttons-grid">
+                <!-- Top Face -->
+                <button class="btn-cube-move move-u" data-move="U" title="Turn Top Face Clockwise">
+                  <span class="btn-move-letter">U</span>
+                  <span class="btn-move-sub">Top ↻</span>
+                </button>
+                <button class="btn-cube-move move-u prime" data-move="U'" title="Turn Top Face Counter-Clockwise">
+                  <span class="btn-move-letter">U'</span>
+                  <span class="btn-move-sub">Top ↺</span>
+                </button>
+                <!-- Right Face -->
+                <button class="btn-cube-move move-r" data-move="R" title="Turn Right Face Up">
+                  <span class="btn-move-letter">R</span>
+                  <span class="btn-move-sub">Right ⬆️</span>
+                </button>
+                <button class="btn-cube-move move-r prime" data-move="R'" title="Turn Right Face Down">
+                  <span class="btn-move-letter">R'</span>
+                  <span class="btn-move-sub">Right ⬇️</span>
+                </button>
+
+                <!-- Front Face -->
+                <button class="btn-cube-move move-f" data-move="F" title="Turn Front Face Clockwise">
+                  <span class="btn-move-letter">F</span>
+                  <span class="btn-move-sub">Front ↻</span>
+                </button>
+                <button class="btn-cube-move move-f prime" data-move="F'" title="Turn Front Face Counter-Clockwise">
+                  <span class="btn-move-letter">F'</span>
+                  <span class="btn-move-sub">Front ↺</span>
+                </button>
+                <!-- Left Face -->
+                <button class="btn-cube-move move-l" data-move="L" title="Turn Left Face Down">
+                  <span class="btn-move-letter">L</span>
+                  <span class="btn-move-sub">Left ⬇️</span>
+                </button>
+                <button class="btn-cube-move move-l prime" data-move="L'" title="Turn Left Face Up">
+                  <span class="btn-move-letter">L'</span>
+                  <span class="btn-move-sub">Left ⬆️</span>
+                </button>
+
+                <!-- Down Face -->
+                <button class="btn-cube-move move-d" data-move="D" title="Turn Bottom Face Clockwise">
+                  <span class="btn-move-letter">D</span>
+                  <span class="btn-move-sub">Bottom ↻</span>
+                </button>
+                <button class="btn-cube-move move-d prime" data-move="D'" title="Turn Bottom Face Counter-Clockwise">
+                  <span class="btn-move-letter">D'</span>
+                  <span class="btn-move-sub">Bottom ↺</span>
+                </button>
+                <!-- Back Face -->
+                <button class="btn-cube-move move-b" data-move="B" title="Turn Back Face Clockwise">
+                  <span class="btn-move-letter">B</span>
+                  <span class="btn-move-sub">Back ↻</span>
+                </button>
+                <button class="btn-cube-move move-b prime" data-move="B'" title="Turn Back Face Counter-Clockwise">
+                  <span class="btn-move-letter">B'</span>
+                  <span class="btn-move-sub">Back ↺</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Double Turns, Slices & Rotations -->
+            <div class="play-turns-section">
+              <div class="turns-group-title">
+                <span>Middle Slice &amp; Cube Rotations</span>
+              </div>
+              <div class="play-secondary-grid">
+                <button class="btn-cube-move sub-move" data-move="M" title="Middle slice down">M</button>
+                <button class="btn-cube-move sub-move" data-move="M'" title="Middle slice up">M'</button>
+                <button class="btn-cube-move sub-move" data-move="x" title="Rotate entire cube on x-axis (like R)">x</button>
+                <button class="btn-cube-move sub-move" data-move="y" title="Rotate entire cube on y-axis (like U)">y</button>
+                <button class="btn-cube-move sub-move" data-move="z" title="Rotate entire cube on z-axis (like F)">z</button>
+                <button class="btn-cube-move sub-move" data-move="U2" title="Turn top face 180 degrees">U2</button>
+                <button class="btn-cube-move sub-move" data-move="R2" title="Turn right face 180 degrees">R2</button>
+                <button class="btn-cube-move sub-move" data-move="F2" title="Turn front face 180 degrees">F2</button>
+              </div>
+            </div>
+
+            <!-- Pro Muscle Memory Triggers -->
+            <div class="play-turns-section">
+              <div class="turns-group-title">
+                <span>Pro Triggers (Speed combos)</span>
+              </div>
+              <div class="play-triggers-grid">
+                <button class="btn-cube-trigger" data-move="R U R' U'" title="The fundamental Sexy Move">
+                  <strong>Sexy Move 🔥</strong>
+                  <small>R U R' U'</small>
+                </button>
+                <button class="btn-cube-trigger" data-move="R' F R F'" title="Sledgehammer edge control trigger">
+                  <strong>Sledgehammer ⚡</strong>
+                  <small>R' F R F'</small>
+                </button>
+                <button class="btn-cube-trigger" data-move="U R U' R'" title="Inverse Sexy Move">
+                  <strong>Inverse Sexy ✨</strong>
+                  <small>U R U' R'</small>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 3. NOTATION STUDIO TAB ================= -->
       <section id="tab-notation" class="tab-pane" aria-label="Interactive Cube Notation Studio">
         <div class="notation-heading">
           <div>
@@ -696,6 +890,10 @@
     <button class="mobile-nav-btn active" data-tab="algorithms" title="Algorithm Vault">
       <span class="m-nav-icon">📖</span>
       <span class="m-nav-label">Learn</span>
+    </button>
+    <button class="mobile-nav-btn" data-tab="play" title="Play 3D Virtual Cube">
+      <span class="m-nav-icon">🎮</span>
+      <span class="m-nav-label">Play</span>
     </button>
     <button class="mobile-nav-btn" data-tab="notation" title="Learn Notation & Rotations">
       <span class="m-nav-icon">🧭</span>
