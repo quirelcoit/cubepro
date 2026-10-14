@@ -431,8 +431,8 @@ body {
   border-color: var(--accent-cyan);
 }
 
-/* Responsive Two-Tier Header for Medium Displays (901px - 1340px) */
-@media (max-width: 1340px) and (min-width: 901px) {
+/* Responsive Two-Tier Header for Medium Displays (901px - 1239px) */
+@media (max-width: 1239px) and (min-width: 901px) {
   .main-header {
     flex-wrap: wrap;
     padding: 14px 20px;
@@ -707,7 +707,7 @@ body {
   display: flex;
   align-items: center;
   margin-left: auto;
-  margin-right: 18px;
+  margin-right: 0;
 }
 
 .btn-helper {

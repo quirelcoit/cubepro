@@ -641,26 +641,49 @@ dialog .modal-card { width: 100%; max-height: none; border: 0; box-shadow: none;
 
 /* ================= Header Navigation Responsive Layout ================= */
 @media (min-width: 901px) {
+  .main-header {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+  }
   .main-header .nav-tab {
-    padding: 8px 13px;
-    font-size: 0.85rem;
+    padding: 7px 11px;
+    font-size: 0.82rem;
     white-space: nowrap;
-    gap: 6px;
+    gap: 5px;
     flex-shrink: 0;
+  }
+  .main-header .nav-tab svg {
+    width: 14px;
+    height: 14px;
+  }
+  .main-header .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 !important;
+    flex-shrink: 0;
+  }
+  .main-header .btn-helper,
+  .main-header .btn-pwa-install,
+  .main-header .btn-theme-toggle {
+    padding: 7px 12px !important;
+    font-size: 0.8rem !important;
+    white-space: nowrap;
   }
 }
 
-/* Two-tier balanced header on standard laptops & tablets (901px - 1340px) */
-@media (min-width: 901px) and (max-width: 1340px) {
+/* Two-tier balanced header on narrower viewports (901px - 1239px) */
+@media (min-width: 901px) and (max-width: 1239px) {
   .main-header {
     display: grid !important;
     grid-template-columns: 1fr auto !important;
     grid-template-areas:
       "brand actions"
       "nav nav" !important;
-    gap: 12px 18px !important;
+    gap: 10px 16px !important;
     align-items: center !important;
-    padding: 14px 20px !important;
+    padding: 12px 18px !important;
   }
   .main-header .header-brand {
     grid-area: brand;
@@ -672,7 +695,7 @@ dialog .modal-card { width: 100%; max-height: none; border: 0; box-shadow: none;
     justify-self: end;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     margin: 0 !important;
   }
   .main-header .main-nav {
@@ -688,17 +711,23 @@ dialog .modal-card { width: 100%; max-height: none; border: 0; box-shadow: none;
   }
 }
 
-/* Single-row wide desktop header (>= 1341px) */
-@media (min-width: 1341px) {
+/* Single-row wide desktop header (>= 1240px) */
+@media (min-width: 1240px) {
   .main-header {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
     flex-wrap: nowrap !important;
-    gap: 16px 20px !important;
+    gap: 12px 16px !important;
+    padding: 10px 18px !important;
   }
   .main-header .header-brand {
-    flex: 0 0 auto;
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+  .main-header .brand-subtitle {
+    font-size: 0.74rem;
+    white-space: nowrap;
   }
   .main-header .main-nav {
     display: flex;
@@ -706,14 +735,15 @@ dialog .modal-card { width: 100%; max-height: none; border: 0; box-shadow: none;
     justify-content: center;
     flex: 0 1 auto;
     overflow: visible !important;
-    min-width: max-content;
+    min-width: 0;
   }
   .main-header .header-actions {
     display: flex;
     align-items: center;
     flex: 0 0 auto;
-    gap: 8px;
-    margin-left: 0 !important;
+    gap: 6px;
+    margin: 0 !important;
+    margin-left: auto !important;
   }
 }
 @media (max-width: 1000px) {
