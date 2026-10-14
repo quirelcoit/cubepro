@@ -437,10 +437,17 @@ export class PlayCube {
         return;
       }
 
-      const direct = key.toUpperCase();
-      if (['U', 'R', 'F', 'L', 'D', 'B', 'M'].includes(direct)) {
+      const directUpper = key.toUpperCase();
+      if (['U', 'R', 'F', 'L', 'D', 'B', 'M'].includes(directUpper)) {
         e.preventDefault();
-        this.executeMove(direct + (isShift ? "'" : ''));
+        this.executeMove(directUpper + (isShift ? "'" : ''));
+        return;
+      }
+
+      const directLower = key.toLowerCase();
+      if (['x', 'y', 'z'].includes(directLower)) {
+        e.preventDefault();
+        this.executeMove(directLower + (isShift ? "'" : ''));
         return;
       }
 

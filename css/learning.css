@@ -1193,6 +1193,92 @@ dialog .modal-card { width: 100%; max-height: none; border: 0; box-shadow: none;
   }
 }
 
+/* Desktop Keyboard Controls Card */
+.keyboard-controls-card {
+  padding: 16px 18px;
+  border-radius: 14px;
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.keyboard-controls-card kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-main);
+  background: var(--bg-surface-elevated, #1e293b);
+  border: 1px solid var(--border-color);
+  border-bottom: 2px solid var(--border-color);
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+.keyboard-columns-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+.keyboard-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.keyboard-col-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-subtle);
+  margin-bottom: 2px;
+}
+.keyboard-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  gap: 10px;
+}
+.key-combo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.key-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+[data-theme="light"] .keyboard-controls-card {
+  background: #ffffff;
+  border-color: #cbd5e1;
+}
+[data-theme="light"] .keyboard-controls-card kbd {
+  background: #f1f5f9;
+  color: #0f172a;
+  border-color: #cbd5e1;
+  border-bottom-color: #94a3b8;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .keyboard-row {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+[data-theme="light"] .key-desc {
+  color: #475569;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
 }
+
