@@ -35,6 +35,7 @@ export class CubeVisualizer {
     // Callbacks
     this.onStepChange = options.onStepChange || (() => {});
     this.onStateChange = options.onStateChange || (() => {});
+    this.turnIndicatorId = options.turnIndicatorId || 'vis-rotating-face';
 
     this._initThree();
     this._setupKeyboardControls();
@@ -179,7 +180,7 @@ export class CubeVisualizer {
     if (this.animationFrame !== null) cancelAnimationFrame(this.animationFrame);
     this.animationFrame = null;
     this.isAnimating = false;
-    const indicator = document.getElementById('vis-rotating-face');
+    const indicator = document.getElementById(this.turnIndicatorId);
     if (indicator) indicator.style.opacity = '0';
   }
 
@@ -282,7 +283,7 @@ export class CubeVisualizer {
     this.isAnimating = true;
     this.notifyState();
     const version = this.animationVersion;
-    const indicator = document.getElementById('vis-rotating-face');
+    const indicator = document.getElementById(this.turnIndicatorId);
     if (indicator) { indicator.textContent = 'Turning ' + move; indicator.style.opacity = '1'; }
     this.pivot.rotation.set(0, 0, 0);
     for (const cubie of this.cubies) {
@@ -304,6 +305,16 @@ export class CubeVisualizer {
       }
     };
     this.animationFrame = requestAnimationFrame(animateRotation);
+  }
+
+  executeMove(move, onComplete = null) {
+    if (this.isAnimating) return false;
+    this.cancelAnimation();
+    this.rotateLayer3D(move, () => {
+      this.render2D();
+      if (onComplete) onComplete();
+    });
+    return true;
   }
 
   // Synchronize 3D cubies with the ACTUAL logical cube state (faces array)

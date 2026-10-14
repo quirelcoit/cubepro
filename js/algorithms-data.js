@@ -1504,8 +1504,8 @@ export const SPEEDCUBER_GUIDE = [
   {
     section: 'Hardware: Upgrade to a Magnetic Speedcube',
     priority: 'HIGH PRIORITY (Day 1)',
-    content: `You mentioned you are currently using a standard non-magnetic cube and planning to buy a GAN or others once you learn.
-**Critical insight**: A standard non-magnetic cube is actively hindering your learning!
+    content: `Many cubers start on a standard non-magnetic cube and plan to upgrade only after mastering algorithms.
+**Critical insight**: A standard non-magnetic cube actively slows down muscle memory and fingertrick development!
 - On a non-magnetic cube, layers overshoot, misalign, and cause painful lockups. This forces your wrists and fingers to exert 3x more force, causing muscle fatigue.
 - Magnetic cubes have miniature neodymium magnets inside the edge and corner pieces that automatically "snap" every turn into crisp 90° alignment. Fingertricks (flicks) work effortlessly.
 - **Top Recommendations**:

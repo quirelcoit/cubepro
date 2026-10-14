@@ -12,6 +12,7 @@ const STATIC_ASSETS = [
   './css/learning.css',
   './js/curriculum.js',
   './js/cube-moves.js',
+  './js/notation-data.js',
   './js/app.js',
   './js/three.min.js',
   './js/OrbitControls.js',

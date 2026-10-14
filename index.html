@@ -99,6 +99,10 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
           <span>Learn</span>
         </button>
+        <button id="nav-btn-notation" class="nav-tab" data-tab="notation" title="Learn Notation & Cube Rotations">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6z"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+          <span>Notation</span>
+        </button>
         <button id="nav-btn-visualizer" class="nav-tab" data-tab="visualizer" title="3D Visualizer">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
           <span>Practice</span>
@@ -169,6 +173,102 @@
         <div class="case-library-heading"><div><h3 id="case-library-title">Practice cases</h3><p id="case-library-count" class="text-muted"></p></div><div class="search-box"><label class="sr-only" for="alg-search-input">Search cases in this lesson</label><input id="alg-search-input" type="search" placeholder="Search this lesson…"></div></div>
         <div id="alg-container" class="alg-grid"></div>
         <p class="curriculum-source">Curriculum references: <a href="https://www.cubeskills.com/tutorials/f2l" target="_blank" rel="noopener">CubeSkills F2L</a> and <a href="https://jperm.net/algs/2lookoll" target="_blank" rel="noopener">J Perm 2-look OLL</a>. Practice at your own pace; levels are learning paths, not guaranteed solve times.</p>
+      </section>
+
+      <!-- ================= 2. NOTATION STUDIO TAB ================= -->
+      <section id="tab-notation" class="tab-pane" aria-label="Interactive Cube Notation Studio">
+        <div class="notation-heading">
+          <div>
+            <span class="eyebrow">BEGINNER TO PRO NOTATION</span>
+            <h2>Master Every Turn &amp; Rotation.</h2>
+            <p>Click any move to watch it animate in 3D with plain-English fingertrick instructions.</p>
+          </div>
+          <div class="notation-header-actions">
+            <button id="btn-notation-reset-cube" class="btn btn-secondary" title="Reset cube to solved state">↺ Reset Cube</button>
+            <button id="btn-notation-restore-view" class="btn btn-text" title="Reset 3D camera angle">Restore View</button>
+          </div>
+        </div>
+
+        <div class="notation-layout">
+          <!-- Left: 3D Animated Cube Stage & Active Move HUD -->
+          <div class="notation-stage-col">
+            <div class="notation-stage-card glass-panel">
+              <div class="notation-canvas-wrap">
+                <canvas id="canvas-3d-notation" width="440" height="300" role="img" aria-label="3D Rubik's Cube Notation Simulator"></canvas>
+                <div id="notation-turn-indicator" class="vis-turn-hud" style="opacity: 0;"></div>
+                <div class="notation-drag-hint">👆 Drag cube to rotate in 3D space</div>
+              </div>
+
+              <!-- Live HUD Card for the Selected Move -->
+              <div class="notation-hud-card" id="notation-hud-card">
+                <div class="notation-hud-top">
+                  <div class="notation-hud-badge" id="notation-hud-symbol">y</div>
+                  <div class="notation-hud-titles">
+                    <div class="notation-hud-tag-row">
+                      <span class="badge-tag highlight-cyan" id="notation-hud-category">Cube Rotation</span>
+                      <span class="notation-hud-mnemonic" id="notation-hud-mnemonic">Follows U Face</span>
+                    </div>
+                    <h3 class="notation-hud-name" id="notation-hud-name">Horizontal Cube Spin</h3>
+                  </div>
+                </div>
+
+                <p class="notation-hud-direction" id="notation-hud-direction">Spins entire cube horizontally clockwise</p>
+
+                <div class="notation-hud-details-grid">
+                  <div class="notation-detail-cell">
+                    <span class="notation-detail-label">GOLDEN RULE</span>
+                    <span class="notation-detail-val" id="notation-hud-rule">Look at U: clockwise turns cube horizontally to the left.</span>
+                  </div>
+                  <div class="notation-detail-cell">
+                    <span class="notation-detail-label">HOW TO TURN / FINGERTIP</span>
+                    <span class="notation-detail-val" id="notation-hud-how">Pivot both hands gently right-to-left. Keep thumbs on front centers.</span>
+                  </div>
+                </div>
+
+                <!-- Animated Variant Triggers (e.g. y, y', y2) -->
+                <div class="notation-variants-wrap">
+                  <span class="notation-variants-label">Test In 3D:</span>
+                  <div class="notation-variant-buttons" id="notation-variant-buttons">
+                    <!-- Populated dynamically -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Category Tabs & Move Grid -->
+          <div class="notation-selector-col">
+            <!-- Category Navigation Pills -->
+            <div class="notation-categories-bar" id="notation-categories-bar" role="tablist" aria-label="Notation Categories">
+              <!-- Populated dynamically from NOTATION_CATEGORIES -->
+            </div>
+
+            <!-- Move Cards Grid for Current Category -->
+            <div class="notation-moves-grid" id="notation-moves-grid" role="region" aria-label="Available Moves">
+              <!-- Populated dynamically from NOTATION_MOVES -->
+            </div>
+
+            <!-- Quick Cheatsheet Helper -->
+            <div class="notation-quick-cheatsheet glass-panel">
+              <div class="notation-cheat-item">
+                <span class="cheat-sym">Letter</span>
+                <span class="cheat-desc">Clockwise 90°</span>
+              </div>
+              <div class="notation-cheat-item">
+                <span class="cheat-sym">' (Prime)</span>
+                <span class="cheat-desc">Counter-Clockwise 90°</span>
+              </div>
+              <div class="notation-cheat-item">
+                <span class="cheat-sym">2 (Double)</span>
+                <span class="cheat-desc">Half-Turn 180°</span>
+              </div>
+              <div class="notation-cheat-item">
+                <span class="cheat-sym">x / y / z</span>
+                <span class="cheat-desc">Rotates Entire Cube</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- ================= 3. 3D VISUALIZER TAB ================= -->
@@ -416,7 +516,7 @@
           <div class="guide-card glass-panel highlight-border">
             <span class="guide-tag tag-urgent">CRITICAL DAY-1 UPGRADE</span>
             <h3>Hardware: Why Your Standard Cube is Slowing You Down</h3>
-            <p>You mentioned you're using a <strong>standard non-magnetic cube</strong> and planning to upgrade only after you learn. <strong>Upgrade now!</strong></p>
+            <p>Many beginners start with a <strong>standard non-magnetic toy cube</strong> and plan to upgrade only after getting faster. <strong>Upgrading to a magnetic cube early transforms your learning curve!</strong></p>
             <ul class="guide-list">
               <li><strong>The Problem:</strong> Non-magnetic cubes lock up when layers miss alignment by even 2 degrees. This forces your hands to tense up and twist with wrist force, developing bad habits and slowing your F2L.</li>
               <li><strong>The Solution:</strong> Magnetic cubes contain 48+ micro neodymium magnets. The faces literally snap into place, allowing light finger flicks.</li>
@@ -579,7 +679,8 @@
           </div>
         </div>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 8px;">
+        <button id="btn-modal-open-notation" class="btn btn-secondary">🧭 Open 3D Notation Studio</button>
         <button id="btn-close-cheat-sheet-foot" class="btn btn-primary">Got it! Back to Solving &rarr;</button>
       </div>
     </div>
@@ -590,6 +691,10 @@
     <button class="mobile-nav-btn active" data-tab="algorithms" title="Algorithm Vault">
       <span class="m-nav-icon">📖</span>
       <span class="m-nav-label">Learn</span>
+    </button>
+    <button class="mobile-nav-btn" data-tab="notation" title="Learn Notation & Rotations">
+      <span class="m-nav-icon">🧭</span>
+      <span class="m-nav-label">Notation</span>
     </button>
     <button class="mobile-nav-btn" data-tab="visualizer" title="3D Cube Visualizer">
       <span class="m-nav-icon">🧊</span>

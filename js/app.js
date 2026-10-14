@@ -11,6 +11,7 @@ import { SpeedTimer } from './timer.js';
 import { AlgorithmTrainer } from './trainer.js';
 import { Cube } from './cube-engine.js';
 import { STAGES, LEVELS, getLessonCases, nextLesson } from './curriculum.js';
+import { NOTATION_CATEGORIES, NOTATION_MOVES } from './notation-data.js';
 
 /**
  * Translates Rubik's cube Singmaster moves into plain English for beginners.
@@ -31,18 +32,48 @@ export function translateMoveToEnglish(algStr) {
     "F": "Front Clockwise ↻",
     "F'": "Front Counter-Clockwise ↺",
     "F2": "Front 180°",
-    "f": "Front 2-Layers ↻",
-    "f'": "Front 2-Layers Back ↺",
-    "f2": "Front 2-Layers 180°",
     "B": "Back Clockwise",
     "B'": "Back Counter-Clockwise",
     "B2": "Back 180°",
     "D": "Bottom Clockwise",
     "D'": "Bottom Counter-Clockwise",
     "D2": "Bottom 180°",
-    "M": "Middle Down",
-    "M'": "Middle Up",
-    "M2": "Middle 180°"
+    "r": "Wide Right Up ⬆️",
+    "r'": "Wide Right Down ⬇️",
+    "r2": "Wide Right 180°",
+    "l": "Wide Left Down ⬇️",
+    "l'": "Wide Left Up ⬆️",
+    "l2": "Wide Left 180°",
+    "u": "Wide Top Left ⬅️",
+    "u'": "Wide Top Right ➡️",
+    "u2": "Wide Top 180°",
+    "d": "Wide Bottom Right ➡️",
+    "d'": "Wide Bottom Left ⬅️",
+    "d2": "Wide Bottom 180°",
+    "f": "Front 2-Layers ↻",
+    "f'": "Front 2-Layers Back ↺",
+    "f2": "Front 2-Layers 180°",
+    "b": "Back 2-Layers",
+    "b'": "Back 2-Layers Back",
+    "b2": "Back 2-Layers 180°",
+    "M": "Middle Down ⬇️",
+    "M'": "Middle Up ☝️",
+    "M2": "Middle 180°",
+    "E": "Equator Right ➡️",
+    "E'": "Equator Left ⬅️",
+    "E2": "Equator 180°",
+    "S": "Standing Clockwise ↻",
+    "S'": "Standing Counter ↺",
+    "S2": "Standing 180°",
+    "x": "Cube Tip Away 🔄 (follows R)",
+    "x'": "Cube Tip Toward 🔄",
+    "x2": "Cube Flip 180°",
+    "y": "Cube Spin Horiz 🔄 (follows U)",
+    "y'": "Cube Spin Left 🔄",
+    "y2": "Cube Turnaround 180°",
+    "z": "Cube Tilt Clockwise 🔄 (follows F)",
+    "z'": "Cube Tilt Counter ↺",
+    "z2": "Cube Invert 180°"
   };
 
   const cleaned = algStr.replace(/[()]/g, ' ').replace(/\s+/g, ' ').trim();
@@ -71,6 +102,9 @@ class App {
     this.masteryState = this.loadMasteryState();
 
     this.visualizer = null;
+    this.notationVisualizer = null;
+    this.selectedNotationCategory = 'rotations';
+    this.selectedNotationMove = NOTATION_MOVES[0];
     this.timer = null;
     this.trainer = null;
 
@@ -80,6 +114,7 @@ class App {
   init() {
     this.initTheme();
     this.initNavigation();
+    this.initNotation();
     this.initVisualizer();
     this.initCurriculum();
     this.initCheatSheetModal();
@@ -166,6 +201,7 @@ class App {
   switchTab(tabId, category = null) {
     if (tabId === 'roadmap') tabId = 'algorithms';
     if (tabId !== 'visualizer') this.visualizer?.pause();
+    if (tabId !== 'notation') this.notationVisualizer?.pause();
     if (tabId !== 'trainer' && this.trainer?.isMetronomeRunning) this.trainer.toggleMetronome();
     document.querySelectorAll('.nav-tab').forEach(t => {
       t.classList.toggle('active', t.dataset.tab === tabId);
@@ -183,6 +219,12 @@ class App {
 
     if (tabId === 'algorithms' && category) this.selectLesson(category === 'beginner' ? 'oll' : category, this.currentLevel);
 
+    if (tabId === 'notation' && this.notationVisualizer) {
+      setTimeout(() => {
+        this.notationVisualizer.handleResize();
+        this.notationVisualizer.render();
+      }, 60);
+    }
     if (tabId === 'visualizer' && this.visualizer) {
       setTimeout(() => {
         this.visualizer.handleResize();
@@ -238,6 +280,7 @@ class App {
     const modal = document.getElementById('modal-cheat-sheet');
     const btnClose = document.getElementById('btn-close-cheat-sheet');
     const btnCloseFoot = document.getElementById('btn-close-cheat-sheet-foot');
+    const btnModalStudio = document.getElementById('btn-modal-open-notation');
 
     const openModal = () => {
       if (modal) { this.visualizer.pause(); modal.showModal(); }
@@ -249,6 +292,13 @@ class App {
     if (btnOpen) btnOpen.addEventListener('click', openModal);
     if (btnClose) btnClose.addEventListener('click', closeModal);
     if (btnCloseFoot) btnCloseFoot.addEventListener('click', closeModal);
+    if (btnModalStudio) {
+      btnModalStudio.addEventListener('click', () => {
+        closeModal();
+        this.switchTab('notation');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
 
     if (modal) {
       modal.addEventListener('click', (e) => {
@@ -763,6 +813,152 @@ class App {
       localStorage.setItem('speedcube_mastery', JSON.stringify(this.masteryState));
     } catch (e) {
       console.warn('Failed to save mastery state', e);
+    }
+  }
+
+  // --- 3D Interactive Notation & Rotations Studio ---
+  initNotation() {
+    const canvasNotation = document.getElementById('canvas-3d-notation');
+    if (!canvasNotation) return;
+
+    this.notationVisualizer = new CubeVisualizer(canvasNotation, null, {
+      turnIndicatorId: 'notation-turn-indicator'
+    });
+    this.notationVisualizer.setSpeed(850);
+
+    const btnReset = document.getElementById('btn-notation-reset-cube');
+    if (btnReset) {
+      btnReset.addEventListener('click', () => {
+        this.notationVisualizer.cancelAnimation();
+        this.notationVisualizer.cube = new Cube();
+        this.notationVisualizer._sync3DFromCubeState();
+        this.updateNotationHUD(this.selectedNotationMove);
+      });
+    }
+
+    const btnRestore = document.getElementById('btn-notation-restore-view');
+    if (btnRestore) {
+      btnRestore.addEventListener('click', () => {
+        this.notationVisualizer.restoreView();
+      });
+    }
+
+    this.renderNotationCategories();
+    this.renderNotationMoves();
+    this.updateNotationHUD(this.selectedNotationMove);
+  }
+
+  renderNotationCategories() {
+    const container = document.getElementById('notation-categories-bar');
+    if (!container) return;
+
+    container.innerHTML = NOTATION_CATEGORIES.map(cat => `
+      <button class="notation-cat-pill ${cat.id === this.selectedNotationCategory ? 'active' : ''}" data-cat="${cat.id}" role="tab" aria-selected="${cat.id === this.selectedNotationCategory}">
+        <span class="cat-pill-name">${cat.name}</span>
+        <span class="cat-pill-badge">${cat.badge}</span>
+      </button>
+    `).join('');
+
+    container.querySelectorAll('.notation-cat-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        this.selectedNotationCategory = btn.dataset.cat;
+        container.querySelectorAll('.notation-cat-pill').forEach(b => {
+          const isActive = b.dataset.cat === this.selectedNotationCategory;
+          b.classList.toggle('active', isActive);
+          b.setAttribute('aria-selected', isActive);
+        });
+        const categoryMoves = NOTATION_MOVES.filter(m => m.category === this.selectedNotationCategory);
+        if (categoryMoves.length > 0) {
+          this.selectedNotationMove = categoryMoves[0];
+        }
+        this.renderNotationMoves();
+        this.updateNotationHUD(this.selectedNotationMove);
+      });
+    });
+  }
+
+  renderNotationMoves() {
+    const container = document.getElementById('notation-moves-grid');
+    if (!container) return;
+
+    const categoryMoves = NOTATION_MOVES.filter(m => m.category === this.selectedNotationCategory);
+    container.innerHTML = categoryMoves.map(move => `
+      <button class="notation-move-card ${move.symbol === this.selectedNotationMove?.symbol ? 'active' : ''}" data-sym="${move.symbol}">
+        <div class="move-card-top">
+          <span class="move-card-sym">${move.symbol}</span>
+          <span class="move-card-axis">${move.axis || ''}</span>
+        </div>
+        <div class="move-card-name">${move.name}</div>
+        <div class="move-card-dir">${move.direction}</div>
+      </button>
+    `).join('');
+
+    container.querySelectorAll('.notation-move-card').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const sym = btn.dataset.sym;
+        const found = NOTATION_MOVES.find(m => m.symbol === sym);
+        if (found) {
+          this.selectedNotationMove = found;
+          container.querySelectorAll('.notation-move-card').forEach(c => {
+            c.classList.toggle('active', c.dataset.sym === sym);
+          });
+          this.updateNotationHUD(found);
+          if (found.variants && found.variants[0]) {
+            this.playNotationMove(found.variants[0].move);
+          }
+        }
+      });
+    });
+  }
+
+  updateNotationHUD(move) {
+    if (!move) return;
+    const symbolEl = document.getElementById('notation-hud-symbol');
+    const categoryEl = document.getElementById('notation-hud-category');
+    const mnemonicEl = document.getElementById('notation-hud-mnemonic');
+    const nameEl = document.getElementById('notation-hud-name');
+    const dirEl = document.getElementById('notation-hud-direction');
+    const ruleEl = document.getElementById('notation-hud-rule');
+    const howEl = document.getElementById('notation-hud-how');
+    const variantsWrap = document.getElementById('notation-variant-buttons');
+
+    if (symbolEl) symbolEl.textContent = move.symbol;
+    if (categoryEl) {
+      const cat = NOTATION_CATEGORIES.find(c => c.id === move.category);
+      categoryEl.textContent = cat ? cat.badge : 'Notation';
+    }
+    if (mnemonicEl) mnemonicEl.textContent = move.mnemonic || move.axis || '';
+    if (nameEl) nameEl.textContent = move.name;
+    if (dirEl) dirEl.textContent = move.direction;
+    if (ruleEl) ruleEl.textContent = move.summary || move.direction;
+    if (howEl) howEl.textContent = move.howToTurn;
+
+    if (variantsWrap) {
+      variantsWrap.innerHTML = (move.variants || []).map(v => `
+        <button class="btn btn-notation-trigger" data-move="${v.move}">
+          <span class="trigger-icon">▶</span>
+          <span class="trigger-label">${v.label}</span>
+        </button>
+      `).join('');
+
+      variantsWrap.querySelectorAll('.btn-notation-trigger').forEach(btn => {
+        btn.addEventListener('click', () => {
+          this.playNotationMove(btn.dataset.move);
+        });
+      });
+    }
+  }
+
+  playNotationMove(moveStr) {
+    if (!this.notationVisualizer || !moveStr) return;
+    const moves = Cube.parseAlgorithm(moveStr);
+    if (!moves.length) return;
+
+    if (moves.length === 1) {
+      this.notationVisualizer.executeMove(moves[0]);
+    } else {
+      this.notationVisualizer.setAlgorithm(moveStr, '', true);
+      this.notationVisualizer.play();
     }
   }
 }
