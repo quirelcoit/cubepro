@@ -127,6 +127,7 @@ class App {
     this.initPWA();
     this.renderAlgorithms();
     this.renderVisualizerSidebar();
+    this.initDeepLinking();
   }
 
   // --- Theme Management (Light / Dark Mode) ---
@@ -221,6 +222,45 @@ class App {
       p.classList.toggle('active', p.id === `tab-${tabId}`);
     });
 
+    // Dynamic SEO Metadata and Hash Routing
+    const seoMap = {
+      'play': {
+        title: "Play 3D Rubik's Cube Online | CUBEPRO Virtual Simulator",
+        desc: "Play, scramble, and solve the interactive 3D virtual Rubik's cube simulator online with touch and keyboard controls."
+      },
+      'algorithms': {
+        title: "CFOP Speedcubing Lessons & Algorithm Guide | CUBEPRO",
+        desc: "Master CFOP step-by-step from beginner to Sub-20 with 3D animated algorithm playback."
+      },
+      'notation': {
+        title: "3D Cube Notation Studio & Fingertricks | CUBEPRO",
+        desc: "Interactive 3D Rubik's cube turn notation studio with plain-English fingertrick explanations."
+      },
+      'trainer': {
+        title: "CFOP Algorithm Drills & Metronome Trainer | CUBEPRO",
+        desc: "Drill speedcubing muscle memory and lookahead with audible metronome and speed tests."
+      },
+      'timer': {
+        title: "WCA Speedcubing Competition Timer & Inspection | CUBEPRO",
+        desc: "Official WCA speedcubing timer with 15-second inspection, Ao5/Ao12 tracking, and net verification."
+      },
+      'visualizer': {
+        title: "3D Interactive Algorithm Practice | CUBEPRO",
+        desc: "Step through Rubik's cube algorithms move-by-move in 60fps 3D."
+      }
+    };
+
+    if (seoMap[tabId]) {
+      document.title = seoMap[tabId].title;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute('content', seoMap[tabId].desc);
+      const ogTitle = document.querySelector('meta[property="og:title"]');
+      if (ogTitle) ogTitle.setAttribute('content', seoMap[tabId].title);
+      if (window.location.hash !== `#${tabId}`) {
+        try { history.replaceState(null, '', `#${tabId}`); } catch { /* Ignore */ }
+      }
+    }
+
     if (tabId === 'algorithms' && category) this.selectLesson(category === 'beginner' ? 'oll' : category, this.currentLevel);
 
     if (tabId === 'play' && this.playCube) {
@@ -244,6 +284,18 @@ class App {
       setTimeout(() => this.timer.renderProgressChart(), 50);
     }
   }
+
+  initDeepLinking() {
+    const handleHash = () => {
+      const hash = window.location.hash.replace(/^#/, '').toLowerCase();
+      if (['play', 'algorithms', 'learn', 'notation', 'trainer', 'timer', 'visualizer'].includes(hash)) {
+        this.switchTab(hash === 'learn' ? 'algorithms' : hash);
+      }
+    };
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+  }
+
 
   initCurriculum() {
     document.querySelectorAll('[data-stage]').forEach(button => button.addEventListener('click', () => this.selectLesson(button.dataset.stage, this.currentLevel)));

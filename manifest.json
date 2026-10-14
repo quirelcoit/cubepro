@@ -37,24 +37,31 @@
   "categories": ["education", "games", "utilities"],
   "shortcuts": [
     {
-      "name": "3D Visualizer",
-      "short_name": "3D Cube",
-      "description": "Interactive 3D move player",
-      "url": "./index.html#visualizer",
+      "name": "Play 3D Cube",
+      "short_name": "Play",
+      "description": "Virtual 3D Rubik's cube simulator",
+      "url": "./index.html#play",
       "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "Speed Timer",
       "short_name": "Timer",
-      "description": "WCA speedcubing timer",
+      "description": "WCA speedcubing competition timer",
       "url": "./index.html#timer",
       "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Algorithm Vault",
-      "short_name": "Algorithms",
-      "description": "Cross, F2L, OLL, PLL reference",
+      "name": "CFOP Lessons",
+      "short_name": "Learn",
+      "description": "Interactive step-by-step CFOP tutorial",
       "url": "./index.html#algorithms",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "3D Notation Studio",
+      "short_name": "Notation",
+      "description": "3D Rubik's cube turn notation & fingertricks",
+      "url": "./index.html#notation",
       "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
     }
   ]

@@ -50,11 +50,14 @@ test('F2L prepared examples finish solved; daisy examples match their stated goa
 test('local preview serves only supported workspace assets', () => {
   assert.ok(resolveAsset('/').endsWith('index.html'));
   assert.ok(resolveAsset('/js/app.js?dev').endsWith('app.js'));
+  assert.ok(resolveAsset('/robots.txt').endsWith('robots.txt'));
+  assert.ok(resolveAsset('/sitemap.xml').endsWith('sitemap.xml'));
   assert.equal(resolveAsset('/.git/config'), null);
   assert.equal(resolveAsset('/%2e%2e%5csecret.json'), null);
   assert.equal(resolveAsset('/README.md'), null);
   assert.throws(() => resolveAsset('/%ZZ'));
 });
+
 
 test('offline release precaches new modules and never refreshes a cached module separately', async () => {
   const handlers = {}, assets = [], deleted = [];

@@ -3,9 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-  <title>CUBEPRO by Kaloy | Path to Sub-20 &amp; Sub-10</title>
-  <meta name="description" content="Speedcubing tutorial and training web app by Kaloy. Master CFOP, 2-Look LL, F2L lookahead, ergonomic fingertricks, and speed timer on your path to Sub-20 and Sub-10.">
-  
+  <title>CUBEPRO — Play 3D Rubik's Cube Online, CFOP Tutorial &amp; Speed Timer</title>
+  <meta name="description" content="Free interactive 3D virtual Rubik's Cube simulator, step-by-step CFOP speedcubing guide (Cross, F2L, OLL, PLL), 3D notation studio, and WCA speed timer. Play &amp; train on mobile or desktop without a physical cube.">
+  <link rel="canonical" href="https://cubepro-nu.vercel.app/">
+  <link rel="alternate" hreflang="x-default" href="https://cubepro-nu.vercel.app/">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="author" content="Kaloy">
+  <meta name="keywords" content="rubiks cube online, play rubiks cube 3d, virtual rubiks cube, speedcubing tutorial, cfop method, f2l algorithms, oll algorithms, pll algorithms, speedcube timer, wca timer, rubiks cube notation, sub 20 rubiks cube, speedcube pro, cubepro">
+
+  <!-- Open Graph / Facebook / Discord / Slack -->
+  <meta property="og:site_name" content="CUBEPRO">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cubepro-nu.vercel.app/">
+  <meta property="og:title" content="CUBEPRO — Play 3D Rubik's Cube Online, CFOP Tutorial &amp; Speed Timer">
+  <meta property="og:description" content="Play the 3D virtual Rubik's Cube simulator online without a physical cube. Master CFOP algorithms with interactive 3D playback and track solves with official WCA timer.">
+  <meta property="og:image" content="https://cubepro-nu.vercel.app/icons/og-preview.png">
+  <meta property="og:image:secure_url" content="https://cubepro-nu.vercel.app/icons/og-preview.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="CUBEPRO 3D Virtual Rubik's Cube &amp; Speedcubing App">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CUBEPRO — Play 3D Rubik's Cube Online &amp; Speedcubing Guide">
+  <meta name="twitter:description" content="Play 3D virtual Rubik's Cube, master CFOP algorithms with interactive 3D playback, and time your solves with WCA inspection.">
+  <meta name="twitter:image" content="https://cubepro-nu.vercel.app/icons/og-preview.png">
+  <meta name="twitter:image:alt" content="CUBEPRO 3D Virtual Rubik's Cube &amp; Speedcubing App">
+
   <!-- PWA & Mobile Web App Meta -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0b0f19">
@@ -18,11 +44,127 @@
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
   <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
 
+  <!-- Performance Preconnects -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/learning.css">
+
+  <!-- Structured Data (JSON-LD Schema.org) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://cubepro-nu.vercel.app/#website",
+        "url": "https://cubepro-nu.vercel.app/",
+        "name": "CUBEPRO",
+        "description": "Interactive 3D Virtual Rubik's Cube Simulator, CFOP Speedcubing Tutorial & WCA Timer by Kaloy.",
+        "inLanguage": "en-US"
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://cubepro-nu.vercel.app/#app",
+        "name": "CUBEPRO Speedcube Simulator & Training Studio",
+        "url": "https://cubepro-nu.vercel.app/",
+        "applicationCategory": ["GameApplication", "EducationalApplication", "UtilitiesApplication"],
+        "operatingSystem": "All (Web Browser, iOS, Android, Windows, macOS, Linux)",
+        "browserRequirements": "Requires WebGL support",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": [
+          "Interactive 3D Virtual Rubik's Cube Simulator with touch and keyboard controls",
+          "Official WCA Scramble Generator with cancellation elimination",
+          "Complete CFOP Speedcubing Lessons (White Cross, 41 F2L Cases, 2-Look OLL, 21 PLL Algorithms)",
+          "Interactive 3D Notation Studio with plain-English fingertrick explanations",
+          "WCA Speed Timer with 15-second inspection and solve analytics (Ao5, Ao12)",
+          "100% Offline Progressive Web App (PWA) support"
+        ],
+        "screenshot": "https://cubepro-nu.vercel.app/icons/og-preview.png",
+        "author": {
+          "@type": "Person",
+          "name": "Kaloy"
+        }
+      },
+      {
+        "@type": "HowTo",
+        "@id": "https://cubepro-nu.vercel.app/#howto",
+        "name": "How to Solve a Rubik's Cube with the CFOP Method",
+        "description": "Learn the Fridrich CFOP speedcubing method to solve the 3x3 Rubik's Cube systematically in four stages.",
+        "step": [
+          {
+            "@type": "HowToStep",
+            "position": 1,
+            "name": "White Cross",
+            "text": "Solve the 4 white edge pieces around the white center on the bottom face, matching edge colors with adjacent center pieces."
+          },
+          {
+            "@type": "HowToStep",
+            "position": 2,
+            "name": "First Two Layers (F2L)",
+            "text": "Pair up corner and edge pieces in the top layer and insert them simultaneously into their 4 slots, completing the bottom two layers."
+          },
+          {
+            "@type": "HowToStep",
+            "position": 3,
+            "name": "Orient Last Layer (OLL)",
+            "text": "Make all top-layer stickers face up (yellow face) using algorithms for cross and corner orientation."
+          },
+          {
+            "@type": "HowToStep",
+            "position": 4,
+            "name": "Permute Last Layer (PLL)",
+            "text": "Rearrange the top-layer pieces into their solved positions using corner and edge permuting algorithms to complete the cube."
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://cubepro-nu.vercel.app/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Can I play and practice the Rubik's Cube online without a physical cube?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes! CUBEPRO includes a built-in 3D Virtual Rubik's Cube simulator. You can scramble, rotate, test fingertricks, and solve directly in your browser using touch controls on mobile or full speedcubing keyboard shortcuts on desktop."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the CFOP method in speedcubing?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "CFOP stands for Cross, F2L (First Two Layers), OLL (Orient Last Layer), and PLL (Permute Last Layer). Also known as the Fridrich Method, it is the world standard used by top speedcubers to solve the cube in Sub-20, Sub-15, and Sub-10 seconds."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What do cube notations like R, U, F, and prime (') mean?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Cube notations represent face turns: R is Right, L is Left, U is Up (Top), D is Down (Bottom), F is Front, and B is Back. A single letter means a 90-degree clockwise turn. An apostrophe (prime, like R') means counter-clockwise. A number 2 (like U2) means a 180-degree half-turn."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does CUBEPRO work offline?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes! CUBEPRO is an offline-first Progressive Web App (PWA). All 3D rendering engines, algorithm vaults, lessons, and speed timers are cached locally so you can play and train anywhere without internet connectivity."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <div id="app-container" class="app-container">
