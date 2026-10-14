@@ -612,14 +612,90 @@ dialog .modal-card { width: 100%; max-height: none; border: 0; box-shadow: none;
   box-shadow: 0 2px 8px rgba(2, 132, 199, 0.15);
 }
 
+[data-theme="light"] .btn-helper {
+  background: #fffbeb !important;
+  border: 1px solid #f59e0b !important;
+  color: #92400e !important;
+  font-weight: 700 !important;
+  box-shadow: 0 1px 3px rgba(245, 158, 11, 0.15) !important;
+}
+[data-theme="light"] .btn-helper:hover {
+  background: #fef3c7 !important;
+  border-color: #d97706 !important;
+  color: #78350f !important;
+}
+[data-theme="light"] .btn-helper .helper-icon {
+  color: #d97706 !important;
+}
+[data-theme="light"] .btn-pwa-install {
+  background: #f0f9ff !important;
+  border: 1px solid #0284c7 !important;
+  color: #0284c7 !important;
+  font-weight: 700 !important;
+}
+[data-theme="light"] .btn-theme-toggle {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
 /* ================= Header Navigation Responsive Layout ================= */
 @media (min-width: 901px) {
+  .main-header .nav-tab {
+    padding: 8px 13px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+}
+
+/* Two-tier balanced header on standard laptops & tablets (901px - 1340px) */
+@media (min-width: 901px) and (max-width: 1340px) {
   .main-header {
+    display: grid !important;
+    grid-template-columns: 1fr auto !important;
+    grid-template-areas:
+      "brand actions"
+      "nav nav" !important;
+    gap: 12px 18px !important;
+    align-items: center !important;
+    padding: 14px 20px !important;
+  }
+  .main-header .header-brand {
+    grid-area: brand;
+    justify-self: start;
+    flex: 0 0 auto;
+  }
+  .main-header .header-actions {
+    grid-area: actions;
+    justify-self: end;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px 18px;
+    gap: 8px;
+    margin: 0 !important;
+  }
+  .main-header .main-nav {
+    grid-area: nav;
+    justify-self: center;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible !important;
+    min-width: max-content;
+    margin: 2px auto 0 !important;
+  }
+}
+
+/* Single-row wide desktop header (>= 1341px) */
+@media (min-width: 1341px) {
+  .main-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+    gap: 16px 20px !important;
   }
   .main-header .header-brand {
     flex: 0 0 auto;
@@ -628,43 +704,16 @@ dialog .modal-card { width: 100%; max-height: none; border: 0; box-shadow: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 0 0 auto;
-    min-width: max-content;
+    flex: 0 1 auto;
     overflow: visible !important;
-    width: auto;
+    min-width: max-content;
   }
   .main-header .header-actions {
     display: flex;
     align-items: center;
     flex: 0 0 auto;
     gap: 8px;
-    margin-left: auto;
-  }
-  .main-header .nav-tab {
-    padding: 8px 12px;
-    font-size: 0.84rem;
-    white-space: nowrap;
-    gap: 6px;
-    flex-shrink: 0;
-  }
-}
-@media (min-width: 901px) and (max-width: 1250px) {
-  .main-header {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-areas:
-      "brand actions"
-      "nav nav";
-    gap: 12px;
-  }
-  .header-brand { grid-area: brand; }
-  .header-actions { grid-area: actions; justify-self: end; }
-  .main-nav {
-    grid-area: nav;
-    justify-self: center;
-    width: auto;
-    overflow: visible !important;
-    min-width: max-content;
+    margin-left: 0 !important;
   }
 }
 @media (max-width: 1000px) {

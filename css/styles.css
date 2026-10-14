@@ -431,8 +431,8 @@ body {
   border-color: var(--accent-cyan);
 }
 
-/* Responsive Two-Tier Header for Medium Displays (901px - 1280px) */
-@media (max-width: 1280px) and (min-width: 901px) {
+/* Responsive Two-Tier Header for Medium Displays (901px - 1340px) */
+@media (max-width: 1340px) and (min-width: 901px) {
   .main-header {
     flex-wrap: wrap;
     padding: 14px 20px;
@@ -4278,6 +4278,487 @@ body {
 [data-theme="light"] .main-footer {
   border-top-color: rgba(15, 23, 42, 0.1);
   color: #64748b;
+}
+
+/* ================= High-Contrast Header Actions & Buttons (Light Mode) ================= */
+[data-theme="light"] .btn-helper {
+  background: #fffbeb !important;
+  border: 1px solid #f59e0b !important;
+  color: #92400e !important;
+  font-weight: 700 !important;
+  box-shadow: 0 1px 3px rgba(245, 158, 11, 0.15) !important;
+}
+
+[data-theme="light"] .btn-helper:hover {
+  background: #fef3c7 !important;
+  border-color: #d97706 !important;
+  color: #78350f !important;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.22) !important;
+}
+
+[data-theme="light"] .btn-helper .helper-icon {
+  color: #d97706 !important;
+}
+
+[data-theme="light"] .btn-helper .helper-sub {
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .btn-pwa-install {
+  background: #f0f9ff !important;
+  border: 1px solid #0284c7 !important;
+  color: #0284c7 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 1px 3px rgba(2, 132, 199, 0.12) !important;
+}
+
+[data-theme="light"] .btn-pwa-install:hover {
+  background: #0284c7 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .btn-theme-toggle {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="light"] .btn-theme-toggle:hover {
+  background: #f8fafc !important;
+  border-color: #0284c7 !important;
+  color: #0284c7 !important;
+}
+
+/* ================= High-Contrast Tags, Badges & Highlights (Light Mode) ================= */
+.highlight-cyan {
+  background: rgba(56, 189, 248, 0.15) !important;
+  color: #38bdf8 !important;
+  border: 1px solid rgba(56, 189, 248, 0.35) !important;
+}
+
+[data-theme="light"] .highlight-gold {
+  background: #fffbeb !important;
+  color: #92400e !important;
+  border: 1px solid #f59e0b !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .highlight-cyan {
+  background: #f0f9ff !important;
+  color: #0284c7 !important;
+  border: 1px solid #bae6fd !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .badge-tag {
+  background: #f1f5f9 !important;
+  color: #334155 !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+[data-theme="light"] .badge-eo {
+  background: #f0f9ff !important;
+  color: #0284c7 !important;
+  border-color: #0284c7 !important;
+}
+
+[data-theme="light"] .badge-co {
+  background: #fffbeb !important;
+  color: #92400e !important;
+  border-color: #f59e0b !important;
+}
+
+[data-theme="light"] .badge-cp {
+  background: #faf5ff !important;
+  color: #7e22ce !important;
+  border-color: #a855f7 !important;
+}
+
+[data-theme="light"] .badge-ep {
+  background: #ecfdf5 !important;
+  color: #047857 !important;
+  border-color: #10b981 !important;
+}
+
+/* ================= High-Contrast Formulas & Typography (Light Mode) ================= */
+[data-theme="light"] .formula-code,
+[data-theme="light"] .alg-formula {
+  color: #0369a1 !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .formula-plain-words {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .formula-qiyi {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .alg-notes {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .hack-alg-code {
+  background: #f8fafc !important;
+  color: #92400e !important;
+  border: 1px solid #fde68a !important;
+}
+
+[data-theme="light"] .hack-alg-code code {
+  color: #0284c7 !important;
+}
+
+[data-theme="light"] .hack-tip {
+  color: #475569 !important;
+}
+
+/* ================= High-Contrast Face Pills (Light Mode) ================= */
+[data-theme="light"] .face-pill.face-u {
+  background: #fffbeb !important;
+  color: #92400e !important;
+  border-color: #f59e0b !important;
+}
+
+[data-theme="light"] .face-pill.face-f {
+  background: #ecfdf5 !important;
+  color: #047857 !important;
+  border-color: #10b981 !important;
+}
+
+[data-theme="light"] .face-pill.face-r {
+  background: #fef2f2 !important;
+  color: #b91c1c !important;
+  border-color: #ef4444 !important;
+}
+
+[data-theme="light"] .face-pill.face-l {
+  background: #fff7ed !important;
+  color: #c2410c !important;
+  border-color: #f97316 !important;
+}
+
+/* ================= High-Contrast Step Trackers (Light Mode) ================= */
+[data-theme="light"] .step-num {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .step-btn.active .step-num {
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .step-arrow {
+  color: #94a3b8 !important;
+}
+
+/* ================= High-Contrast Drills & Flashcards (Light Mode) ================= */
+[data-theme="light"] .trainer-set-selector {
+  background: #e2e8f0 !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+[data-theme="light"] .set-pill {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .set-pill:hover {
+  color: #0f172a !important;
+  background: #f1f5f9 !important;
+}
+
+[data-theme="light"] .set-pill.active {
+  background: #0284c7 !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25) !important;
+}
+
+[data-theme="light"] .flashcard-stage {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04) !important;
+}
+
+[data-theme="light"] .card-case-badge {
+  background: #f0f9ff !important;
+  color: #0284c7 !important;
+  border: 1px solid rgba(2, 132, 199, 0.25) !important;
+}
+
+[data-theme="light"] .card-case-name {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .card-recognition {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .card-recognition strong {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .revealed-alg-box {
+  background: #f8fafc !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+[data-theme="light"] .drill-session-stats {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .bpm-display {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: var(--radius-md) !important;
+  padding: 12px !important;
+}
+
+[data-theme="light"] #metro-bpm-val {
+  color: #0284c7 !important;
+}
+
+[data-theme="light"] .bpm-unit {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .metro-guide ul li {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .metro-guide ul li strong {
+  color: #0f172a !important;
+}
+
+/* ================= High-Contrast Timer (Light Mode) ================= */
+[data-theme="light"] .scramble-box {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
+}
+
+[data-theme="light"] .scramble-tag {
+  background: #f0f9ff !important;
+  color: #0284c7 !important;
+  border: 1px solid rgba(2, 132, 199, 0.25) !important;
+}
+
+[data-theme="light"] .scramble-text {
+  color: #0f172a !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="light"] .scramble-verification-card {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+[data-theme="light"] .verification-title {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .timer-instruction {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .timer-status.status-idle {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .stat-card-label {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .history-title {
+  color: #0f172a !important;
+}
+
+/* ================= High-Contrast Practice Visualizer (Light Mode) ================= */
+[data-theme="light"] .canvas-3d-box {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+[data-theme="light"] .canvas-top-bar {
+  background: #f8fafc !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  padding: 8px 12px !important;
+  border-radius: var(--radius-md) var(--radius-md) 0 0 !important;
+}
+
+[data-theme="light"] .canvas-label {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .btn-text {
+  color: #0284c7 !important;
+}
+
+[data-theme="light"] .btn-text:hover {
+  color: #0369a1 !important;
+}
+
+[data-theme="light"] .moves-ribbon {
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+}
+
+[data-theme="light"] .move-pill {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #334155 !important;
+}
+
+[data-theme="light"] .move-pill.current-move {
+  background: #0284c7 !important;
+  color: #ffffff !important;
+  border-color: #0369a1 !important;
+}
+
+[data-theme="light"] .move-pill.passed-move {
+  background: #ecfdf5 !important;
+  color: #047857 !important;
+  border-color: #a7f3d0 !important;
+}
+
+[data-theme="light"] .btn-ctrl {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .btn-ctrl:hover {
+  background: #f1f5f9 !important;
+  border-color: #0284c7 !important;
+  color: #0284c7 !important;
+}
+
+[data-theme="light"] .btn-ctrl.btn-play {
+  background: #0284c7 !important;
+  color: #ffffff !important;
+  border-color: #0284c7 !important;
+}
+
+[data-theme="light"] .speed-slider-group {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #334155 !important;
+}
+
+[data-theme="light"] #vis-speed-label {
+  color: #0284c7 !important;
+}
+
+[data-theme="light"] .quick-case-btn {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+[data-theme="light"] .quick-case-btn:hover {
+  background: #f0f9ff !important;
+  border-color: #0284c7 !important;
+  color: #0284c7 !important;
+}
+
+[data-theme="light"] .quick-case-btn.active {
+  background: #f0f9ff !important;
+  border-color: #0284c7 !important;
+  color: #0284c7 !important;
+  font-weight: 700 !important;
+}
+
+/* ================= High-Contrast Guide & Hardware (Light Mode) ================= */
+[data-theme="light"] .guide-card {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04) !important;
+}
+
+[data-theme="light"] .guide-tag {
+  color: #0284c7 !important;
+}
+
+[data-theme="light"] .tag-urgent {
+  color: #e11d48 !important;
+}
+
+[data-theme="light"] .gear-item {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+[data-theme="light"] .gear-item strong {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .gear-price {
+  color: #059669 !important;
+}
+
+[data-theme="light"] .gear-item p {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .ft-card {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+[data-theme="light"] .ft-card h4 {
+  color: #0284c7 !important;
+}
+
+[data-theme="light"] .ft-card p {
+  color: #334155 !important;
+}
+
+[data-theme="light"] .numbered-guide li {
+  color: #334155 !important;
+}
+
+[data-theme="light"] .numbered-guide li strong {
+  color: #0f172a !important;
+}
+
+/* ================= High-Contrast Modal Cheat Sheet (Light Mode) ================= */
+[data-theme="light"] .notation-explain-intro {
+  background: #f0f9ff !important;
+  border: 1px solid #bae6fd !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .notation-explain-intro strong {
+  color: #0284c7 !important;
+}
+
+[data-theme="light"] .notation-item {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+[data-theme="light"] .notation-symbol {
+  color: #0284c7 !important;
+}
+
+[data-theme="light"] .notation-name {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .notation-item p {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .notation-item.special-highlight {
+  background: #fffbeb !important;
+  border: 1px solid #fcd34d !important;
+}
+
+[data-theme="light"] .notation-item.special-highlight .notation-symbol {
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .notation-item.special-highlight p strong {
+  color: #92400e !important;
 }
 
 

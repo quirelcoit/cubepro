@@ -63,7 +63,7 @@ test('offline release precaches new modules and never refreshes a cached module 
   let networkCalls = 0;
   const context = {
     self: { addEventListener: (name, fn) => handlers[name] = fn, skipWaiting: () => {}, clients: { claim: () => {} }, location: { origin: 'http://localhost' } },
-    caches: { open: async () => cache, keys: async () => ['speedcube-pro-v6','speedcube-pro-v7','another-app'], delete: async key => deleted.push(key) },
+    caches: { open: async () => cache, keys: async () => ['speedcube-pro-v7','speedcube-pro-v8','another-app'], delete: async key => deleted.push(key) },
     fetch: async () => { networkCalls++; }, URL, Response
   };
   runInNewContext(readFileSync(new URL('../sw.js', import.meta.url), 'utf8'), context);
@@ -72,7 +72,7 @@ test('offline release precaches new modules and never refreshes a cached module 
   for (const asset of assets) assert.ok(existsSync(new URL('../' + asset, import.meta.url)), asset);
   for (const asset of ['./js/curriculum.js','./js/cube-moves.js','./css/learning.css']) assert.ok(assets.includes(asset));
   handlers.activate({ waitUntil: promise => task = promise }); await task;
-  assert.deepEqual(deleted, ['speedcube-pro-v6']);
+  assert.deepEqual(deleted, ['speedcube-pro-v7']);
   handlers.fetch({ request: { method: 'GET', url: 'http://localhost/js/app.js' }, respondWith: promise => task = promise });
   assert.equal(await task, cached); assert.equal(networkCalls, 0);
 });

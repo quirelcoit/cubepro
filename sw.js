@@ -3,7 +3,7 @@
  * Enables offline capability and fast loading as a Progressive Web App (PWA).
  */
 
-const CACHE_NAME = 'speedcube-pro-v7';
+const CACHE_NAME = 'speedcube-pro-v8';
 
 const STATIC_ASSETS = [
   './',
