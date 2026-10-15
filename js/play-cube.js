@@ -273,6 +273,10 @@ export class PlayCube {
       document.getElementById('play-vic-moves').textContent = this.moveCount;
       document.getElementById('play-vic-tps').textContent = `${tps} TPS`;
       victoryModal.classList.add('visible');
+
+      if (typeof window !== 'undefined' && window.va) {
+        window.va('event', { name: 'cube_solved', data: { time: timeStr, moves: this.moveCount, tps } });
+      }
     }
   }
 

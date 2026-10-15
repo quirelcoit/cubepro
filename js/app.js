@@ -259,6 +259,9 @@ class App {
       if (window.location.hash !== `#${tabId}`) {
         try { history.replaceState(null, '', `#${tabId}`); } catch { /* Ignore */ }
       }
+      if (typeof window !== 'undefined' && window.va) {
+        window.va('event', { name: 'tab_switch', data: { tab: tabId } });
+      }
     }
 
     if (tabId === 'algorithms' && category) this.selectLesson(category === 'beginner' ? 'oll' : category, this.currentLevel);
