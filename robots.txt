@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Canonical Sitemap
-Sitemap: https://cubepro-nu.vercel.app/sitemap.xml
+Sitemap: https://cube-pro.vercel.app/sitemap.xml
