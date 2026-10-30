@@ -50,7 +50,8 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 .alg-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr)); }
 .alg-card { box-shadow: none; padding: 20px; }
 .alg-card:hover { transform: none; box-shadow: none; }
-.alg-card-diagram-thumb { flex-shrink: 0; width: 150px; overflow: hidden; }
+.alg-card-diagram-thumb { flex-shrink: 0; width: 150px; height: 114px; min-height: 114px; overflow: visible; display: flex; align-items: center; justify-content: center; }
+.alg-card-diagram-thumb svg { width: 150px; height: 112px; max-width: 100%; display: block; }
 .alg-title { font-size: 1rem; }
 .alg-badge { font-size: .65rem; }
 .formula-code { font-size: .95rem; overflow-wrap: anywhere; }
@@ -767,7 +768,7 @@ dialog .modal-card { width: 100%; max-height: none; border: 0; box-shadow: none;
   .lesson-drill { border-left: 0; border-top: 1px solid var(--border-color); }
   .case-library-heading { align-items: stretch; flex-direction: column; gap: 12px; }
   .case-library-heading .search-box { width: 100%; }
-  .alg-card-diagram-thumb { width: 120px; }
+  .alg-card-diagram-thumb { width: 120px; height: 92px; min-height: 92px; }
   .alg-card-diagram-thumb svg { width: 120px; height: 90px; }
   .visualizer-stage { padding: 12px; }
   .canvas-box.canvas-2d-box { width: 100%; text-align: center; }
