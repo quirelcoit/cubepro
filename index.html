@@ -282,6 +282,10 @@
           <span class="pwa-install-icon">📲</span>
           <span>Install App</span>
         </button>
+        <button id="btn-open-speed-sheet" class="btn btn-helper" title="Click to view Badmephisto 2-Look CFOP Fast Reference">
+          <span class="helper-icon">⚡</span>
+          <span>Speed sheet</span>
+        </button>
         <button id="btn-open-cheat-sheet" class="btn btn-helper" title="Click to view move explanations">
           <span class="helper-icon">&#10067;</span>
           <span>Move guide</span>
@@ -318,13 +322,21 @@
           <button class="cfop-stage" data-stage="oll" aria-pressed="false"><span class="stage-number">03</span><span><strong>OLL</strong><small>Orient the last layer</small></span></button>
           <button class="cfop-stage" data-stage="pll" aria-pressed="false"><span class="stage-number">04</span><span><strong>PLL</strong><small>Finish the solve</small></span></button>
         </nav>
-        <div class="lesson-toolbar"><div class="lesson-levels" role="group" aria-label="Learning level">
-          <button data-level="beginner" aria-pressed="true" class="active">Beginner</button><button data-level="intermediate" aria-pressed="false">Intermediate</button><button data-level="pro" aria-pressed="false">Pro</button>
-        </div><span id="lesson-position" class="text-muted"></span></div>
+        <div class="lesson-toolbar">
+          <div class="lesson-levels" role="group" aria-label="Learning level">
+            <button data-level="beginner" aria-pressed="true" class="active">Beginner</button><button data-level="intermediate" aria-pressed="false">Intermediate</button><button data-level="pro" aria-pressed="false">Pro</button>
+          </div>
+          <div class="toolbar-right-actions" style="display: flex; gap: 10px; align-items: center;">
+            <button id="btn-quick-speed-sheet" class="btn btn-helper btn-sm" title="Open Badmephisto 2-Look CFOP Fast Reference">
+              <span>⚡ 2-Look Speed Sheet</span>
+            </button>
+            <span id="lesson-position" class="text-muted"></span>
+          </div>
+        </div>
         <article id="lesson-content" class="lesson-card glass-panel"></article>
         <div class="case-library-heading"><div><h3 id="case-library-title">Practice cases</h3><p id="case-library-count" class="text-muted"></p></div><div class="search-box"><label class="sr-only" for="alg-search-input">Search cases in this lesson</label><input id="alg-search-input" type="search" placeholder="Search this lesson…"></div></div>
         <div id="alg-container" class="alg-grid"></div>
-        <p class="curriculum-source">Curriculum references: <a href="https://www.cubeskills.com/tutorials/f2l" target="_blank" rel="noopener">CubeSkills F2L</a> and <a href="https://jperm.net/algs/2lookoll" target="_blank" rel="noopener">J Perm 2-look OLL</a>. Practice at your own pace; levels are learning paths, not guaranteed solve times.</p>
+        <p class="curriculum-source">Curriculum &amp; strategy references: <a href="https://badmephisto.com/" target="_blank" rel="noopener">Badmephisto CFOP Guide</a>, <a href="https://www.cubeskills.com/tutorials/f2l" target="_blank" rel="noopener">CubeSkills F2L</a>, and <a href="https://jperm.net/algs/2lookoll" target="_blank" rel="noopener">J Perm 2-look OLL</a>. Practice at your own pace; levels are learning paths, not guaranteed solve times.</p>
       </section>
 
       <!-- ================= 2. PLAY 3D VIRTUAL CUBE TAB ================= -->
@@ -972,35 +984,157 @@
       <!-- ================= 6. GUIDE TAB ================= -->
       <section id="tab-guide" class="tab-pane">
         <div class="guide-grid">
+
+          <!-- Badmephisto's Sub-15 Progression Matrix -->
           <div class="guide-card glass-panel highlight-border">
-            <span class="guide-tag tag-urgent">CRITICAL DAY-1 UPGRADE</span>
-            <h3>Hardware: Why Your Standard Cube is Slowing You Down</h3>
-            <p>Many beginners start with a <strong>standard non-magnetic toy cube</strong> and plan to upgrade only after getting faster. <strong>Upgrading to a magnetic cube early transforms your learning curve!</strong></p>
-            <ul class="guide-list">
-              <li><strong>The Problem:</strong> Non-magnetic cubes lock up when layers miss alignment by even 2 degrees. This forces your hands to tense up and twist with wrist force, developing bad habits and slowing your F2L.</li>
-              <li><strong>The Solution:</strong> Magnetic cubes contain 48+ micro neodymium magnets. The faces literally snap into place, allowing light finger flicks.</li>
-              <li><strong>Top Recommendations:</strong>
-                <div class="gear-recs">
-                  <div class="gear-item">
-                    <strong>MoYu RS3M V5 (Dual Adjustment or Ball-Core)</strong>
-                    <span class="gear-price">~$9 - $15</span>
-                    <p>The #1 budget speedcube in the world. Used by top competitors. Incredible corner-cutting.</p>
-                  </div>
-                  <div class="gear-item">
-                    <strong>GAN 356 M / GAN 12 MagLev</strong>
-                    <span class="gear-price">~$25 - $60</span>
-                    <p>Ultra-featherweight (60g), buttery magnetic feel, easiest on fingers.</p>
-                  </div>
-                  <div class="gear-item">
-                    <strong>X-Man Tornado V3 Flagship</strong>
-                    <span class="gear-price">~$25</span>
-                    <p>Whisper quiet, highly customizable magnetic strength.</p>
-                  </div>
-                </div>
-              </li>
-            </ul>
+            <span class="guide-tag tag-urgent">BADMEPHISTO BLUEPRINT</span>
+            <h3>The Speedcubing Progression Roadmap: From 1:30 to Sub-15</h3>
+            <p>Mastering speedcubing is about targeting the right skills at each time barrier. Based on <strong>Badmephisto's Sub-15 Guide</strong>, here is how top speedcubers divide their solve times and where to focus your effort:</p>
+            
+            <div class="matrix-table-wrapper">
+              <table class="guide-matrix-table">
+                <thead>
+                  <tr>
+                    <th>Milestone</th>
+                    <th>Cross (D)</th>
+                    <th>F2L (Slots)</th>
+                    <th>OLL</th>
+                    <th>PLL</th>
+                    <th>Core Focus &amp; Technique</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Sub-60s</strong><small>Novice</small></td>
+                    <td>10s</td>
+                    <td>30s</td>
+                    <td>10s</td>
+                    <td>10s</td>
+                    <td>Cross directly on bottom (no daisy); basic intuitive F2L; 2-Look OLL &amp; 2-Look PLL.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Sub-40s</strong><small>Intermediate</small></td>
+                    <td>6s</td>
+                    <td>22s</td>
+                    <td>6s</td>
+                    <td>6s</td>
+                    <td>Master all 41 F2L intuitive setups; eliminate cube rotations; index U &amp; double-flick U2.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Sub-30s</strong><small>Solid Cuber</small></td>
+                    <td>4s</td>
+                    <td>16s</td>
+                    <td>5s</td>
+                    <td>5s</td>
+                    <td>Full 21 PLL algorithms; smooth continuous turning (slow turning without pauses); back-slot F2L inserts.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Sub-20s</strong><small>Advanced</small></td>
+                    <td>2.5s</td>
+                    <td>10.5s</td>
+                    <td>4s</td>
+                    <td>3s</td>
+                    <td>Full 57 OLL algorithms; predictive 2-sided PLL recognition; fluent F2L lookahead with zero pauses.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Sub-15s</strong><small>Competitive</small></td>
+                    <td>1.5s</td>
+                    <td>7.5s</td>
+                    <td>3s</td>
+                    <td>3s</td>
+                    <td>Full cross inspection in 15s; Cross + 1 (planning 1st F2L pair before turning); AUF prediction; sub-1s PLL execution.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
+          <!-- Badmephisto's 4 Golden Rules of the Cross -->
+          <div class="guide-card glass-panel">
+            <span class="guide-tag">CROSS MASTERY</span>
+            <h3>Badmephisto's 4 Golden Rules of the Cross</h3>
+            <p>The cross sets the tempo for your entire solve. Badmephisto taught 4 non-negotiable principles to drop your cross from 10 seconds to under 2.5 seconds:</p>
+            <div class="cross-rules-grid">
+              <div class="cross-rule-card">
+                <div class="rule-badge">RULE 1</div>
+                <h4>Cross on Bottom (Always)</h4>
+                <p>Never solve the daisy on top and flip. Solving directly on the bottom (White on D) keeps the top layer (U) completely visible so you can spot your first F2L pair without rotating the cube.</p>
+              </div>
+              <div class="cross-rule-card">
+                <div class="rule-badge">RULE 2</div>
+                <h4>Relative Color Order (GO BR)</h4>
+                <p>Do not waste moves matching edges to side centers first! Solve edges relative to each other: with White down and Green front, clockwise around yellow is <strong>Green &rarr; Orange &rarr; Blue &rarr; Red (GO BR)</strong>. Once relative edges are placed, one simple <code>D</code> or <code>D'</code> aligns all 4 centers.</p>
+              </div>
+              <div class="cross-rule-card">
+                <div class="rule-badge">RULE 3</div>
+                <h4>The 8-Move Maximum Principle</h4>
+                <p>Mathematically, <strong>99.9% of all scrambles have a cross solution of 8 moves or fewer</strong> (average is ~5.8 moves). If your cross takes 12 moves, pause and find the shorter, more efficient placement.</p>
+              </div>
+              <div class="cross-rule-card">
+                <div class="rule-badge">RULE 4</div>
+                <h4>The 15-Second Blind Cross Drill</h4>
+                <p>During the official 15-second inspection, find all 4 cross edges and mentally rehearse the entire solution. Close your eyes, execute the 6 moves without stopping, and open your eyes. When you can do this consistently, your cross time will instantly plummet.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Badmephisto's Intuitive F2L Masterclass -->
+          <div class="guide-card glass-panel">
+            <span class="guide-tag">F2L ACCELERATION</span>
+            <h3>Badmephisto's Intuitive F2L Masterclass</h3>
+            <p>F2L accounts for 60% of your total solve time. Rather than memorizing 41 formulas mechanically, Badmephisto simplified F2L into <strong>3 fundamental top-layer situations</strong>:</p>
+            <div class="f2l-rules-grid">
+              <div class="f2l-case-box">
+                <h4>Case 1: Top Colors Match</h4>
+                <p>When the corner and edge share the same color on top: hide the corner in the bottom layer (using an empty slot), turn the U face to place the edge one turn away, then unhide the corner. They connect into a ready-to-insert 1x2 pair!</p>
+              </div>
+              <div class="f2l-case-box">
+                <h4>Case 2: Top Colors Differ</h4>
+                <p>When top colors are different: position the edge so its side color matches the corner's side color. Bringing up the slot connects the pair with white facing side, ready for a 3-move insert (<code>R U R'</code> or <code>F' U' F</code>).</p>
+              </div>
+              <div class="f2l-case-box">
+                <h4>Case 3: Corner White Faces Up</h4>
+                <p>When the corner's white sticker points straight up: match the edge to its side center, move it away from the target slot, bring the corner over top of it, and un-turn the face. The pair is united.</p>
+              </div>
+            </div>
+            <div class="golden-f2l-rule">
+              <strong>🔥 Badmephisto's Golden F2L Law:</strong>
+              <em>"Never look at the pair your hands are currently inserting!"</em> Once you identify a pair, your fingers execute the 3-4 moves on muscle memory while your eyes actively hunt for the next corner and edge pieces across the cube.
+            </div>
+          </div>
+
+          <!-- Badmephisto's 2-Sided PLL Fast Recognition Guide -->
+          <div class="guide-card glass-panel">
+            <span class="guide-tag">RECOGNITION MASTERY</span>
+            <h3>Badmephisto's 2-Sided PLL Fast Recognition Guide</h3>
+            <p>Beginners waste 2 to 4 seconds rotating the whole cube (<code>y / y'</code>) looking for matching colors. Speedcubers determine the exact PLL case by inspecting <strong>only 2 adjacent visible faces</strong>:</p>
+            <div class="pll-recog-steps">
+              <div class="recog-step-item">
+                <div class="recog-step-num">1</div>
+                <div class="recog-step-content">
+                  <strong>Count Headlights (Matching Corner Stickers):</strong>
+                  <ul class="recog-sublist">
+                    <li><strong>4 Headlights (all around):</strong> Pure Edge Permutation &rarr; <code>Ua</code>, <code>Ub</code>, <code>H</code>, or <code>Z Perm</code>.</li>
+                    <li><strong>1 Headlight (one side only):</strong> Adjacent Corner Swap &rarr; <code>T</code>, <code>Jb</code>, <code>Ja</code>, <code>Ra</code>, <code>Rb</code>, <code>F</code>, <code>Aa</code>, <code>Ab</code>, or <code>G Perm</code>.</li>
+                    <li><strong>0 Headlights (none visible):</strong> Diagonal Corner Swap &rarr; <code>Y</code>, <code>V</code>, <code>E</code>, or <code>Na/Nb Perm</code>.</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="recog-step-item">
+                <div class="recog-step-num">2</div>
+                <div class="recog-step-content">
+                  <strong>Identify Blocks &amp; Bars:</strong>
+                  <ul class="recog-sublist">
+                    <li><strong>Full 1x3 Solved Bar:</strong> If visible alongside headlights, it's a <code>Ja</code>, <code>Jb</code>, or <code>F Perm</code>.</li>
+                    <li><strong>1x2 Matching Block:</strong> Attached to headlights with opposite front color = <code>T Perm</code>. Attached to front-right = <code>Ra / Rb Perm</code>.</li>
+                    <li><strong>No Headlights + Two 1x2 Blocks:</strong> If opposite corners swap = <code>Y Perm</code>; if blocks are adjacent = <code>V Perm</code>; if opposite bars on sides = <code>E Perm</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hardware & Fingertrick Mastery (Preserved & Polished) -->
           <div class="guide-card glass-panel">
             <span class="guide-tag">FINGERTRICK MASTERY</span>
             <h3>Ergonomics &amp; Flow: Efficiency Over Raw Spam</h3>
@@ -1026,15 +1160,28 @@
           </div>
 
           <div class="guide-card glass-panel">
-            <span class="guide-tag">F2L ACCELERATION</span>
-            <h3>How to Stop Being "Super Slow" at F2L</h3>
-            <p>F2L is 60% to 70% of the entire solve. To slash your F2L from 40 seconds to 12 seconds:</p>
-            <ol class="numbered-guide">
-              <li><strong>Stop Looking at What You're Turning:</strong> Once you see a pair and know the 3-4 moves to insert it, look with your eyes at the OTHER pieces on the cube while your hands execute the insert automatically.</li>
-              <li><strong>Back-Slot Preference:</strong> Always solve back-left and back-right F2L slots first when possible. This keeps the front slots empty so you never have to rotate the cube to find pieces.</li>
-              <li><strong>Slow Metronome Practice:</strong> Set the built-in Lookahead Metronome to 60 BPM (1 turn per second). Solve the F2L without ever stopping or pausing between turns. Smooth continuous turning beats fast-stop-search every time!</li>
-            </ol>
+            <span class="guide-tag tag-urgent">HARDWARE UPGRADE</span>
+            <h3>Hardware: Why Your Standard Cube is Slowing You Down</h3>
+            <p>Upgrading to a magnetic speedcube early transforms your learning curve and saves you from developing wrist tension habits:</p>
+            <div class="gear-recs">
+              <div class="gear-item">
+                <strong>MoYu RS3M V5 (Dual Adjustment / Ball-Core)</strong>
+                <span class="gear-price">~$9 - $15</span>
+                <p>The #1 budget speedcube in the world. Exceptional corner-cutting and light magnetic tactile snap.</p>
+              </div>
+              <div class="gear-item">
+                <strong>GAN 356 M / GAN 12 MagLev</strong>
+                <span class="gear-price">~$25 - $60</span>
+                <p>Ultra-lightweight (60g), buttery magnetic glide, lowest finger fatigue for long practice sessions.</p>
+              </div>
+              <div class="gear-item">
+                <strong>X-Man Tornado V3 Flagship</strong>
+                <span class="gear-price">~$25</span>
+                <p>Whisper quiet turning, smooth corner cutting, and customizable magnetic settings.</p>
+              </div>
+            </div>
           </div>
+
         </div>
       </section>
 
@@ -1043,101 +1190,485 @@
     <!-- Footer -->
     <footer id="main-footer" class="main-footer">
       <span>Built for your Sub-20 &amp; Sub-10 Speedcubing Journey</span>
-      <span>Based on QiYi MoFangGe Reference &amp; Modern Speedcubing Standards</span>
+      <span>Based on Badmephisto Speedcubing Guides &amp; WCA / CFOP Standards</span>
     </footer>
   </div>
 
-  <!-- ================= Move Notation Cheat Sheet Modal ================= -->
+  <!-- ================= Comprehensive Speedcubing Cheat Sheet Modal ================= -->
   <dialog id="modal-cheat-sheet" class="modal-backdrop" aria-labelledby="cheat-sheet-title">
-    <div class="modal-card">
+    <div class="modal-card modal-card-wide">
       <div class="modal-header">
         <div>
-          <span class="badge-tag">BEGINNER ZERO-JARGON GUIDE</span>
-          <h3 id="cheat-sheet-title">What do R, U, F, and (') Prime mean?</h3>
+          <span class="badge-tag">SPEEDCUBING CHEAT SHEET</span>
+          <h3 id="cheat-sheet-title">Badmephisto 2-Look CFOP &amp; Notation Reference</h3>
         </div>
-        <button id="btn-close-cheat-sheet" class="modal-close-btn" title="Close" aria-label="Close move cheat sheet">&times;</button>
+        <div class="modal-header-actions" style="display: flex; gap: 8px; align-items: center;">
+          <button id="btn-print-cheat-sheet" class="btn btn-sm btn-secondary" title="Print pocket reference sheet">🖨️ Print Sheet</button>
+          <button id="btn-close-cheat-sheet" class="modal-close-btn" title="Close" aria-label="Close cheat sheet">&times;</button>
+        </div>
       </div>
+
+      <!-- Navigation Tabs inside Modal -->
+      <div class="modal-nav-tabs" role="tablist">
+        <button id="modal-tab-btn-speed" class="modal-tab-btn active" role="tab" aria-selected="true" data-target="modal-pane-speed">⚡ 2-Look CFOP Fast Sheet</button>
+        <button id="modal-tab-btn-recognition" class="modal-tab-btn" role="tab" aria-selected="false" data-target="modal-pane-recognition">👀 2-Sided PLL Recognition</button>
+        <button id="modal-tab-btn-notation" class="modal-tab-btn" role="tab" aria-selected="false" data-target="modal-pane-notation">🔤 Move Notation (R, U, F, ')</button>
+      </div>
+
       <div class="modal-body">
-        <div class="notation-explain-intro">
-          <p>Each letter represents a face: <strong>R</strong>=Right, <strong>L</strong>=Left, <strong>U</strong>=Upper (Top), <strong>D</strong>=Down (Bottom), <strong>F</strong>=Front, <strong>B</strong>=Back.<br>
-          &bull; <strong>Letter alone (e.g. R):</strong> Turn that face <strong>CLOCKWISE</strong> (90&deg;).<br>
-          &bull; <strong>Apostrophe ' (Prime, e.g. R'):</strong> Turn it <strong>COUNTER-CLOCKWISE</strong> (the other way).<br>
-          &bull; <strong>Number 2 (e.g. U2):</strong> Turn it <strong>TWICE</strong> (180&deg;).<br>
-          &bull; <strong>Lowercase f:</strong> Push <strong>FRONT TWO LAYERS</strong> together.</p>
+
+        <!-- ================= PANE 1: 2-LOOK CFOP FAST SHEET ================= -->
+        <div id="modal-pane-speed" class="modal-pane active">
+          <div class="speed-sheet-intro">
+            <p><strong>Badmephisto CFOP Standard Reference:</strong> Features the 2-Look OLL foundation and the complete <strong>21 PLL Reference Table</strong> with exact <em>Chance of Occurrence</em>, <em>Difficulty to Learn (X, XX, XXX)</em>, and <em>Badmephisto's Memorization Comments</em>.</p>
+          </div>
+
+          <!-- Section: 2-Look OLL Step 1 -->
+          <div class="speed-sheet-group">
+            <div class="group-header">
+              <span class="group-badge">OLL STEP 1</span>
+              <h4>Yellow Cross (Edge Orientation &bull; 3 Cases)</h4>
+            </div>
+            <div class="speed-table-wrapper">
+              <table class="speed-alg-table">
+                <thead>
+                  <tr>
+                    <th>Case / Pattern</th>
+                    <th>Algorithm</th>
+                    <th>Chance</th>
+                    <th>Difficulty</th>
+                    <th>Badmephisto's Comment</th>
+                    <th>Practice</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Dot Case</strong><br><small>No edges yellow</small></td>
+                    <td><code class="alg-code-text">F (R U R' U') F' f (R U R' U') f'</code></td>
+                    <td class="prob-cell">1/8 (12.5%)</td>
+                    <td class="diff-cell diff-x">X (Easy)</td>
+                    <td class="comment-cell">Line alg F (R U R' U') F' followed by L-shape alg f (R U R' U') f'.</td>
+                    <td><button class="cheat-practice-btn" data-alg="F (R U R' U') F' f (R U R' U') f'" data-name="Dot Case">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>L-Shape</strong><br><small>Hold at 9:00 (top-left)</small></td>
+                    <td><code class="alg-code-text">f (R U R' U') f'</code></td>
+                    <td class="prob-cell">1/2 (50%)</td>
+                    <td class="diff-cell diff-x">X (Easy)</td>
+                    <td class="comment-cell">Wide FRURUF with lowercase f (turns 2 layers). Completes cross in 6 moves!</td>
+                    <td><button class="cheat-practice-btn" data-alg="f (R U R' U') f'" data-name="L-Shape">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Horizontal Bar</strong><br><small>Hold horizontal</small></td>
+                    <td><code class="alg-code-text">F (R U R' U') F'</code></td>
+                    <td class="prob-cell">1/4 (25%)</td>
+                    <td class="diff-cell diff-x">X (Easy)</td>
+                    <td class="comment-cell">The famous "FRURUF": Front, Sexy Move (R U R' U'), Front counter-clockwise.</td>
+                    <td><button class="cheat-practice-btn" data-alg="F (R U R' U') F'" data-name="Horizontal Bar">3D ↗</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Section: 2-Look OLL Step 2 -->
+          <div class="speed-sheet-group">
+            <div class="group-header">
+              <span class="group-badge">OLL STEP 2</span>
+              <h4>Yellow Face (Corner Orientation &bull; 7 Cases)</h4>
+            </div>
+            <div class="speed-table-wrapper">
+              <table class="speed-alg-table">
+                <thead>
+                  <tr>
+                    <th>Case</th>
+                    <th>Algorithm</th>
+                    <th>Chance</th>
+                    <th>Difficulty</th>
+                    <th>Badmephisto's Comment</th>
+                    <th>Practice</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Sune</strong><br><small>1 corner (front-left)</small></td>
+                    <td><code class="alg-code-text">R U R' U R U2 R'</code></td>
+                    <td class="prob-cell">4/54 (7.4%)</td>
+                    <td class="diff-cell diff-x">X (Easy)</td>
+                    <td class="comment-cell">The #1 OLL algorithm. Natural rhythm: up, left, down, left, up, double-turn, down.</td>
+                    <td><button class="cheat-practice-btn" data-alg="R U R' U R U2 R'" data-name="Sune">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Anti-Sune</strong><br><small>1 corner (front-right)</small></td>
+                    <td><code class="alg-code-text">R U2 R' U' R U' R'</code></td>
+                    <td class="prob-cell">4/54 (7.4%)</td>
+                    <td class="diff-cell diff-x">X (Easy)</td>
+                    <td class="comment-cell">Mirror of Sune. Starts with index double-flick U2: R U2 R' U' R U' R'.</td>
+                    <td><button class="cheat-practice-btn" data-alg="R U2 R' U' R U' R'" data-name="Anti-Sune">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Car (Double Headlights)</strong><br><small>Headlights front &amp; back</small></td>
+                    <td><code class="alg-code-text">F (R U R' U')3 F'</code></td>
+                    <td class="prob-cell">2/54 (3.7%)</td>
+                    <td class="diff-cell diff-x">X (Easy)</td>
+                    <td class="comment-cell">Triple Sexy Move wrapped inside F and F': F (R U R' U')3 F'.</td>
+                    <td><button class="cheat-practice-btn" data-alg="F (R U R' U')3 F'" data-name="Car">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Headlights (U-Shape)</strong><br><small>Headlights face front</small></td>
+                    <td><code class="alg-code-text">R2 D (R' U2 R) D' (R' U2 R')</code></td>
+                    <td class="prob-cell">4/54 (7.4%)</td>
+                    <td class="diff-cell diff-xx">XX (Med)</td>
+                    <td class="comment-cell">2 corners oriented in back. Solves with smooth D-layer keyhole moves.</td>
+                    <td><button class="cheat-practice-btn" data-alg="R2 D (R' U2 R) D' (R' U2 R')" data-name="Headlights">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Chameleon</strong><br><small>Yellow on right, front-left</small></td>
+                    <td><code class="alg-code-text">r U R' U' r' F R F'</code></td>
+                    <td class="prob-cell">4/54 (7.4%)</td>
+                    <td class="diff-cell diff-x">X (Easy)</td>
+                    <td class="comment-cell">Wide Sexy move directly into Sledgehammer: (r U R' U') (r' F R F').</td>
+                    <td><button class="cheat-practice-btn" data-alg="r U R' U' r' F R F'" data-name="Chameleon">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Bowtie</strong><br><small>Diagonal corners</small></td>
+                    <td><code class="alg-code-text">F' r U R' U' r' F R</code></td>
+                    <td class="prob-cell">4/54 (7.4%)</td>
+                    <td class="diff-cell diff-x">X (Easy)</td>
+                    <td class="comment-cell">Inverse Wide Sledge: F' (r U R' U') r' F R.</td>
+                    <td><button class="cheat-practice-btn" data-alg="F' r U R' U' r' F R" data-name="Bowtie">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Wheel / Pi</strong><br><small>Headlights on left</small></td>
+                    <td><code class="alg-code-text">R U2 R2 U' R2 U' R2 U2 R</code></td>
+                    <td class="prob-cell">2/54 (3.7%)</td>
+                    <td class="diff-cell diff-xx">XX (Med)</td>
+                    <td class="comment-cell">0 corners oriented; headlights left. Alternating R2 U' cycles.</td>
+                    <td><button class="cheat-practice-btn" data-alg="R U2 R2 U' R2 U' R2 U2 R" data-name="Wheel / Pi">3D ↗</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Section: Full 21 PLL Standard Reference Table -->
+          <div class="speed-sheet-group">
+            <div class="group-header">
+              <span class="group-badge">FULL PLL SET</span>
+              <h4>Complete 21 PLL Algorithms Table (Badmephisto Standard)</h4>
+            </div>
+            <div class="speed-table-wrapper">
+              <table class="speed-alg-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Algorithm</th>
+                    <th>Chance of Occurence</th>
+                    <th>Difficulty to Learn</th>
+                    <th>Comment</th>
+                    <th>Practice</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Aa Perm</strong><br><small>Adjacent corners</small></td>
+                    <td><code class="alg-code-text">x (R' U R') D2 (R U' R') D2 R2 x'</code></td>
+                    <td class="prob-cell">1/18 (5.56%)</td>
+                    <td class="diff-cell diff-xxx">XXX (Hard)</td>
+                    <td class="comment-cell">The algorithm has a little bit of symmetry to it. Track the two corners in UBR and UFR around the cube as you do it.</td>
+                    <td><button class="cheat-practice-btn" data-alg="x (R' U R') D2 (R U' R') D2 R2 x'" data-name="Aa Perm">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Ab Perm</strong><br><small>Adjacent corners</small></td>
+                    <td><code class="alg-code-text">x R2 D2 (R U R') D2 (R U' R) x'</code></td>
+                    <td class="prob-cell">1/18 (5.56%)</td>
+                    <td class="diff-cell diff-xx">XX (Med)</td>
+                    <td class="comment-cell">This is the exact same type of motion you do in Aa Perm. If memorized by motions instead of notation, very easy.</td>
+                    <td><button class="cheat-practice-btn" data-alg="x R2 D2 (R U R') D2 (R U' R) x'" data-name="Ab Perm">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Ub Perm</strong><br><small>CCW 3-edge cycle</small></td>
+                    <td><code class="alg-code-text">R2 U (R U R' U') (R' U' R' U R')</code></td>
+                    <td class="prob-cell">1/18 (5.56%)</td>
+                    <td class="diff-cell diff-x">X (Easy)</td>
+                    <td class="comment-cell">Note how the algorithm is basically always R and then U' U U U' in that symmetrical order accompanying the R, and lastly R'.</td>
+                    <td><button class="cheat-practice-btn" data-alg="R2 U (R U R' U') (R' U' R' U R')" data-name="Ub Perm">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Ua Perm</strong><br><small>CW 3-edge cycle</small></td>
+                    <td><code class="alg-code-text">R U' (R U R U) (R U' R' U') R2</code></td>
+                    <td class="prob-cell">1/18 (5.56%)</td>
+                    <td class="diff-cell diff-x">X (Easy)</td>
+                    <td class="comment-cell">The way I remember it: R2 U, then the R U R' U' trigger, then last two letters of trigger, then R' and fix alignment.</td>
+                    <td><button class="cheat-practice-btn" data-alg="R U' (R U R U) (R U' R' U') R2" data-name="Ua Perm">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>H Perm</strong><br><small>Opposite edges swap</small></td>
+                    <td><code class="alg-code-text">(M2 U) (M2 U2) (M2 U) M2</code></td>
+                    <td class="prob-cell">1/72 (1.39%)</td>
+                    <td class="diff-cell diff-x">X (Easy)</td>
+                    <td class="comment-cell">A very easy to remember algorithm. Note how the M2's always alternate, and in between you simply have just U, U2, U.</td>
+                    <td><button class="cheat-practice-btn" data-alg="(M2 U) (M2 U2) (M2 U) M2" data-name="H Perm">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>T Perm</strong><br><small>Headlights on left</small></td>
+                    <td><code class="alg-code-text">(R U R' U') (R' F R2 U') (R' U' R U) (R' F')</code></td>
+                    <td class="prob-cell">1/18 (5.56%)</td>
+                    <td class="diff-cell diff-xx">XX (Med)</td>
+                    <td class="comment-cell">I find it easy to learn this algorithm by tracking F2L pairs around the cube: R U R' U' takes out a pair, R' F hides it, and R U R' F' restores F2L.</td>
+                    <td><button class="cheat-practice-btn" data-alg="(R U R' U') (R' F R2 U') (R' U' R U) (R' F')" data-name="T Perm">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Jb Perm</strong><br><small>1x3 bar on right</small></td>
+                    <td><code class="alg-code-text">(R U R' F') (R U R' U') (R' F R2 U' R')</code></td>
+                    <td class="prob-cell">1/18 (5.56%)</td>
+                    <td class="diff-cell diff-x">X (Easy)</td>
+                    <td class="comment-cell">Notice this is EXACTLY the same algorithm as T perm, but the R U R' F' from the end was moved to the beginning! Fastest PLL in cubing.</td>
+                    <td><button class="cheat-practice-btn" data-alg="(R U R' F') (R U R' U') (R' F R2 U' R')" data-name="Jb Perm">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Ja Perm</strong><br><small>1x3 bar on left</small></td>
+                    <td><code class="alg-code-text">x R2 F R F' R U2 r' U r U2 x'</code></td>
+                    <td class="prob-cell">1/18 (5.56%)</td>
+                    <td class="diff-cell diff-xx">XX (Med)</td>
+                    <td class="comment-cell">Left-handed counterpart of Jb, or executed cleanly with an x-rotation. Full 1x3 bar on left.</td>
+                    <td><button class="cheat-practice-btn" data-alg="x R2 F R F' R U2 r' U r U2 x'" data-name="Ja Perm">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Y Perm</strong><br><small>Diagonal corners</small></td>
+                    <td><code class="alg-code-text">F (R U' R' U') (R U R' F') (R U R' U') (R' F R F')</code></td>
+                    <td class="prob-cell">1/18 (5.56%)</td>
+                    <td class="diff-cell diff-xx">XX (Med)</td>
+                    <td class="comment-cell">Track F2L pairs: F brings a pair up, R U' R' inserts to middle, then finish with OLL sledgehammer trigger (R' F R F').</td>
+                    <td><button class="cheat-practice-btn" data-alg="F (R U' R' U') (R U R' F') (R U R' U') (R' F R F')" data-name="Y Perm">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Rb Perm</strong><br><small>Block on back-right</small></td>
+                    <td><code class="alg-code-text">(R' U2 R' D') (R U' R' D) (R U R U' R' U' R)</code></td>
+                    <td class="prob-cell">1/18 (5.56%)</td>
+                    <td class="diff-cell diff-xx">XX (Med)</td>
+                    <td class="comment-cell">Again for this one I find it easiest to track an F2L pair: after R' F you have an F2L pair on the bottom, do (R U R' U') sexy move, R' F' reconnects it.</td>
+                    <td><button class="cheat-practice-btn" data-alg="(R' U2 R' D') (R U' R' D) (R U R U' R' U' R)" data-name="Rb Perm">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Ra Perm</strong><br><small>Block on front-right</small></td>
+                    <td><code class="alg-code-text">(R U R' F') (R U2 R' U2) (R' F R U) (R U2 R')</code></td>
+                    <td class="prob-cell">1/18 (5.56%)</td>
+                    <td class="diff-cell diff-xx">XX (Med)</td>
+                    <td class="comment-cell">Start with R U R' F', then fluid U2 double-turns R U2 R' U2, and finish with R' F R U R U2 R'.</td>
+                    <td><button class="cheat-practice-btn" data-alg="(R U R' F') (R U2 R' U2) (R' F R U) (R U2 R')" data-name="Ra Perm">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Z Perm</strong><br><small>Adjacent edges swap</small></td>
+                    <td><code class="alg-code-text">M' U (M2 U M2 U) M' U2 M2</code></td>
+                    <td class="prob-cell">1/36 (2.78%)</td>
+                    <td class="diff-cell diff-xx">XX (Med)</td>
+                    <td class="comment-cell">Swaps adjacent edges. Track the M2 pulses separated by U turns: M' U (M2 U M2 U) M' U2 M2.</td>
+                    <td><button class="cheat-practice-btn" data-alg="M' U (M2 U M2 U) M' U2 M2" data-name="Z Perm">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>F Perm</strong><br><small>Full bar + headlights</small></td>
+                    <td><code class="alg-code-text">(R' U' F') (R U R' U') (R' F R2 U' R') (U' R U R' U R)</code></td>
+                    <td class="prob-cell">1/18 (5.56%)</td>
+                    <td class="diff-cell diff-xx">XX (Med)</td>
+                    <td class="comment-cell">Setup into a T-Perm! R' U' F' sets up the pieces, execute the T-perm body, and U' R U R' U R finishes it cleanly.</td>
+                    <td><button class="cheat-practice-btn" data-alg="(R' U' F') (R U R' U') (R' F R2 U' R') (U' R U R' U R)" data-name="F Perm">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>V Perm</strong><br><small>2x2 block solved</small></td>
+                    <td><code class="alg-code-text">(R' U R' U') y (R' F' R2 U') (R' U R' F) (R F)</code></td>
+                    <td class="prob-cell">1/18 (5.56%)</td>
+                    <td class="diff-cell diff-xx">XX (Med)</td>
+                    <td class="comment-cell">Starts with reverse sexy (R' U R' U') into a smooth y rotation, then finishes with (R' U R' F) (R F).</td>
+                    <td><button class="cheat-practice-btn" data-alg="(R' U R' U') y (R' F' R2 U') (R' U R' F) (R F)" data-name="V Perm">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>E Perm</strong><br><small>Diagonal corners</small></td>
+                    <td><code class="alg-code-text">x' (R U' R' D) (R U R' D') (R U R' D) (R U' R' D') x</code></td>
+                    <td class="prob-cell">1/36 (2.78%)</td>
+                    <td class="diff-cell diff-xxx">XXX (Hard)</td>
+                    <td class="comment-cell">Diagonal corner swap with no headlights. Alternates R U' R' D with R U R' D' in a steady 4-beat rhythm.</td>
+                    <td><button class="cheat-practice-btn" data-alg="x' (R U' R' D) (R U R' D') (R U R' D) (R U' R' D') x" data-name="E Perm">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Na Perm</strong><br><small>Double side bars</small></td>
+                    <td><code class="alg-code-text">(R U R' U) (R U R' F') (R U R' U') (R' F R2 U' R') (U2 R U' R')</code></td>
+                    <td class="prob-cell">1/72 (1.39%)</td>
+                    <td class="diff-cell diff-xxx">XXX (Hard)</td>
+                    <td class="comment-cell">Rare case (1/72). Starts with (R U R' U) setup into Jb Perm body, and finishes with U2 R U' R'.</td>
+                    <td><button class="cheat-practice-btn" data-alg="(R U R' U) (R U R' F') (R U R' U') (R' F R2 U' R') (U2 R U' R')" data-name="Na Perm">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Nb Perm</strong><br><small>Double front/back bars</small></td>
+                    <td><code class="alg-code-text">(R' U R U') (R' F' U' F) (R U R' F) (R' F' R U' R)</code></td>
+                    <td class="prob-cell">1/72 (1.39%)</td>
+                    <td class="diff-cell diff-xxx">XXX (Hard)</td>
+                    <td class="comment-cell">Left-handed / mirrored counterpart of Na Perm. Distinct double bars on front and back.</td>
+                    <td><button class="cheat-practice-btn" data-alg="(R' U R U') (R' F' U' F) (R U R' F) (R' F' R U' R)" data-name="Nb Perm">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Ga Perm</strong><br><small>Headlights left, front block</small></td>
+                    <td><code class="alg-code-text">R2 U (R' U R' U') (R U' R2) D (U' R' U R) D'</code></td>
+                    <td class="prob-cell">1/18 (5.56%)</td>
+                    <td class="diff-cell diff-xx">XX (Med)</td>
+                    <td class="comment-cell">All 4 G perms have headlights on the left. Ga has a 2x1 block in front: R2 U (R' U R' U') (R U' R2) D (U' R' U R) D'.</td>
+                    <td><button class="cheat-practice-btn" data-alg="R2 U (R' U R' U') (R U' R2) D (U' R' U R) D'" data-name="Ga Perm">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Gb Perm</strong><br><small>Headlights left, right block</small></td>
+                    <td><code class="alg-code-text">(R' U' R) U D' (R2 U R' U) (R U' R U' R2) D</code></td>
+                    <td class="prob-cell">1/18 (5.56%)</td>
+                    <td class="diff-cell diff-xx">XX (Med)</td>
+                    <td class="comment-cell">Headlights on left, block on the right. Track the D' slide that sets up the insert.</td>
+                    <td><button class="cheat-practice-btn" data-alg="(R' U' R) U D' (R2 U R' U) (R U' R U' R2) D" data-name="Gb Perm">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Gc Perm</strong><br><small>Headlights left, back block</small></td>
+                    <td><code class="alg-code-text">R2 U' (R U' R U) (R' U R2) D' (U R U' R') D</code></td>
+                    <td class="prob-cell">1/18 (5.56%)</td>
+                    <td class="diff-cell diff-xx">XX (Med)</td>
+                    <td class="comment-cell">Headlights on left, block on the back. Uses fluid D' moves to cancel pair reconstruction.</td>
+                    <td><button class="cheat-practice-btn" data-alg="R2 U' (R U' R U) (R' U R2) D' (U R U' R') D" data-name="Gc Perm">3D ↗</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Gd Perm</strong><br><small>Headlights left, front-left</small></td>
+                    <td><code class="alg-code-text">(R U R' U') D (R2 U' R U') (R' U R' U R2) D'</code></td>
+                    <td class="prob-cell">1/18 (5.56%)</td>
+                    <td class="diff-cell diff-xx">XX (Med)</td>
+                    <td class="comment-cell">Starts with Sexy Move (R U R' U') into a D move, followed by (R2 U' R U') (R' U R' U R2) D'.</td>
+                    <td><button class="cheat-practice-btn" data-alg="(R U R' U') D (R2 U' R U') (R' U R' U R2) D'" data-name="Gd Perm">3D ↗</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-        <div class="notation-cards-grid">
-          <div class="notation-item">
-            <div class="notation-symbol">R</div>
-            <div class="notation-name">Right UP &#11014;&#65039;</div>
-            <p>Push the right side upwards away from you with your right hand.</p>
+
+        <!-- ================= PANE 2: 2-SIDED PLL RECOGNITION ================= -->
+        <div id="modal-pane-recognition" class="modal-pane" style="display: none;">
+          <div class="recognition-guide-intro">
+            <h4>How to Spot Any PLL Without Rotating the Cube</h4>
+            <p>Inspect only <strong>2 adjacent visible faces</strong> (Front &amp; Right). Follow Badmephisto's 3-step decision flow:</p>
           </div>
-          <div class="notation-item">
-            <div class="notation-symbol">R'</div>
-            <div class="notation-name">Right DOWN &#11015;&#65039;</div>
-            <p>Pull the right side downwards towards you.</p>
-          </div>
-          <div class="notation-item">
-            <div class="notation-symbol">U</div>
-            <div class="notation-name">Top LEFT &#11013;&#65039;</div>
-            <p>Flick the top face to the left using your right index finger.</p>
-          </div>
-          <div class="notation-item">
-            <div class="notation-symbol">U'</div>
-            <div class="notation-name">Top RIGHT &#10145;&#65039;</div>
-            <p>Flick the top face to the right using your left index finger.</p>
-          </div>
-          <div class="notation-item">
-            <div class="notation-symbol">F</div>
-            <div class="notation-name">Front Clockwise &#8635;</div>
-            <p>Turn the front face like clock hands turning forward.</p>
-          </div>
-          <div class="notation-item">
-            <div class="notation-symbol">F'</div>
-            <div class="notation-name">Front Counter-Clockwise &#8634;</div>
-            <p>Turn the front face backwards counter-clockwise.</p>
-          </div>
-          <div class="notation-item">
-            <div class="notation-symbol">f</div>
-            <div class="notation-name">Front TWO Layers &#8635;</div>
-            <p>Push both the front face and middle slice together clockwise.</p>
-          </div>
-          <div class="notation-item">
-            <div class="notation-symbol">r</div>
-            <div class="notation-name">Right TWO Layers &#11014;&#65039;</div>
-            <p>Push both the right face and middle slice upwards together.</p>
-          </div>
-          <div class="notation-item">
-            <div class="notation-symbol">L / L'</div>
-            <div class="notation-name">Left Side (L=Down, L'=Up)</div>
-            <p>Clockwise for left face pushes DOWN towards you; counter-clockwise pushes UP.</p>
-          </div>
-          <div class="notation-item">
-            <div class="notation-symbol">D / D'</div>
-            <div class="notation-name">Bottom Face (Underneath)</div>
-            <p>Turn the bottom layer with your ring finger from underneath.</p>
-          </div>
-          <div class="notation-item">
-            <div class="notation-symbol">M / M'</div>
-            <div class="notation-name">Middle Slice</div>
-            <p>The slice between Left and Right. M pushes down, M' pushes up.</p>
-          </div>
-          <div class="notation-item">
-            <div class="notation-symbol">U2 / R2</div>
-            <div class="notation-name">Double Turn (180&deg;)</div>
-            <p>Turn the face twice. Double-flick with index then middle finger.</p>
-          </div>
-          <div class="notation-item special-highlight">
-            <div class="notation-symbol">(R U R' U') &bull; The "Sexy Move" &#128293;</div>
-            <div class="notation-name">The #1 Speedcubing Muscle Memory Trigger</div>
-            <p>Say it aloud while turning: <strong>Right Up, Top Left, Right Down, Top Right</strong>. Doing this 6 times returns the cube to solved!</p>
-          </div>
-          <div class="notation-item special-highlight">
-            <div class="notation-symbol">(R' F R F') &bull; The Sledgehammer &#9889;</div>
-            <div class="notation-name">Pro F2L &amp; Edge Orientation Trigger</div>
-            <p><strong>Right Down, Front Clockwise, Right Up, Front Counter-Clockwise</strong>. Inserts F2L pairs while orienting top edges!</p>
+          <div class="recog-decision-grid">
+            <div class="recog-card">
+              <span class="recog-tag">STEP 1 &bull; HEADLIGHTS</span>
+              <h5>Corner Check</h5>
+              <p>Look at the corners on your two visible faces:</p>
+              <ul>
+                <li><strong>Headlights on both visible sides:</strong> You have 4 headlights! &rarr; Edges-only (<code>Ua</code>, <code>Ub</code>, <code>H</code>, or <code>Z</code>).</li>
+                <li><strong>Headlights on one side:</strong> Adjacent Corner Swap (<code>T</code>, <code>J</code>, <code>R</code>, <code>F</code>, <code>A</code>, <code>G</code>).</li>
+                <li><strong>No headlights on either side:</strong> Diagonal Corner Swap (<code>Y</code>, <code>V</code>, <code>E</code>, <code>Na</code>, <code>Nb</code>).</li>
+              </ul>
+            </div>
+            <div class="recog-card">
+              <span class="recog-tag">STEP 2 &bull; BLOCKS</span>
+              <h5>Block &amp; Bar Check</h5>
+              <p>Scan for connected 1x2 or 1x3 matching color bars:</p>
+              <ul>
+                <li><strong>Solid 1x3 bar:</strong> <code>Ja</code> (bar on left), <code>Jb</code> (bar on front), or <code>F Perm</code> (bar on back).</li>
+                <li><strong>1x2 block next to headlights:</strong> If front color is opposite headlights = <code>T Perm</code>.</li>
+                <li><strong>No headlights + 1x2 block:</strong> <code>V Perm</code> (one block) or <code>Y Perm</code> (diagonal blocks).</li>
+                <li><strong>No headlights + opposite colors:</strong> <code>E Perm</code> (checkerboard sides).</li>
+              </ul>
+            </div>
+            <div class="recog-card">
+              <span class="recog-tag">STEP 3 &bull; OPPOSITES</span>
+              <h5>Edge Match Check</h5>
+              <p>Compare the edge color to the surrounding corners:</p>
+              <ul>
+                <li><strong>Edge has OPPOSITE color to corners:</strong> Opposite swap (e.g. <code>H-Perm</code> if on both faces, <code>T-Perm</code> front edge).</li>
+                <li><strong>Edge has ADJACENT color:</strong> Adjacent cycle (<code>Z-Perm</code>, <code>U-Perm</code>).</li>
+              </ul>
+            </div>
           </div>
         </div>
+
+        <!-- ================= PANE 3: ZERO-JARGON MOVE NOTATION ================= -->
+        <div id="modal-pane-notation" class="modal-pane" style="display: none;">
+          <div class="notation-explain-intro">
+            <p>Each letter represents a face: <strong>R</strong>=Right, <strong>L</strong>=Left, <strong>U</strong>=Upper (Top), <strong>D</strong>=Down (Bottom), <strong>F</strong>=Front, <strong>B</strong>=Back.<br>
+            &bull; <strong>Letter alone (e.g. R):</strong> Turn that face <strong>CLOCKWISE</strong> (90&deg;).<br>
+            &bull; <strong>Apostrophe ' (Prime, e.g. R'):</strong> Turn it <strong>COUNTER-CLOCKWISE</strong>.<br>
+            &bull; <strong>Number 2 (e.g. U2):</strong> Turn it <strong>TWICE</strong> (180&deg;).<br>
+            &bull; <strong>Lowercase f / r:</strong> Push <strong>TWO LAYERS</strong> together.</p>
+          </div>
+          <div class="notation-cards-grid">
+            <div class="notation-item">
+              <div class="notation-symbol">R</div>
+              <div class="notation-name">Right UP &#11014;&#65039;</div>
+              <p>Push the right side upwards away from you with your right hand.</p>
+            </div>
+            <div class="notation-item">
+              <div class="notation-symbol">R'</div>
+              <div class="notation-name">Right DOWN &#11015;&#65039;</div>
+              <p>Pull the right side downwards towards you.</p>
+            </div>
+            <div class="notation-item">
+              <div class="notation-symbol">U</div>
+              <div class="notation-name">Top LEFT &#11013;&#65039;</div>
+              <p>Flick the top face to the left using your right index finger.</p>
+            </div>
+            <div class="notation-item">
+              <div class="notation-symbol">U'</div>
+              <div class="notation-name">Top RIGHT &#10145;&#65039;</div>
+              <p>Flick the top face to the right using your left index finger.</p>
+            </div>
+            <div class="notation-item">
+              <div class="notation-symbol">F</div>
+              <div class="notation-name">Front Clockwise &#8635;</div>
+              <p>Turn the front face like clock hands turning forward.</p>
+            </div>
+            <div class="notation-item">
+              <div class="notation-symbol">F'</div>
+              <div class="notation-name">Front Counter-Clockwise &#8634;</div>
+              <p>Turn the front face backwards counter-clockwise.</p>
+            </div>
+            <div class="notation-item">
+              <div class="notation-symbol">f</div>
+              <div class="notation-name">Front TWO Layers &#8635;</div>
+              <p>Push both the front face and middle slice together clockwise.</p>
+            </div>
+            <div class="notation-item">
+              <div class="notation-symbol">r</div>
+              <div class="notation-name">Right TWO Layers &#11014;&#65039;</div>
+              <p>Push both the right face and middle slice upwards together.</p>
+            </div>
+            <div class="notation-item">
+              <div class="notation-symbol">L / L'</div>
+              <div class="notation-name">Left Side (L=Down, L'=Up)</div>
+              <p>Clockwise for left face pushes DOWN towards you; counter-clockwise pushes UP.</p>
+            </div>
+            <div class="notation-item">
+              <div class="notation-symbol">D / D'</div>
+              <div class="notation-name">Bottom Face (Underneath)</div>
+              <p>Turn the bottom layer with your ring finger from underneath.</p>
+            </div>
+            <div class="notation-item">
+              <div class="notation-symbol">M / M'</div>
+              <div class="notation-name">Middle Slice</div>
+              <p>The slice between Left and Right. M pushes down, M' pushes up.</p>
+            </div>
+            <div class="notation-item">
+              <div class="notation-symbol">U2 / R2</div>
+              <div class="notation-name">Double Turn (180&deg;)</div>
+              <p>Turn the face twice. Double-flick with index then middle finger.</p>
+            </div>
+            <div class="notation-item special-highlight">
+              <div class="notation-symbol">(R U R' U') &bull; The "Sexy Move" &#128293;</div>
+              <div class="notation-name">The #1 Speedcubing Muscle Memory Trigger</div>
+              <p>Say it aloud while turning: <strong>Right Up, Top Left, Right Down, Top Right</strong>. Repeating 6 times returns cube to solved!</p>
+            </div>
+            <div class="notation-item special-highlight">
+              <div class="notation-symbol">(R' F R F') &bull; The Sledgehammer &#9889;</div>
+              <div class="notation-name">Pro F2L &amp; Edge Orientation Trigger</div>
+              <p><strong>Right Down, Front Clockwise, Right Up, Front Counter-Clockwise</strong>. Inserts F2L pairs while orienting top edges!</p>
+            </div>
+          </div>
+        </div>
+
       </div>
+
       <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 8px;">
         <button id="btn-modal-open-notation" class="btn btn-secondary">🧭 Open 3D Notation Studio</button>
         <button id="btn-close-cheat-sheet-foot" class="btn btn-primary">Got it! Back to Solving &rarr;</button>

@@ -29,6 +29,11 @@ export const BEGINNER_LAST_LAYER = [
           { name: 'Sexy Move', code: "R U R' U'" },
           { name: 'Wide Sexy', code: "f (R U R' U') f'" }
         ],
+        probability: '1/8',
+        probabilityPct: '12.5%',
+        difficulty: 'Easy',
+        difficultyRating: 'X',
+        comment: 'Line algorithm F (R U R\' U\') F\' followed by L-shape algorithm f (R U R\' U\') f\'.',
         notes: 'Use both six-move parts of this sequence. Check the yellow edges after the full sequence.'
       },
       {
@@ -46,6 +51,11 @@ export const BEGINNER_LAST_LAYER = [
           rims: { B: [0, 0, 0], F: [0, 1, 0], L: [0, 0, 0], R: [0, 1, 0] }
         },
         triggers: [{ name: 'Wide FRURUF', code: "f (R U R' U') f'" }],
+        probability: '1/2',
+        probabilityPct: '50%',
+        difficulty: 'Easy',
+        difficultyRating: 'X',
+        comment: 'Use lowercase f (turn both front layers together). In just 6 moves, your yellow cross is done!',
         notes: 'Use lowercase f (turn both front layers together). In just 6 moves, your cross is done!'
       },
       {
@@ -63,6 +73,11 @@ export const BEGINNER_LAST_LAYER = [
           rims: { B: [0, 1, 0], F: [0, 1, 0], L: [0, 0, 0], R: [0, 0, 0] }
         },
         triggers: [{ name: 'FRURUF', code: "F (R U R' U') F'" }],
+        probability: '1/4',
+        probabilityPct: '25%',
+        difficulty: 'Easy',
+        difficultyRating: 'X',
+        comment: 'The famous "FRURUF" trigger: Front clockwise, sexy move (R U R\' U\'), Front counter-clockwise.',
         notes: 'The famous "FRURUF" move: Front clockwise, sexy move (R U R\' U\'), Front counter-clockwise.'
       }
     ]
@@ -87,6 +102,11 @@ export const BEGINNER_LAST_LAYER = [
           rims: { B: [1, 0, 0], F: [0, 0, 1], L: [0, 0, 0], R: [1, 0, 0] }
         },
         triggers: [{ name: 'Sune Trigger', code: "R U R' U R U2 R'" }],
+        probability: '4/54',
+        probabilityPct: '7.41%',
+        difficulty: 'Easy',
+        difficultyRating: 'X',
+        comment: 'The #1 most famous OLL in speedcubing! 1 corner yellow at front-left. Follow the rhythm: up, left, down, left, up, double-turn, down.',
         notes: 'The most famous algorithm in speedcubing! 1 corner yellow (front-left).'
       },
       {
@@ -104,6 +124,11 @@ export const BEGINNER_LAST_LAYER = [
           rims: { B: [0, 0, 1], F: [1, 0, 0], L: [0, 0, 1], R: [0, 0, 0] }
         },
         triggers: [{ name: 'Anti-Sune Trigger', code: "R U2 R' U' R U' R'" }],
+        probability: '4/54',
+        probabilityPct: '7.41%',
+        difficulty: 'Easy',
+        difficultyRating: 'X',
+        comment: 'Exact mirror of Sune. Put the corner at front-right and begin with U2 double turn.',
         notes: 'Mirror of Sune. 1 corner oriented (front-right).'
       },
       {
@@ -121,6 +146,11 @@ export const BEGINNER_LAST_LAYER = [
           rims: { B: [1, 0, 1], F: [1, 0, 1], L: [0, 0, 0], R: [0, 0, 0] }
         },
         triggers: [{ name: 'Triple Sexy', code: "(R U R' U')3" }],
+        probability: '2/54',
+        probabilityPct: '3.70%',
+        difficulty: 'Easy',
+        difficultyRating: 'X',
+        comment: '0 corners oriented. Wrap Triple Sexy Move inside F and F\': F (R U R\' U\')3 F\'.',
         notes: '0 corners oriented. Two pairs of headlights on front and back.'
       },
       {
@@ -138,6 +168,11 @@ export const BEGINNER_LAST_LAYER = [
           rims: { B: [0, 0, 0], F: [1, 0, 1], L: [0, 0, 0], R: [0, 0, 0] }
         },
         triggers: [{ name: 'Keyhole D-Move', code: "R2 D ... D'" }],
+        probability: '4/54',
+        probabilityPct: '7.41%',
+        difficulty: 'Medium',
+        difficultyRating: 'XX',
+        comment: '2 corners oriented in back, headlights in front. Uses keyhole D turns: R2 D (R\' U2 R) D\' (R\' U2 R\').',
         notes: '2 corners oriented in back. The other two corners face front (headlights).'
       },
       {
@@ -155,6 +190,11 @@ export const BEGINNER_LAST_LAYER = [
           rims: { B: [0, 0, 1], F: [0, 0, 0], L: [0, 0, 0], R: [0, 0, 1] }
         },
         triggers: [{ name: 'Wide Sledge', code: "r U R' U' r' F R F'" }],
+        probability: '4/54',
+        probabilityPct: '7.41%',
+        difficulty: 'Easy',
+        difficultyRating: 'X',
+        comment: 'Wide sexy move directly into Sledgehammer: (r U R\' U\') (r\' F R F\'). Very fast execution.',
         notes: '2 corners oriented. The other two face opposite directions.'
       },
       {
@@ -172,6 +212,11 @@ export const BEGINNER_LAST_LAYER = [
           rims: { B: [0, 0, 0], F: [1, 0, 0], L: [0, 0, 0], R: [1, 0, 0] }
         },
         triggers: [{ name: 'Inverse Wide Sledge', code: "F' r U R' U' r' F R" }],
+        probability: '4/54',
+        probabilityPct: '7.41%',
+        difficulty: 'Easy',
+        difficultyRating: 'X',
+        comment: 'Inverse wide sledge: F\' (r U R\' U\') r\' F R.',
         notes: '2 diagonally oriented corners.'
       },
       {
@@ -189,6 +234,11 @@ export const BEGINNER_LAST_LAYER = [
           rims: { B: [0, 0, 0], F: [1, 0, 1], L: [1, 0, 0], R: [0, 0, 1] }
         },
         triggers: [{ name: 'R2 Swaps', code: "R2 U' R2 U' R2" }],
+        probability: '2/54',
+        probabilityPct: '3.70%',
+        difficulty: 'Medium',
+        difficultyRating: 'XX',
+        comment: '0 corners oriented. Headlights on left. Follow the symmetrical R2 U\' cycles.',
         notes: '0 corners oriented. One pair of headlights, two corners facing outward.'
       }
     ]
@@ -217,6 +267,11 @@ export const BEGINNER_LAST_LAYER = [
           }
         },
         triggers: [{ name: 'B2 Double Ring', code: "R' F R' B2 R F' R' B2 R2" }],
+        probability: '1/18',
+        probabilityPct: '5.56%',
+        difficulty: 'Medium',
+        difficultyRating: 'XX',
+        comment: 'Classic headlights corner swap. Hold headlights in back and execute to solve all 4 corners.',
         notes: 'Hold headlights in back (or left) and execute. Swaps remaining 2 corners.'
       },
       {
@@ -243,6 +298,11 @@ export const BEGINNER_LAST_LAYER = [
           { name: 'T-Perm Core', code: "R U R' F'" },
           { name: 'Sledgehammer', code: "R' F R F'" }
         ],
+        probability: '1/18',
+        probabilityPct: '5.56%',
+        difficulty: 'Medium',
+        difficultyRating: 'XX',
+        comment: 'Track F2L pairs: setup with F, insert, and finish with (R\' F R F\') sledgehammer.',
         notes: 'Swaps diagonal opposite corners.'
       }
     ]
@@ -271,6 +331,11 @@ export const BEGINNER_LAST_LAYER = [
           }
         },
         triggers: [{ name: 'Right Flow', code: "R U' (R U R U) (R U' R' U') R2" }],
+        probability: '1/18',
+        probabilityPct: '5.56%',
+        difficulty: 'Easy',
+        difficultyRating: 'X',
+        comment: 'Hold solved bar on back. Cycles 3 edges clockwise. Continuous right-hand flow.',
         notes: 'Hold solved bar at the back. Left-front-right edges cycle clockwise.'
       },
       {
@@ -293,6 +358,11 @@ export const BEGINNER_LAST_LAYER = [
           }
         },
         triggers: [{ name: 'Inverse Flow', code: "R2 U (R U R' U') (R' U' R' U R')" }],
+        probability: '1/18',
+        probabilityPct: '5.56%',
+        difficulty: 'Easy',
+        difficultyRating: 'X',
+        comment: 'Notice R alternates with U\' U U U\' in symmetrical order accompanying R.',
         notes: 'Hold solved bar at the back. Edges cycle counter-clockwise.'
       },
       {
@@ -314,6 +384,11 @@ export const BEGINNER_LAST_LAYER = [
           }
         },
         triggers: [{ name: 'M-Slice Rhythm', code: "M2 U M2 U2 M2 U M2" }],
+        probability: '1/72',
+        probabilityPct: '1.39%',
+        difficulty: 'Easy',
+        difficultyRating: 'X',
+        comment: 'Very easy to remember. M2 slice turns alternate with U, U2, U in a simple rhythm.',
         notes: 'Fingertrick gold: double M slice flicks with ring finger!'
       },
       {
@@ -333,6 +408,11 @@ export const BEGINNER_LAST_LAYER = [
           }
         },
         triggers: [{ name: 'M2 Z-Swap', code: "M' U M2 U M2 U M' U2 M2" }],
+        probability: '1/36',
+        probabilityPct: '2.78%',
+        difficulty: 'Medium',
+        difficultyRating: 'XX',
+        comment: 'Adjacent edge swaps. Track the M2 pulses separated by U turns: M\' U (M2 U M2 U) M\' U2 M2.',
         notes: 'Swaps front-right and back-left adjacent edges.'
       }
     ]
@@ -363,6 +443,11 @@ export const PLL_ALGORITHMS = [
       { name: 'Reverse Sexy', code: "R' U' R U" },
       { name: 'Sledge End', code: "R' F'" }
     ],
+    probability: '1/18',
+    probabilityPct: '5.56%',
+    difficulty: 'Medium',
+    difficultyRating: 'XX',
+    comment: 'I find it easy to learn this algorithm by tracking F2L pairs around the cube: R U R\' U\' takes out a pair, R\' F hides it, R2 U\' R\' aligns with whites, and R U R\' F\' restores F2L.',
     arrows: '2 corners + 2 edges swap',
     recognition: 'Headlights on right, headlights on left, 2 opposing bars',
     speedTip: 'The fundamental benchmark PLL for speedcubers. Practice until sub-1.2s.'
@@ -389,6 +474,11 @@ export const PLL_ALGORITHMS = [
       { name: 'Sexy Move', code: "R U R' U'" },
       { name: 'T-Perm End', code: "R' F R2 U' R'" }
     ],
+    probability: '1/18',
+    probabilityPct: '5.56%',
+    difficulty: 'Easy',
+    difficultyRating: 'X',
+    comment: 'Notice this is EXACTLY the same algorithm as the T permutation, but the R U R\' F\' from the end was moved to the beginning! So just do R U R\' F\' then start doing the T perm.',
     arrows: '1x3 bar on right',
     recognition: 'Full bar on right, headlights on front (fastest PLL in speedcubing!)',
     speedTip: 'Fastest PLL for most cubers! (Sub-0.9s achievable).'
@@ -409,6 +499,11 @@ export const PLL_ALGORITHMS = [
       }
     },
     triggers: [{ name: 'x-rotation Alg', code: "x R2 F R F' R U2 ..." }],
+    probability: '1/18',
+    probabilityPct: '5.56%',
+    difficulty: 'Medium',
+    difficultyRating: 'XX',
+    comment: 'Left-handed counterpart of Jb Perm, or executed cleanly with an x-rotation: x R2 F R F\' R U2 r\' U r U2 x\'.',
     arrows: '1x3 bar on left, corner swap on right',
     recognition: 'Full bar on left, headlights on back',
     speedTip: 'Left-handed counterpart or x-rotation alg.'
@@ -429,6 +524,11 @@ export const PLL_ALGORITHMS = [
       }
     },
     triggers: [{ name: 'Cycle', code: "R U' R U R U R U' R' U' R2" }],
+    probability: '1/18',
+    probabilityPct: '5.56%',
+    difficulty: 'Easy',
+    difficultyRating: 'X',
+    comment: 'The way I remember it: R2 U, then the R U R\' U\' trigger, then the last two letters of the R U R\' U\' trigger, then do R\' and fix alignment.',
     arrows: '3 edges cycle CW',
     recognition: '1 solved bar on back + front-right edge matches front center',
     speedTip: 'Continuous right-hand flow. No regrip required.'
@@ -449,6 +549,11 @@ export const PLL_ALGORITHMS = [
       }
     },
     triggers: [{ name: 'Reverse Cycle', code: "R2 U R U R' U' R' U' R' U R'" }],
+    probability: '1/18',
+    probabilityPct: '5.56%',
+    difficulty: 'Easy',
+    difficultyRating: 'X',
+    comment: 'Note how the algorithm is basically always R and then U\' U U U\' in that symmetrical order accompanying the R, and lastly R\' and fix up rest.',
     arrows: '3 edges cycle CCW',
     recognition: '1 solved bar on back + front-left edge matches front center',
     speedTip: 'Start with index push or right thumb push.'
@@ -465,6 +570,11 @@ export const PLL_ALGORITHMS = [
       pllArrows: [[0, 1, 2, 1], [2, 1, 0, 1], [1, 0, 1, 2], [1, 2, 1, 0]]
     },
     triggers: [{ name: 'Double M-Slice', code: "M2 U M2 U2 M2 U M2" }],
+    probability: '1/72',
+    probabilityPct: '1.39%',
+    difficulty: 'Easy',
+    difficultyRating: 'X',
+    comment: 'A very easy to remember algorithm. Note how the M2 slice turns always alternate, and in between you simply have just U, U2, U.',
     arrows: 'Opposite edge pairs swap',
     recognition: 'All 4 sides have opposite color edge from corners',
     speedTip: 'One of the fastest PLLs. Can be executed in under 0.8s.'
@@ -481,6 +591,11 @@ export const PLL_ALGORITHMS = [
       pllArrows: [[2, 1, 1, 2], [1, 2, 2, 1], [0, 1, 1, 0], [1, 0, 0, 1]]
     },
     triggers: [{ name: 'M-Slice Swap', code: "M' U M2 U M2 U M' U2 M2" }],
+    probability: '1/36',
+    probabilityPct: '2.78%',
+    difficulty: 'Medium',
+    difficultyRating: 'XX',
+    comment: 'Swaps adjacent edges. Track the M2 pulses separated by U turns: M\' U (M2 U M2 U) M\' U2 M2.',
     arrows: 'Adjacent edge pairs swap',
     recognition: 'Checkered adjacent colors, 0 solved bars',
     speedTip: 'Use ring-middle double flick for M2 from the bottom.'
@@ -502,6 +617,11 @@ export const PLL_ALGORITHMS = [
       { name: 'Sexy Move', code: "R U R' U'" },
       { name: 'Sledgehammer', code: "R' F R F'" }
     ],
+    probability: '1/18',
+    probabilityPct: '5.56%',
+    difficulty: 'Medium',
+    difficultyRating: 'XX',
+    comment: 'Helpful to see how F2L pairs move around for this algorithm: F brings an F2L pair up, R U\' R\' inserts it to middle. Then finish with OLL sledgehammer trigger (R\' F R F\').',
     arrows: 'Diagonal corners swap + adjacent edges swap',
     recognition: 'Headlights on corner of block, no 2-side headlights',
     speedTip: 'Made of two standard speedcubing triggers: (FRURUF variant) + (Sledgehammer).'
@@ -526,6 +646,11 @@ export const PLL_ALGORITHMS = [
       { name: 'T-Perm Core', code: "R U R' U' R' F R2 U' R'" },
       { name: 'Finish', code: "U' R U R' U R" }
     ],
+    probability: '1/18',
+    probabilityPct: '5.56%',
+    difficulty: 'Medium',
+    difficultyRating: 'XX',
+    comment: 'Setup into a T-Perm! R\' U\' F\' sets up the pieces, execute the T-perm body, and U\' R U R\' U R finishes it cleanly.',
     arrows: '1 full solved side, opposite side has headlights',
     recognition: 'Full bar on left, headlights on right',
     speedTip: 'T-Perm setup variation (starts with setup R\' U\' F\').'
@@ -545,6 +670,11 @@ export const PLL_ALGORITHMS = [
       { name: 'Start', code: "R U R' F'" },
       { name: 'U2 inserts', code: "R U2 R' U2" }
     ],
+    probability: '1/18',
+    probabilityPct: '5.56%',
+    difficulty: 'Medium',
+    difficultyRating: 'XX',
+    comment: 'Start with R U R\' F\', then fluid U2 double-turns R U2 R\' U2, and finish with R\' F R U R U2 R\'. Avoids awkward D moves.',
     arrows: 'Headlights on left + 2x1 block on front-right',
     recognition: 'Headlights on left, block on front',
     speedTip: 'Modern F\' insertion avoids awkward D moves.'
@@ -561,6 +691,11 @@ export const PLL_ALGORITHMS = [
       pllArrows: [[0, 2, 2, 2], [2, 2, 0, 2]]
     },
     triggers: [{ name: 'Keyhole D', code: "R' U2 R' D' R U' R' D" }],
+    probability: '1/18',
+    probabilityPct: '5.56%',
+    difficulty: 'Medium',
+    difficultyRating: 'XX',
+    comment: 'Again for this one I find it easiest to track an F2L pair: after R\' F you have an F2L pair on the bottom, do (R U R\' U\') trigger, R\' F\' reconnects it, and finishes with R2 U\'.',
     arrows: 'Headlights on left + 2x1 block on back-right',
     recognition: 'Headlights on left, block on back',
     speedTip: 'Keep right wrist stable during U2.'
@@ -577,6 +712,11 @@ export const PLL_ALGORITHMS = [
       pllArrows: [[0, 0, 2, 0], [2, 0, 2, 2], [2, 2, 0, 0]]
     },
     triggers: [{ name: 'D2 Flicks', code: "x R' U R' D2 R U' R' D2 R2 x'" }],
+    probability: '1/18',
+    probabilityPct: '5.56%',
+    difficulty: 'Hard',
+    difficultyRating: 'XXX',
+    comment: 'The algorithm has a little bit of symmetry to it. Track the two corners in UBR and UFR around the cube as you do it: x [(R\' U R\') D2] [(R U\' R\') D2] R2.',
     arrows: '3 corners cycle',
     recognition: 'Headlights on left, solved 2x1 block on back-right',
     speedTip: 'Use left ring finger for D2 double flick.'
@@ -593,6 +733,11 @@ export const PLL_ALGORITHMS = [
       pllArrows: [[0, 0, 2, 2], [2, 2, 2, 0], [2, 0, 0, 0]]
     },
     triggers: [{ name: 'D2 Mirror', code: "x R2 D2 R U R' D2 R U' R x'" }],
+    probability: '1/18',
+    probabilityPct: '5.56%',
+    difficulty: 'Medium',
+    difficultyRating: 'XX',
+    comment: 'This is the exact same type of motion you do in Aa Perm. If you memorized it by motions instead of notation, you can do this one without problems.',
     arrows: '3 corners cycle',
     recognition: 'Headlights on left, solved 2x1 block on front-right',
     speedTip: 'Mirror of Aa perm.'
@@ -609,6 +754,11 @@ export const PLL_ALGORITHMS = [
       pllArrows: [[0, 0, 0, 2, '#f43f5e'], [0, 2, 0, 0, '#f43f5e'], [2, 0, 2, 2, '#f43f5e'], [2, 2, 2, 0, '#f43f5e']]
     },
     triggers: [{ name: 'Rhythm Sexy-D', code: "(R U' R' D) (R U R' D')" }],
+    probability: '1/36',
+    probabilityPct: '2.78%',
+    difficulty: 'Hard',
+    difficultyRating: 'XXX',
+    comment: 'Diagonal corner swap with no headlights. Alternates R U\' R\' D with R U R\' D\' in a steady 4-beat rhythm.',
     arrows: 'Corners swap diagonally',
     recognition: 'No headlights on any side, edges match adjacent centers',
     speedTip: 'Rhythm: (sexy-D) (reverse-sexy-D\') pattern.'
@@ -625,6 +775,11 @@ export const PLL_ALGORITHMS = [
       pllArrows: [[0, 0, 2, 2, '#f43f5e'], [2, 2, 0, 0, '#f43f5e']]
     },
     triggers: [{ name: 'y-Rotation Slice', code: "R' U R' U' y R' F' R2 U' ..." }],
+    probability: '1/18',
+    probabilityPct: '5.56%',
+    difficulty: 'Medium',
+    difficultyRating: 'XX',
+    comment: 'Starts with reverse sexy (R\' U R\' U\') into a smooth y rotation, then finishes with (R\' U R\' F) (R F).',
     arrows: '2x2 block solved, diagonal corners swap',
     recognition: '2x2 block solved on top-left',
     speedTip: 'Smooth y rotation during the first 4 moves.'
@@ -641,6 +796,11 @@ export const PLL_ALGORITHMS = [
       pllArrows: [[0, 0, 2, 2, '#f43f5e'], [2, 2, 0, 0, '#f43f5e']]
     },
     triggers: [{ name: 'J-Perm Extension', code: "R U R' U ... Jb Perm ... U2 R U' R'" }],
+    probability: '1/72',
+    probabilityPct: '1.39%',
+    difficulty: 'Hard',
+    difficultyRating: 'XXX',
+    comment: 'Rare case (1/72). Starts with (R U R\' U) setup into Jb Perm body, and finishes with U2 R U\' R\'.',
     arrows: 'Opposite corners & edges swap',
     recognition: 'Two solved 2x1 bars on opposite sides (left & right)',
     speedTip: 'Recognizable by double bars. J-perm extension.'
@@ -657,6 +817,11 @@ export const PLL_ALGORITHMS = [
       pllArrows: [[0, 2, 2, 0, '#f43f5e'], [2, 0, 0, 2, '#f43f5e']]
     },
     triggers: [{ name: 'Nb Sledge combo', code: "R' U R U' R' F' U' F ..." }],
+    probability: '1/72',
+    probabilityPct: '1.39%',
+    difficulty: 'Hard',
+    difficultyRating: 'XXX',
+    comment: 'Left-handed / mirrored counterpart of Na Perm. Distinct double bars on front and back.',
     arrows: 'Opposite corners & edges swap',
     recognition: 'Two solved 2x1 bars on front & back',
     speedTip: 'Double bars on front & back.'
@@ -673,6 +838,11 @@ export const PLL_ALGORITHMS = [
       pllArrows: [[0, 0, 2, 0], [2, 0, 2, 2], [2, 2, 0, 0]]
     },
     triggers: [{ name: 'D-Layer Slide', code: "R2 U R' U R' U' R U' R2 D ..." }],
+    probability: '1/18',
+    probabilityPct: '5.56%',
+    difficulty: 'Medium',
+    difficultyRating: 'XX',
+    comment: 'All 4 G perms have headlights on the left. Ga has a 2x1 block in front: R2 U (R\' U R\' U\') (R U\' R2) D (U\' R\' U R) D\'.',
     arrows: 'Headlights on left, 2x1 block on front-right',
     recognition: 'Headlights on left, block in front',
     speedTip: 'All 4 G perms have headlights on the left. Learn the block position!'
@@ -689,6 +859,11 @@ export const PLL_ALGORITHMS = [
       pllArrows: [[0, 0, 2, 0], [2, 0, 2, 2], [2, 2, 0, 0]]
     },
     triggers: [{ name: 'Start', code: "R' U' R U D'" }],
+    probability: '1/18',
+    probabilityPct: '5.56%',
+    difficulty: 'Medium',
+    difficultyRating: 'XX',
+    comment: 'Headlights on left, block on the right. Track the D\' slide that sets up the insert.',
     arrows: 'Headlights on left, 2x1 block on back-right',
     recognition: 'Headlights on left, block on right',
     speedTip: 'Headlights on left, 2x1 block on the right.'
@@ -705,6 +880,11 @@ export const PLL_ALGORITHMS = [
       pllArrows: [[0, 0, 2, 2], [2, 2, 2, 0], [2, 0, 0, 0]]
     },
     triggers: [{ name: 'D-Counter Slide', code: "R2 U' R U' R U R' U R2 D' ..." }],
+    probability: '1/18',
+    probabilityPct: '5.56%',
+    difficulty: 'Medium',
+    difficultyRating: 'XX',
+    comment: 'Headlights on left, block on the back. Uses fluid D\' moves to cancel pair reconstruction.',
     arrows: 'Headlights on left, 2x1 block on front-left',
     recognition: 'Headlights on left, block on back',
     speedTip: 'Headlights on left, 2x1 block on the back.'
@@ -724,6 +904,11 @@ export const PLL_ALGORITHMS = [
       { name: 'Sexy Move Start', code: "R U R' U'" },
       { name: 'D-Slide', code: "D R2 U' R U' ..." }
     ],
+    probability: '1/18',
+    probabilityPct: '5.56%',
+    difficulty: 'Medium',
+    difficultyRating: 'XX',
+    comment: 'Starts with Sexy Move (R U R\' U\') into a D move, followed by (R2 U\' R U\') (R\' U R\' U R2) D\'.',
     arrows: 'Headlights on left, 2x1 block on back-left',
     recognition: 'Headlights on left, block in front-left',
     speedTip: 'Headlights on left, 2x1 block attached to front headlight.'

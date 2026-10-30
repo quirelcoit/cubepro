@@ -338,24 +338,81 @@ class App {
     document.getElementById('lesson-next').addEventListener('click', () => { this.selectLesson(next.stage, next.level); document.getElementById('lesson-content').scrollIntoView({ block: 'start' }); });
   }
 
-  // --- Move Notation Cheat Sheet Modal ---
+  // --- Move Notation & CFOP Speed Cheat Sheet Modal ---
   initCheatSheetModal() {
     const btnOpen = document.getElementById('btn-open-cheat-sheet');
+    const btnOpenSpeed = document.getElementById('btn-open-speed-sheet');
+    const btnQuickSpeed = document.getElementById('btn-quick-speed-sheet');
     const modal = document.getElementById('modal-cheat-sheet');
     const btnClose = document.getElementById('btn-close-cheat-sheet');
     const btnCloseFoot = document.getElementById('btn-close-cheat-sheet-foot');
     const btnModalStudio = document.getElementById('btn-modal-open-notation');
+    const btnPrint = document.getElementById('btn-print-cheat-sheet');
 
-    const openModal = () => {
-      if (modal) { this.visualizer.pause(); modal.showModal(); }
+    const switchModalTab = (targetPaneId) => {
+      document.querySelectorAll('.modal-tab-btn').forEach(btn => {
+        const isTarget = btn.dataset.target === targetPaneId;
+        btn.classList.toggle('active', isTarget);
+        btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+      });
+      document.querySelectorAll('.modal-pane').forEach(pane => {
+        const isTarget = pane.id === targetPaneId;
+        pane.classList.toggle('active', isTarget);
+        pane.style.display = isTarget ? 'block' : 'none';
+      });
+    };
+
+    const openModal = (defaultPane = 'modal-pane-speed') => {
+      if (modal) {
+        this.visualizer?.pause();
+        switchModalTab(defaultPane);
+        modal.showModal();
+      }
     };
     const closeModal = () => {
       if (modal) modal.close();
     };
 
-    if (btnOpen) btnOpen.addEventListener('click', openModal);
+    if (btnOpen) btnOpen.addEventListener('click', () => openModal('modal-pane-notation'));
+    if (btnOpenSpeed) btnOpenSpeed.addEventListener('click', () => openModal('modal-pane-speed'));
+    if (btnQuickSpeed) btnQuickSpeed.addEventListener('click', () => openModal('modal-pane-speed'));
     if (btnClose) btnClose.addEventListener('click', closeModal);
     if (btnCloseFoot) btnCloseFoot.addEventListener('click', closeModal);
+    if (btnPrint) {
+      btnPrint.addEventListener('click', () => {
+        window.print();
+      });
+    }
+
+    document.querySelectorAll('.modal-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.dataset.target) switchModalTab(btn.dataset.target);
+      });
+    });
+
+    // Wire practice buttons inside the cheat sheet
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        const practiceBtn = e.target.closest('.cheat-practice-btn');
+        if (practiceBtn) {
+          const alg = practiceBtn.dataset.alg;
+          const name = practiceBtn.dataset.name;
+          closeModal();
+          this.switchTab('visualizer');
+          if (this.visualizer) {
+            this.visualizer.setAlgorithm(alg);
+            const titleEl = document.getElementById('vis-case-title');
+            const descEl = document.getElementById('vis-case-desc');
+            const movesEl = document.getElementById('vis-moves-display');
+            if (titleEl) titleEl.textContent = name;
+            if (descEl) descEl.textContent = 'Loaded from CFOP Speed Cheat Sheet.';
+            if (movesEl) movesEl.textContent = alg;
+          }
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    }
+
     if (btnModalStudio) {
       btnModalStudio.addEventListener('click', () => {
         closeModal();
@@ -537,7 +594,14 @@ class App {
 
   openCase(item) {
     this.activeCaseId = item.id;
-    this.loadCaseIntoVisualizer(item.name, item.recommendedAlg || item.alg, item.whatItDoes || item.intuition || item.notes || '', item.setup || '', item.howToHold || 'Yellow on top, white on bottom. Match the preview before starting.', '', STAGES[this.currentCategory].name.toUpperCase() + ' PRACTICE');
+    let desc = item.comment || item.whatItDoes || item.intuition || item.notes || '';
+    if (item.probability || item.difficulty) {
+      const parts = [];
+      if (item.probability) parts.push(`Chance: ${item.probability} (${item.probabilityPct || ''})`);
+      if (item.difficulty) parts.push(`Difficulty: ${item.difficultyRating ? item.difficultyRating + ' • ' : ''}${item.difficulty}`);
+      desc = `[${parts.join(' | ')}] ` + desc;
+    }
+    this.loadCaseIntoVisualizer(item.name, item.recommendedAlg || item.alg, desc, item.setup || '', item.howToHold || 'Yellow on top, white on bottom. Match the preview before starting.', '', STAGES[this.currentCategory].name.toUpperCase() + ' PRACTICE');
     this.renderVisualizerSidebar();
   }
 
@@ -720,6 +784,9 @@ class App {
         `;
       }
 
+      // Format formula with Badmephisto-style trigger chunking
+      const formattedFormula = algCode ? algCode.replace(/\(([^)]+)\)(\d*)/g, '<span class="alg-chunk">($1)$2</span>') : '';
+
       // Descriptive badge
       let badgeLabel = item.badge || item.category || item.type || item.group || 'CFOP';
       if (item.type === 'EO') badgeLabel = 'EO • Edge Orientation (Cross)';
@@ -741,14 +808,43 @@ class App {
           </div>
         </div>
 
+        ${(item.probability || item.difficulty) ? `
+          <div class="alg-meta-stats">
+            ${item.probability ? `
+              <span class="meta-stat-chip chip-prob" title="Chance of Occurrence: ${item.probability} (${item.probabilityPct || ''})">
+                <span class="meta-label">🎲 CHANCE</span>
+                <strong>${item.probability}</strong> <small>(${item.probabilityPct || ''})</small>
+              </span>
+            ` : ''}
+            ${item.difficulty ? `
+              <span class="meta-stat-chip chip-diff diff-${(item.difficulty || '').toLowerCase()}" title="Difficulty to Learn">
+                <span class="meta-label">🎯 DIFFICULTY</span>
+                <strong>${item.difficultyRating ? item.difficultyRating + ' • ' : ''}${item.difficulty}</strong>
+              </span>
+            ` : ''}
+          </div>
+        ` : ''}
+
         ${triggersHtml}
 
         <div class="alg-formula-box">
           <span class="formula-label">Practice sequence:</span>
-          <div class="formula-code">${algCode}</div>
-
-          
+          <div class="formula-code">${formattedFormula || algCode}</div>
         </div>
+
+        ${item.recognition ? `
+          <div class="card-recognition-cue">
+            <span class="rec-badge">👀 RECOGNITION</span>
+            <span class="rec-text">${item.recognition}</span>
+          </div>
+        ` : ''}
+
+        ${item.comment ? `
+          <div class="card-memorization-comment">
+            <span class="comment-badge">💡 BADMEPHISTO'S TIP</span>
+            <p class="comment-text">${item.comment}</p>
+          </div>
+        ` : ''}
 
         <details class="case-details"><summary>Hold &amp; learning notes</summary>
         ${item.howToHold ? `
